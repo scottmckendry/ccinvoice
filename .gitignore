@@ -22,4 +22,4 @@ go.work
 
 # Custom ignore list
 .env
-test.txt
+*.pdf
