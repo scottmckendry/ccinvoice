@@ -19,3 +19,7 @@
 
 # Go workspace file
 go.work
+
+# Custom ignore list
+.env
+test.txt
