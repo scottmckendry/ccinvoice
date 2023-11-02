@@ -9,16 +9,38 @@ import (
 
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	"github.com/Shopify/gomail"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/template/html/v2"
 	"github.com/joho/godotenv"
 )
 
 func main() {
-	// Load .env file
-	log.Println("Loading .env file")
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file: ", err)
+		log.Fatal("Error loading .env file")
 	}
+
+	app := fiber.New(fiber.Config{
+		Views: html.New("./views", ".html"),
+	})
+	app.Use(recover.New())
+	app.Use(logger.New())
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.Render("index", nil)
+	})
+
+	app.Post("/send", func(c *fiber.Ctx) error {
+		SendInvoice()
+		return c.SendString("Email sent!")
+	})
+
+	app.Listen(":3000")
+}
+
+func SendInvoice() {
 
 	log.Println("Creating PDF")
 	pdfGenerator, err := wkhtmltopdf.NewPDFGenerator()

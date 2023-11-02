@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script
+            src="https://unpkg.com/htmx.org@1.9.6"
+            integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
+            crossorigin="anonymous"
+        ></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        <main>
+            <div class="md:container md:mx-auto">
+                <h1 class="text-4xl">Invoices</h1>
+                <button
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    hx-post="/send"
+                    hx-target="this"
+                    hx-swap="innerHTML"
+                >
+                    Send
+                </button>
+            </div>
+        </main>
+    </body>
+</html>
