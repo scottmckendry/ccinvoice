@@ -7,8 +7,8 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	"github.com/Shopify/gomail"
-	"github.com/go-pdf/fpdf"
 	"github.com/joho/godotenv"
 )
 
@@ -20,13 +20,25 @@ func main() {
 		log.Fatal("Error loading .env file: ", err)
 	}
 
-	// Create PDF
 	log.Println("Creating PDF")
-	pdf := fpdf.New("P", "mm", "A4", "")
-	pdf.AddPage()
-	pdf.SetFont("Arial", "B", 16)
-	pdf.Cell(40, 10, "Hello World!")
-	pdf.OutputFileAndClose("./test.pdf")
+	pdfGenerator, err := wkhtmltopdf.NewPDFGenerator()
+	if err != nil {
+		log.Fatal("Error creating PDF generator: ", err)
+	}
+
+	page := wkhtmltopdf.NewPage("https://google.com")
+
+	pdfGenerator.AddPage(page)
+
+	err = pdfGenerator.Create()
+	if err != nil {
+		log.Fatal("Error generating PDF: ", err)
+	}
+
+	err = pdfGenerator.WriteFile("./test.pdf")
+	if err != nil {
+		log.Fatal("Error writing PDF: ", err)
+	}
 
 	smtpPort, err := strconv.Atoi(os.Getenv("SMTP_PORT"))
 	if err != nil {
