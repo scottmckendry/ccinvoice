@@ -24,3 +24,4 @@ go.work
 .env
 *.pdf
 tmp/
+db.sqlite3

@@ -14,12 +14,19 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/template/html/v2"
 	"github.com/joho/godotenv"
+
+	"ccinvoice/db"
 )
 
 func main() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
+	}
+
+	err = db.Init()
+	if err != nil {
+		log.Fatal("Error initializing database: ", err)
 	}
 
 	app := fiber.New(fiber.Config{

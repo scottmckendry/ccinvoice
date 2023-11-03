@@ -14,15 +14,10 @@
     <body>
         <main>
             <div class="md:container md:mx-auto">
-                <h1 class="text-4xl">Invoices</h1>
-                <button
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    hx-post="/send"
-                    hx-target="this"
-                    hx-swap="innerHTML"
-                >
-                    Send
-                </button>
+                <h1 class="text-3xl">Invoices</h1>
+                <br />
+                <span class="text-xl">Dogs</span>
+                <div>{{ template "dogs" . }}</div>
             </div>
         </main>
     </body>
