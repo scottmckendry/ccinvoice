@@ -44,7 +44,7 @@ func generatePdf(dog Dog) error {
 		return err
 	}
 
-	page := wkhtmltopdf.NewPage("http://localhost:3000/invoice/" + strconv.Itoa(dog.ID))
+	page := wkhtmltopdf.NewPage(os.Getenv("BASE_URL") + "/invoice/" + strconv.Itoa(dog.ID))
 
 	pdfGenerator.AddPage(page)
 
@@ -81,7 +81,7 @@ func sendEmail(dog Dog) error {
 
 	m := gomail.NewMessage()
 	m.SetHeader("From", fmt.Sprintf("Canine Club<%s>", os.Getenv("SMTP_USER")))
-	m.SetHeader("To", fmt.Sprintf("%s <%s>", dog.OwnerName, os.Getenv("SMTP_USER")))
+	m.SetHeader("To", fmt.Sprintf("%s <%s>", dog.OwnerName, dog.Email))
 	m.SetHeader("Subject", "Canine Club - Invoice for "+dog.Name)
 	m.SetBody(
 		"text/html",
