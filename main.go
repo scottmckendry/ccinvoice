@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	"github.com/Shopify/gomail"
@@ -139,7 +140,16 @@ func main() {
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
-		return c.Render("invoice", dog)
+		return c.Render("invoice", fiber.Map{
+			"InvoiceNumber": "1234567890",
+			"Date":          time.Now().Format("02-01-06"),
+			"Name":          dog.Name,
+			"OwnerName":     dog.OwnerName,
+			"Address":       dog.Address,
+			"Walks":         dog.WalksPerWeek,
+			"Price":         dog.PricePerWalk,
+			"Total":         float64(dog.WalksPerWeek) * dog.PricePerWalk,
+		})
 	})
 
 	app.Post("/invoice/:id", func(c *fiber.Ctx) error {
@@ -169,7 +179,7 @@ func SendInvoice(id int) {
 		log.Fatal("Error creating PDF generator: ", err)
 	}
 
-	page := wkhtmltopdf.NewPage("localhost:3000/invoice/" + strconv.Itoa(id))
+	page := wkhtmltopdf.NewPage("http://localhost:3000/invoice/" + strconv.Itoa(id))
 
 	pdfGenerator.AddPage(page)
 
