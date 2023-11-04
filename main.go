@@ -16,8 +16,6 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/template/html/v2"
 	"github.com/joho/godotenv"
-
-	"ccinvoice/db"
 )
 
 func main() {
@@ -26,7 +24,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	err = db.Init()
+	err = Init()
 	if err != nil {
 		log.Fatal("Error initializing database: ", err)
 	}
@@ -38,7 +36,7 @@ func main() {
 	app.Use(logger.New())
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		dogs, err := db.GetDogs()
+		dogs, err := GetDogs()
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
@@ -48,7 +46,7 @@ func main() {
 	})
 
 	app.Get("/dogs", func(c *fiber.Ctx) error {
-		dogs, err := db.GetDogs()
+		dogs, err := GetDogs()
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
@@ -62,15 +60,15 @@ func main() {
 	})
 
 	app.Post("/dogs", func(c *fiber.Ctx) error {
-		dog := new(db.Dog)
+		dog := new(Dog)
 		if err := c.BodyParser(dog); err != nil {
 			return c.Status(400).SendString(err.Error())
 		}
-		err := db.AddDog(*dog)
+		err := AddDog(*dog)
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
-		dogs, err := db.GetDogs()
+		dogs, err := GetDogs()
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
@@ -84,11 +82,11 @@ func main() {
 		if err != nil {
 			return c.Status(400).SendString(err.Error())
 		}
-		err = db.DeleteDog(id)
+		err = DeleteDog(id)
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
-		dogs, err := db.GetDogs()
+		dogs, err := GetDogs()
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
@@ -102,7 +100,7 @@ func main() {
 		if err != nil {
 			return c.Status(400).SendString(err.Error())
 		}
-		dog, err := db.GetDog(id)
+		dog, err := GetDog(id)
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
@@ -114,16 +112,16 @@ func main() {
 		if err != nil {
 			return c.Status(400).SendString(err.Error())
 		}
-		dog := new(db.Dog)
+		dog := new(Dog)
 		dog.ID = id
 		if err := c.BodyParser(dog); err != nil {
 			return c.Status(400).SendString(err.Error())
 		}
-		err = db.UpdateDog(*dog)
+		err = UpdateDog(*dog)
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
-		dogs, err := db.GetDogs()
+		dogs, err := GetDogs()
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
@@ -137,7 +135,7 @@ func main() {
 		if err != nil {
 			return c.Status(400).SendString(err.Error())
 		}
-		dog, err := db.GetDog(id)
+		dog, err := GetDog(id)
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
@@ -166,7 +164,7 @@ func main() {
 			return c.Status(400).SendString(err.Error())
 		}
 		SendInvoice(id)
-		dogs, err := db.GetDogs()
+		dogs, err := GetDogs()
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
@@ -180,7 +178,7 @@ func main() {
 }
 
 func SendInvoice(id int) {
-	dog, err := db.GetDog(id)
+	dog, err := GetDog(id)
 	if err != nil {
 		log.Fatal("Error getting dog: ", err)
 	}
@@ -247,7 +245,7 @@ func SendInvoice(id int) {
 	}
 }
 
-func getInvoiceNumber(dog db.Dog) string {
+func getInvoiceNumber(dog Dog) string {
 	prefix := strings.ToUpper(dog.Name[0:3])
 	return prefix + time.Now().Format("20060102")
 }
