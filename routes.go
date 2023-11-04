@@ -125,6 +125,7 @@ func SetRoutes(app *fiber.App) {
 			"FromName":      os.Getenv("FROM_NAME"),
 			"FromAddress":   os.Getenv("FROM_ADDRESS"),
 			"FromCity":      os.Getenv("FROM_CITY"),
+			"AccountNumber": os.Getenv("ACCOUNT_NUMBER"),
 			"Name":          dog.Name,
 			"OwnerName":     dog.OwnerName,
 			"Address":       dog.Address,

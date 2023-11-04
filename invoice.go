@@ -80,6 +80,12 @@ func sendEmail(dog Dog) error {
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 
 	ownerFirstName := strings.Split(dog.OwnerName, " ")[0]
+	fromFirstName := strings.Split(os.Getenv("FROM_NAME"), " ")[0]
+
+	walkOrWalks := "walk"
+	if dog.Quantity > 1 {
+		walkOrWalks = "walks"
+	}
 
 	m := gomail.NewMessage()
 	m.SetHeader("From", fmt.Sprintf("Canine Club<%s>", os.Getenv("SMTP_USER")))
@@ -87,7 +93,8 @@ func sendEmail(dog Dog) error {
 	m.SetHeader("Subject", "Canine Club - Invoice for "+dog.Name)
 	m.SetBody(
 		"text/html",
-		"Hi "+ownerFirstName+",<br><br>Here is your invoice for "+dog.Name+".<br><br>Kind regards,<br>Canine Club",
+		"Hi "+ownerFirstName+",<br><br>Please find attached the invoice for "+dog.Name+"'s "+walkOrWalks+" this week.<p style='font-weight:lighter;'>Please use '<b>"+dog.Name+"</b>' as the reference when making payment. Also note that payment is due by "+nextMonday().Format("Monday, 2 January 2006")+
+			".</p><br>Any questions let me know,<br>Thank you!<br><br>"+fromFirstName+"<br>Canine Club",
 	)
 	m.Attach(invoiceFile)
 
