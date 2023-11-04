@@ -12,14 +12,15 @@ var dbUrl = "file:./db.sqlite3"
 var Db *sql.DB
 
 type Dog struct {
-	ID           int
-	Name         string
-	OwnerName    string
-	Address      string
-	City         string
-	Email        string
-	WalksPerWeek int
-	PricePerWalk float64
+	ID        int
+	Name      string
+	OwnerName string
+	Address   string
+	City      string
+	Email     string
+	Service   string
+	Quantity  int
+	Price     float64
 }
 
 func Init() error {
@@ -55,8 +56,9 @@ func createTables() error {
             address TEXT,
             city TEXT,
             email TEXT,
-            walksPerWeek INTEGER,
-            pricePerWalk INTEGER
+            service TEXT,
+            quantity INTEGER,
+            price INTEGER
         );
     `)
 	if err != nil {
@@ -82,8 +84,9 @@ func GetDogs() ([]Dog, error) {
 			&dog.Address,
 			&dog.City,
 			&dog.Email,
-			&dog.WalksPerWeek,
-			&dog.PricePerWalk,
+			&dog.Service,
+			&dog.Quantity,
+			&dog.Price,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("error scanning dog: %v", err)
@@ -103,8 +106,9 @@ func GetDog(id int) (Dog, error) {
 		&dog.Address,
 		&dog.City,
 		&dog.Email,
-		&dog.WalksPerWeek,
-		&dog.PricePerWalk,
+		&dog.Service,
+		&dog.Quantity,
+		&dog.Price,
 	)
 	if err != nil {
 		return Dog{}, fmt.Errorf("error getting dog: %v", err)
@@ -121,10 +125,11 @@ func AddDog(dog Dog) error {
             address,
             city,
             email,
-            walksPerWeek,
-            pricePerWalk
-        ) VALUES (?, ?, ?, ?, ?, ?, ?)
-    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.WalksPerWeek, dog.PricePerWalk)
+            service,
+            quantity,
+            price
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Service, dog.Quantity, dog.Price)
 	if err != nil {
 		return fmt.Errorf("error adding dog: %v", err)
 	}
@@ -140,10 +145,11 @@ func UpdateDog(dog Dog) error {
             address = ?,
             city = ?,
             email = ?,
-            walksPerWeek = ?,
-            pricePerWalk = ?
+            service = ?,
+            quantity = ?,
+            price = ?
         WHERE id = ?
-    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.WalksPerWeek, dog.PricePerWalk, dog.ID)
+    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Service, dog.Quantity, dog.Price, dog.ID)
 	if err != nil {
 		return fmt.Errorf("error updating dog: %v", err)
 	}

@@ -1,5 +1,5 @@
 <tr id="datarow-{{.ID}}" class="border-b dark:border-neutral-500">
-    <td class="px-6 py-4">{{.ID}}</td>
+    <td class="px-6 py-4 hidden">{{.ID}}</td>
     <td class="px-6 py-4">
         <input
             type="text"
@@ -50,8 +50,17 @@
             type="text"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             data-include-edit="{{.ID}}"
-            name="walksPerWeek"
-            value="{{.WalksPerWeek}}"
+            name="service"
+            value="{{.Service}}"
+        />
+    </td>
+    <td class="px-6 py-4">
+        <input
+            type="text"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            data-include-edit="{{.ID}}"
+            name="quantity"
+            value="{{.Quantity}}"
         />
     </td>
     <td class="px-6 py-4">
@@ -60,7 +69,7 @@
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             data-include-edit="{{.ID}}"
             name="pricePerWalk"
-            value="{{.PricePerWalk}}"
+            value="{{.Price}}"
         />
     </td>
     <td class="px-1 py-1">

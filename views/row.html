@@ -1,12 +1,13 @@
 <tr id="datarow-{{.ID}}" class="border-b dark:border-neutral-500">
-    <td class="px-6 py-4">{{.ID}}</td>
+    <td class="px-6 py-4 hidden">{{.ID}}</td>
     <td class="px-6 py-4">{{.Name}}</td>
     <td class="px-6 py-4">{{.OwnerName}}</td>
     <td class="px-6 py-4">{{.Address}}</td>
     <td class="px-6 py-4">{{.City}}</td>
     <td class="px-6 py-4">{{.Email}}</td>
-    <td class="px-6 py-4">{{.WalksPerWeek}}</td>
-    <td class="px-6 py-4">{{.PricePerWalk}}</td>
+    <td class="px-6 py-4">{{.Service}}</td>
+    <td class="px-6 py-4">{{.Quantity}}</td>
+    <td class="px-6 py-4">{{.Price}}</td>
     <td class="px-1 py-1">
         <a
             hx-get="/dogs/edit/{{.ID}}"

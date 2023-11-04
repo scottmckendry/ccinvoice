@@ -79,13 +79,15 @@ func sendEmail(dog Dog) error {
 	)
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 
+	ownerFirstName := strings.Split(dog.OwnerName, " ")[0]
+
 	m := gomail.NewMessage()
 	m.SetHeader("From", fmt.Sprintf("Canine Club<%s>", os.Getenv("SMTP_USER")))
 	m.SetHeader("To", fmt.Sprintf("%s <%s>", dog.OwnerName, dog.Email))
 	m.SetHeader("Subject", "Canine Club - Invoice for "+dog.Name)
 	m.SetBody(
 		"text/html",
-		"Hi "+dog.OwnerName+",<br><br>Here is your invoice for "+dog.Name+".<br><br>Kind regards,<br>Canine Club",
+		"Hi "+ownerFirstName+",<br><br>Here is your invoice for "+dog.Name+".<br><br>Kind regards,<br>Canine Club",
 	)
 	m.Attach(invoiceFile)
 
