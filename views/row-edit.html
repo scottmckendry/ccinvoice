@@ -1,6 +1,6 @@
 <tr id="datarow-{{.ID}}" class="border-b dark:border-neutral-500">
-    <td class="whitespace-nowrap px-6 py-4">{{.ID}}</td>
-    <td class="whitespace-nowrap px-6 py-4">
+    <td class="px-6 py-4">{{.ID}}</td>
+    <td class="px-6 py-4">
         <input
             type="text"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -9,7 +9,7 @@
             value="{{.Name}}"
         />
     </td>
-    <td class="whitespace-nowrap px-6 py-4">
+    <td class="px-6 py-4">
         <input
             type="text"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -18,7 +18,7 @@
             value="{{.OwnerName}}"
         />
     </td>
-    <td class="whitespace-nowrap px-6 py-4">
+    <td class="px-6 py-4">
         <input
             type="text"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -27,7 +27,7 @@
             value="{{.Address}}"
         />
     </td>
-    <td class="whitespace-nowrap px-6 py-4">
+    <td class="px-6 py-4">
         <input
             type="text"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -36,7 +36,7 @@
             value="{{.City}}"
         />
     </td>
-    <td class="whitespace-nowrap px-6 py-4">
+    <td class="px-6 py-4">
         <input
             type="text"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -45,7 +45,7 @@
             value="{{.Email}}"
         />
     </td>
-    <td class="whitespace-nowrap px-6 py-4">
+    <td class="px-6 py-4">
         <input
             type="text"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -54,7 +54,7 @@
             value="{{.WalksPerWeek}}"
         />
     </td>
-    <td class="whitespace-nowrap px-6 py-4">
+    <td class="px-6 py-4">
         <input
             type="text"
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -63,24 +63,22 @@
             value="{{.PricePerWalk}}"
         />
     </td>
-    <td class="whitespace-nowrap px-1 py-1">
+    <td class="px-1 py-1">
         <a
             hx-put="/dogs/{{.ID}}"
             hx-target="#dogs"
             hx-indicator="#processing"
             hx-include="input[data-include-edit]"
-            class="inline-flex items-center h-8 px-4 m-2 text-sm text-blue-100 transition-colors duration-150 bg-blue-700 rounded-lg focus:shadow-outline hover:bg-blue-800"
+            class="hover:underline text-blue-700"
             href=""
             >Save</a
         >
-    </td>
-    <td class="whitespace-nowrap px-1 py-1">
         <a
             hx-get="/dogs/"
             hx-target="#dogs"
             hx-indicator="#processing"
-            class="inline-flex items-center h-8 px-4 m-2 text-sm text-red-100 transition-colors duration-150 bg-red-700 rounded-lg focus:shadow-outline hover:bg-red-800"
             href=""
+            class="hover:underline text-blue-700"
             >Cancel</a
         >
     </td>

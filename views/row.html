@@ -1,13 +1,13 @@
 <tr id="datarow-{{.ID}}" class="border-b dark:border-neutral-500">
-    <td class="whitespace-nowrap px-6 py-4">{{.ID}}</td>
-    <td class="whitespace-nowrap px-6 py-4">{{.Name}}</td>
-    <td class="whitespace-nowrap px-6 py-4">{{.OwnerName}}</td>
-    <td class="whitespace-nowrap px-6 py-4">{{.Address}}</td>
-    <td class="whitespace-nowrap px-6 py-4">{{.City}}</td>
-    <td class="whitespace-nowrap px-6 py-4">{{.Email}}</td>
-    <td class="whitespace-nowrap px-6 py-4">{{.WalksPerWeek}}</td>
-    <td class="whitespace-nowrap px-6 py-4">{{.PricePerWalk}}</td>
-    <td class="whitespace-nowrap px-1 py-1">
+    <td class="px-6 py-4">{{.ID}}</td>
+    <td class="px-6 py-4">{{.Name}}</td>
+    <td class="px-6 py-4">{{.OwnerName}}</td>
+    <td class="px-6 py-4">{{.Address}}</td>
+    <td class="px-6 py-4">{{.City}}</td>
+    <td class="px-6 py-4">{{.Email}}</td>
+    <td class="px-6 py-4">{{.WalksPerWeek}}</td>
+    <td class="px-6 py-4">{{.PricePerWalk}}</td>
+    <td class="px-1 py-1">
         <a
             hx-get="/dogs/edit/{{.ID}}"
             hx-target="#datarow-{{.ID}}"
@@ -18,8 +18,6 @@
         >
             Edit
         </a>
-    </td>
-    <td class="whitespace-nowrap px-1 py-1">
         <a
             hx-delete="/dogs/{{.ID}}"
             hx-target="#dogs"
@@ -29,8 +27,6 @@
             href=""
             >Delete</a
         >
-    </td>
-    <td class="whitespace-nowrap px-1 py-1">
         <a
             class="hover:underline text-blue-700"
             href="/invoice/{{.ID}}"
@@ -38,8 +34,6 @@
             target="_blank"
             >Preview</a
         >
-    </td>
-    <td class="whitespace-nowrap px-1 py-1">
         <a
             hx-post="/invoice/{{.ID}}"
             hx-target="#dogs"
