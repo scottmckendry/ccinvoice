@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"strconv"
 	"time"
 
@@ -121,6 +122,9 @@ func SetRoutes(app *fiber.App) {
 			"InvoiceNumber": getInvoiceNumber(dog),
 			"Date":          time.Now().Format("Monday, 2 January 2006"),
 			"DueDate":       nextMonday().Format("Monday, 2 January 2006"),
+			"FromName":      os.Getenv("FROM_NAME"),
+			"FromAddress":   os.Getenv("FROM_ADDRESS"),
+			"FromCity":      os.Getenv("FROM_CITY"),
 			"Name":          dog.Name,
 			"OwnerName":     dog.OwnerName,
 			"Address":       dog.Address,
