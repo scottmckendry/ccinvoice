@@ -16,6 +16,7 @@ type Dog struct {
 	Name         string
 	OwnerName    string
 	Address      string
+	City         string
 	Email        string
 	WalksPerWeek int
 	PricePerWalk float64
@@ -52,6 +53,7 @@ func createTables() error {
             name TEXT,
             ownerName TEXT,
             address TEXT,
+            city TEXT,
             email TEXT,
             walksPerWeek INTEGER,
             pricePerWalk INTEGER
@@ -78,6 +80,7 @@ func GetDogs() ([]Dog, error) {
 			&dog.Name,
 			&dog.OwnerName,
 			&dog.Address,
+			&dog.City,
 			&dog.Email,
 			&dog.WalksPerWeek,
 			&dog.PricePerWalk,
@@ -98,6 +101,7 @@ func GetDog(id int) (Dog, error) {
 		&dog.Name,
 		&dog.OwnerName,
 		&dog.Address,
+		&dog.City,
 		&dog.Email,
 		&dog.WalksPerWeek,
 		&dog.PricePerWalk,
@@ -115,11 +119,12 @@ func AddDog(dog Dog) error {
             name,
             ownerName,
             address,
+            city,
             email,
             walksPerWeek,
             pricePerWalk
-        ) VALUES (?, ?, ?, ?, ?, ?)
-    `, dog.Name, dog.OwnerName, dog.Address, dog.Email, dog.WalksPerWeek, dog.PricePerWalk)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.WalksPerWeek, dog.PricePerWalk)
 	if err != nil {
 		return fmt.Errorf("error adding dog: %v", err)
 	}
@@ -133,11 +138,12 @@ func UpdateDog(dog Dog) error {
             name = ?,
             ownerName = ?,
             address = ?,
+            city = ?,
             email = ?,
             walksPerWeek = ?,
             pricePerWalk = ?
         WHERE id = ?
-    `, dog.Name, dog.OwnerName, dog.Address, dog.Email, dog.WalksPerWeek, dog.PricePerWalk, dog.ID)
+    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.WalksPerWeek, dog.PricePerWalk, dog.ID)
 	if err != nil {
 		return fmt.Errorf("error updating dog: %v", err)
 	}

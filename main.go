@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
@@ -141,14 +142,21 @@ func main() {
 			return c.Status(500).SendString(err.Error())
 		}
 		return c.Render("invoice", fiber.Map{
-			"InvoiceNumber": "1234567890",
-			"Date":          time.Now().Format("02-01-06"),
+			"InvoiceNumber": getInvoiceNumber(dog),
+			"Date":          time.Now().Format("Monday, 2 January 2006"),
+			"DueDate":       nextMonday().Format("Monday, 2 January 2006"),
 			"Name":          dog.Name,
 			"OwnerName":     dog.OwnerName,
 			"Address":       dog.Address,
+			"City":          dog.City,
 			"Walks":         dog.WalksPerWeek,
-			"Price":         dog.PricePerWalk,
-			"Total":         float64(dog.WalksPerWeek) * dog.PricePerWalk,
+			"Price":         strconv.FormatFloat(dog.PricePerWalk, 'f', 2, 64),
+			"Total": strconv.FormatFloat(
+				(float64(dog.WalksPerWeek) * dog.PricePerWalk),
+				'f',
+				2,
+				64,
+			),
 		})
 	})
 
@@ -172,6 +180,10 @@ func main() {
 }
 
 func SendInvoice(id int) {
+	dog, err := db.GetDog(id)
+	if err != nil {
+		log.Fatal("Error getting dog: ", err)
+	}
 
 	log.Println("Creating PDF")
 	pdfGenerator, err := wkhtmltopdf.NewPDFGenerator()
@@ -188,7 +200,9 @@ func SendInvoice(id int) {
 		log.Fatal("Error generating PDF: ", err)
 	}
 
-	err = pdfGenerator.WriteFile("./test.pdf")
+	invoiceFile := fmt.Sprintf("./%s.pdf", getInvoiceNumber(dog))
+
+	err = pdfGenerator.WriteFile(invoiceFile)
 	if err != nil {
 		log.Fatal("Error writing PDF: ", err)
 	}
@@ -208,11 +222,14 @@ func SendInvoice(id int) {
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 
 	m := gomail.NewMessage()
-	m.SetHeader("From", fmt.Sprintf("Test <%s>", os.Getenv("SMTP_USER")))
-	m.SetHeader("To", fmt.Sprintf("Test <%s>", os.Getenv("SMTP_USER")))
-	m.SetHeader("Subject", "Hello!")
-	m.SetBody("text/html", "Hello <b>World</b>!")
-	m.Attach("./test.pdf")
+	m.SetHeader("From", fmt.Sprintf("Canine Club<%s>", os.Getenv("SMTP_USER")))
+	m.SetHeader("To", fmt.Sprintf("%s <%s>", dog.OwnerName, os.Getenv("SMTP_USER")))
+	m.SetHeader("Subject", "Canine Club - Invoice for "+dog.Name)
+	m.SetBody(
+		"text/html",
+		"Hi "+dog.OwnerName+",<br><br>Here is your invoice for "+dog.Name+".<br><br>Kind regards,<br>Canine Club",
+	)
+	m.Attach(invoiceFile)
 
 	err = d.DialAndSend(m)
 	if err != nil {
@@ -222,10 +239,24 @@ func SendInvoice(id int) {
 	}
 
 	log.Println("Deleting PDF")
-	err = os.Remove("./test.pdf")
+	err = os.Remove(invoiceFile)
 	if err != nil {
 		log.Fatal("Error deleting PDF: ", err)
 	} else {
 		log.Println("PDF deleted!")
 	}
+}
+
+func getInvoiceNumber(dog db.Dog) string {
+	prefix := strings.ToUpper(dog.Name[0:3])
+	return prefix + time.Now().Format("20060102")
+}
+
+func nextMonday() time.Time {
+	today := time.Now()
+	daysUntilMonday := int(time.Monday - today.Weekday())
+	if daysUntilMonday < 0 {
+		daysUntilMonday += 7
+	}
+	return today.AddDate(0, 0, daysUntilMonday)
 }
