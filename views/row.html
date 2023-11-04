@@ -28,4 +28,23 @@
             >Delete</a
         >
     </td>
+    <td class="whitespace-nowrap px-1 py-1">
+        <a
+            class="hover:underline text-blue-700"
+            href="/invoice/{{.ID}}"
+            rel="noopener noreferrer"
+            target="_blank"
+            >Preview</a
+        >
+    </td>
+    <td class="whitespace-nowrap px-1 py-1">
+        <a
+            hx-post="/invoice/{{.ID}}"
+            hx-target="#dogs"
+            hx-indicator="#processing"
+            class="hover:underline text-blue-700"
+            href=""
+            >Send</a
+        >
+    </td>
 </tr>

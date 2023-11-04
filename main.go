@@ -130,15 +130,38 @@ func main() {
 		})
 	})
 
-	app.Post("/send", func(c *fiber.Ctx) error {
-		SendInvoice()
-		return c.SendString("Email sent!")
+	app.Get("/invoice/:id", func(c *fiber.Ctx) error {
+		id, err := strconv.Atoi(c.Params("id"))
+		if err != nil {
+			return c.Status(400).SendString(err.Error())
+		}
+		dog, err := db.GetDog(id)
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+		return c.Render("invoice", dog)
+	})
+
+	app.Post("/invoice/:id", func(c *fiber.Ctx) error {
+		id, err := strconv.Atoi(c.Params("id"))
+		if err != nil {
+			return c.Status(400).SendString(err.Error())
+		}
+		SendInvoice(id)
+		dogs, err := db.GetDogs()
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+
+		return c.Render("dogs", fiber.Map{
+			"dogs": dogs,
+		})
 	})
 
 	app.Listen(":3000")
 }
 
-func SendInvoice() {
+func SendInvoice(id int) {
 
 	log.Println("Creating PDF")
 	pdfGenerator, err := wkhtmltopdf.NewPDFGenerator()
@@ -146,7 +169,7 @@ func SendInvoice() {
 		log.Fatal("Error creating PDF generator: ", err)
 	}
 
-	page := wkhtmltopdf.NewPage("https://google.com")
+	page := wkhtmltopdf.NewPage("localhost:3000/invoice/" + strconv.Itoa(id))
 
 	pdfGenerator.AddPage(page)
 
