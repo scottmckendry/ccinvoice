@@ -12,12 +12,12 @@ var dbUrl = "file:./db.sqlite3"
 var Db *sql.DB
 
 type Dog struct {
-	Id           int
+	ID           int
 	Name         string
 	OwnerName    string
 	Address      string
 	WalksPerWeek int
-	PricePerWalk int
+	PricePerWalk float64
 }
 
 func Init() error {
@@ -47,7 +47,7 @@ func connect() error {
 func createTables() error {
 	_, err := Db.Exec(`
         CREATE TABLE IF NOT EXISTS dogs (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             ownerName TEXT,
             address TEXT,
@@ -72,7 +72,7 @@ func GetDogs() ([]Dog, error) {
 	for rows.Next() {
 		var dog Dog
 		err := rows.Scan(
-			&dog.Id,
+			&dog.ID,
 			&dog.Name,
 			&dog.OwnerName,
 			&dog.Address,
@@ -88,6 +88,23 @@ func GetDogs() ([]Dog, error) {
 	return dogs, nil
 }
 
+func GetDog(id int) (Dog, error) {
+	var dog Dog
+	err := Db.QueryRow("SELECT * FROM dogs WHERE id = ?", id).Scan(
+		&dog.ID,
+		&dog.Name,
+		&dog.OwnerName,
+		&dog.Address,
+		&dog.WalksPerWeek,
+		&dog.PricePerWalk,
+	)
+	if err != nil {
+		return Dog{}, fmt.Errorf("error getting dog: %v", err)
+	}
+
+	return dog, nil
+}
+
 func AddDog(dog Dog) error {
 	_, err := Db.Exec(`
         INSERT INTO dogs (
@@ -100,6 +117,32 @@ func AddDog(dog Dog) error {
     `, dog.Name, dog.OwnerName, dog.Address, dog.WalksPerWeek, dog.PricePerWalk)
 	if err != nil {
 		return fmt.Errorf("error adding dog: %v", err)
+	}
+
+	return nil
+}
+
+func UpdateDog(dog Dog) error {
+	_, err := Db.Exec(`
+        UPDATE dogs SET
+            name = ?,
+            ownerName = ?,
+            address = ?,
+            walksPerWeek = ?,
+            pricePerWalk = ?
+        WHERE id = ?
+    `, dog.Name, dog.OwnerName, dog.Address, dog.WalksPerWeek, dog.PricePerWalk, dog.ID)
+	if err != nil {
+		return fmt.Errorf("error updating dog: %v", err)
+	}
+
+	return nil
+}
+
+func DeleteDog(id int) error {
+	_, err := Db.Exec("DELETE FROM dogs WHERE id = ?", id)
+	if err != nil {
+		return fmt.Errorf("error deleting dog: %v", err)
 	}
 
 	return nil

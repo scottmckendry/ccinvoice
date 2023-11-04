@@ -36,7 +36,98 @@ func main() {
 	app.Use(logger.New())
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Render("index", nil)
+		dogs, err := db.GetDogs()
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+		return c.Render("index", fiber.Map{
+			"dogs": dogs,
+		})
+	})
+
+	app.Get("/dogs", func(c *fiber.Ctx) error {
+		dogs, err := db.GetDogs()
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+		return c.Render("dogs", fiber.Map{
+			"dogs": dogs,
+		})
+	})
+
+	app.Get("/dogs/add", func(c *fiber.Ctx) error {
+		return c.Render("row-add", nil)
+	})
+
+	app.Post("/dogs", func(c *fiber.Ctx) error {
+		dog := new(db.Dog)
+		if err := c.BodyParser(dog); err != nil {
+			return c.Status(400).SendString(err.Error())
+		}
+		err := db.AddDog(*dog)
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+		dogs, err := db.GetDogs()
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+		return c.Render("dogs", fiber.Map{
+			"dogs": dogs,
+		})
+	})
+
+	app.Delete("/dogs/:id", func(c *fiber.Ctx) error {
+		id, err := strconv.Atoi(c.Params("id"))
+		if err != nil {
+			return c.Status(400).SendString(err.Error())
+		}
+		err = db.DeleteDog(id)
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+		dogs, err := db.GetDogs()
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+		return c.Render("dogs", fiber.Map{
+			"dogs": dogs,
+		})
+	})
+
+	app.Get("dogs/edit/:id", func(c *fiber.Ctx) error {
+		id, err := strconv.Atoi(c.Params("id"))
+		if err != nil {
+			return c.Status(400).SendString(err.Error())
+		}
+		dog, err := db.GetDog(id)
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+		return c.Render("row-edit", dog)
+	})
+
+	app.Put("/dogs/:id", func(c *fiber.Ctx) error {
+		id, err := strconv.Atoi(c.Params("id"))
+		if err != nil {
+			return c.Status(400).SendString(err.Error())
+		}
+		dog := new(db.Dog)
+		dog.ID = id
+		if err := c.BodyParser(dog); err != nil {
+			return c.Status(400).SendString(err.Error())
+		}
+		err = db.UpdateDog(*dog)
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+		dogs, err := db.GetDogs()
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+		return c.Render("dogs", fiber.Map{
+			"dogs": dogs,
+		})
 	})
 
 	app.Post("/send", func(c *fiber.Ctx) error {

@@ -1,0 +1,31 @@
+<tr id="datarow-{{.ID}}" class="border-b dark:border-neutral-500">
+    <td class="whitespace-nowrap px-6 py-4">{{.ID}}</td>
+    <td class="whitespace-nowrap px-6 py-4">{{.Name}}</td>
+    <td class="whitespace-nowrap px-6 py-4">{{.OwnerName}}</td>
+    <td class="whitespace-nowrap px-6 py-4">{{.Address}}</td>
+    <td class="whitespace-nowrap px-6 py-4">{{.WalksPerWeek}}</td>
+    <td class="whitespace-nowrap px-6 py-4">{{.PricePerWalk}}</td>
+    <td class="whitespace-nowrap px-1 py-1">
+        <a
+            hx-get="/dogs/edit/{{.ID}}"
+            hx-target="#datarow-{{.ID}}"
+            hx-swap="outerHTML"
+            hx-indicator="#processing"
+            class="hover:underline text-blue-700"
+            href=""
+        >
+            Edit
+        </a>
+    </td>
+    <td class="whitespace-nowrap px-1 py-1">
+        <a
+            hx-delete="/dogs/{{.ID}}"
+            hx-target="#dogs"
+            hx-confirm="Are you sure you want to delete {{.Name}}?"
+            hx-indicator="#processing"
+            class="hover:underline text-blue-700"
+            href=""
+            >Delete</a
+        >
+    </td>
+</tr>

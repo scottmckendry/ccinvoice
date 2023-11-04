@@ -32,6 +32,7 @@
                             </tr>
                         </thead>
                         <tbody id="table-body"></tbody>
+                        {{ range .dogs }} {{ template "row" . }} {{ end }}
                     </table>
                 </div>
             </div>
