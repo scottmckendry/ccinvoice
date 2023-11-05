@@ -68,17 +68,47 @@ header h1 {
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     flex: 0 1 300px;
-    min-width: 300px;
-    max-width: 600px;
+    min-width: 350px;
+    max-width: 650px;
+}
+
+hr {
+    border: 1px solid #eee;
 }
 
 .card-title {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
 }
 
 .card-title h2 {
     font-size: 18px;
+    padding-left: 10px;
+}
+
+.card-person {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.card-person p {
+    margin: 2px;
+    text-align: right;
+}
+
+.card-services {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 10px 20px 10px;
+}
+
+.card-services p {
+    margin: 2px;
     padding-left: 10px;
 }
 

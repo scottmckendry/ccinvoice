@@ -3,17 +3,21 @@
         <i class="nf nf-md-dog_side"></i>
         <h2>{{ .Name }}</h2>
     </div>
-    <div class="card-subtitle">
-        <p>{{ .OwnerName }}</p>
+    <hr />
+    <div class="card-person">
+        <i class="nf nf-fa-user"></i>
+        <div class="details">
+            <p>{{ .OwnerName }}</p>
+            <p>{{ .Address }}</p>
+            <p>{{ .City }}</p>
+            <p>{{ .Email }}</p>
+        </div>
     </div>
-    <div class="address">
-        <p>{{ .Address }}</p>
-        <p>{{ .City }}</p>
-        <p>{{ .Email }}</p>
-    </div>
-    <div class="services">
+    <hr />
+    <div class="card-services">
+        <i class="nf nf-fa-shopping_cart"></i>
         <p>
-            <b>{{ .Quantity }}</b> X <b>{{ .Service }}</b> @
+            <b>{{ .Quantity }}</b> x <b>{{ .Service }}</b> @
             <b>${{ .Price }}</b>
         </p>
     </div>
