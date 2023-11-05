@@ -21,8 +21,8 @@
         <button
             class="btn-primary"
             hx-get="/dogs/edit/{{.ID}}"
-            hx-target="#cards"
-            hx-swap="outerHTML"
+            hx-target="body"
+            hx-swap="beforeend"
             hx-indicator="#spinner"
             href=""
         >
