@@ -1,45 +1,32 @@
 <div id="dogs">
     <div id="processing" class="htmx-indicator">Processing...</div>
-    <div class="flex flex-col">
-        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                <div class="overflow-hidden">
-                    <div class="flex justify-end">
-                        <button
-                            hx-get="/dogs/add"
-                            hx-target="#table-body"
-                            hx-swap="outerHTML"
-                            hx-indicator="#processing"
-                            class="inline-flex items-center h-8 px-4 m-2 text-sm text-blue-100 transition-colors duration-150 bg-blue-700 rounded-lg focus:shadow-outline hover:bg-blue-800"
-                            href=""
-                        >
-                            Add
-                        </button>
-                    </div>
-                    <table class="table-auto">
-                        <thead
-                            class="border-b font-medium dark:border-neutral-500"
-                        >
-                            <tr>
-                                <th scope="col" class="px-6 py-4 hidden">#</th>
-                                <th scope="col" class="px-6 py-4">Name</th>
-                                <th scope="col" class="px-6 py-4">
-                                    Owner Name
-                                </th>
-                                <th scope="col" class="px-6 py-4">Address</th>
-                                <th scope="col" class="px-6 py-4">City</th>
-                                <th scope="col" class="px-6 py-4">Email</th>
-                                <th scope="col" class="px-6 py-4">Service</th>
-                                <th scope="col" class="px-6 py-4">Quantity</th>
-                                <th scope="col" class="px-6 py-4">Price</th>
-                                <th scope="col" class="px-6 py-4">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-body"></tbody>
-                        {{ range .dogs }} {{ template "row" . }} {{ end }}
-                    </table>
-                </div>
-            </div>
-        </div>
+    <div>
+        <button
+            hx-get="/dogs/add"
+            hx-target="#table-body"
+            hx-swap="outerHTML"
+            hx-indicator="#processing"
+            href=""
+        >
+            Add
+        </button>
     </div>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Owner Name</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Email</th>
+                <th>Service</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+        {{ range .dogs }} {{ template "row" . }} {{ end }}
+    </table>
 </div>

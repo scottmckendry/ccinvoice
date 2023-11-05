@@ -1,20 +1,19 @@
-<tr id="datarow-{{.ID}}" class="border-b dark:border-neutral-500">
-    <td class="px-6 py-4 hidden">{{.ID}}</td>
-    <td class="px-6 py-4">{{.Name}}</td>
-    <td class="px-6 py-4">{{.OwnerName}}</td>
-    <td class="px-6 py-4">{{.Address}}</td>
-    <td class="px-6 py-4">{{.City}}</td>
-    <td class="px-6 py-4">{{.Email}}</td>
-    <td class="px-6 py-4">{{.Service}}</td>
-    <td class="px-6 py-4">{{.Quantity}}</td>
-    <td class="px-6 py-4">{{.Price}}</td>
-    <td class="px-1 py-1">
+<tr id="datarow-{{.ID}}">
+    <td>{{.ID}}</td>
+    <td>{{.Name}}</td>
+    <td>{{.OwnerName}}</td>
+    <td>{{.Address}}</td>
+    <td>{{.City}}</td>
+    <td>{{.Email}}</td>
+    <td>{{.Service}}</td>
+    <td>{{.Quantity}}</td>
+    <td>{{.Price}}</td>
+    <td>
         <a
             hx-get="/dogs/edit/{{.ID}}"
             hx-target="#datarow-{{.ID}}"
             hx-swap="outerHTML"
             hx-indicator="#processing"
-            class="hover:underline text-blue-700"
             href=""
         >
             Edit
@@ -24,7 +23,6 @@
             hx-target="#dogs"
             hx-confirm="Are you sure you want to delete {{.Name}}?"
             hx-indicator="#processing"
-            class="hover:underline text-blue-700"
             href=""
             >Delete</a
         >
@@ -39,7 +37,6 @@
             hx-post="/invoice/{{.ID}}"
             hx-target="#dogs"
             hx-indicator="#processing"
-            class="hover:underline text-blue-700"
             href=""
             >Send</a
         >

@@ -1,93 +1,79 @@
-<tr id="datarow-{{.ID}}" class="border-b dark:border-neutral-500">
-    <td class="px-6 py-4 hidden">{{.ID}}</td>
-    <td class="px-6 py-4">
+<tr id="datarow-{{.ID}}">
+    <td>{{.ID}}</td>
+    <td>
         <input
             type="text"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             data-include-edit="{{.ID}}"
             name="name"
             value="{{.Name}}"
         />
     </td>
-    <td class="px-6 py-4">
+    <td>
         <input
             type="text"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             data-include-edit="{{.ID}}"
             name="ownerName"
             value="{{.OwnerName}}"
         />
     </td>
-    <td class="px-6 py-4">
+    <td>
         <input
             type="text"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             data-include-edit="{{.ID}}"
             name="address"
             value="{{.Address}}"
         />
     </td>
-    <td class="px-6 py-4">
+    <td>
         <input
             type="text"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             data-include-edit="{{.ID}}"
             name="city"
             value="{{.City}}"
         />
     </td>
-    <td class="px-6 py-4">
+    <td>
         <input
             type="text"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             data-include-edit="{{.ID}}"
             name="email"
             value="{{.Email}}"
         />
     </td>
-    <td class="px-6 py-4">
+    <td>
         <input
             type="text"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             data-include-edit="{{.ID}}"
             name="service"
             value="{{.Service}}"
         />
     </td>
-    <td class="px-6 py-4">
+    <td>
         <input
             type="text"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             data-include-edit="{{.ID}}"
             name="quantity"
             value="{{.Quantity}}"
         />
     </td>
-    <td class="px-6 py-4">
+    <td>
         <input
             type="text"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             data-include-edit="{{.ID}}"
             name="price"
             value="{{.Price}}"
         />
     </td>
-    <td class="px-1 py-1">
+    <td>
         <a
             hx-put="/dogs/{{.ID}}"
             hx-target="#dogs"
             hx-indicator="#processing"
             hx-include="input[data-include-edit]"
-            class="hover:underline text-blue-700"
             href=""
             >Save</a
         >
-        <a
-            hx-get="/dogs/"
-            hx-target="#dogs"
-            hx-indicator="#processing"
-            href=""
-            class="hover:underline text-blue-700"
+        <a hx-get="/dogs/" hx-target="#dogs" hx-indicator="#processing" href=""
             >Cancel</a
         >
     </td>
