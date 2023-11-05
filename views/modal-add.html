@@ -1,0 +1,68 @@
+<div
+    id="modal"
+    _="on closeModal add .closing then wait for animationend then remove me"
+>
+    <div class="modal-underlay" _="on click trigger closeModal"></div>
+    <div class="modal-content">
+        <h1>Add</h1>
+        <input type="text" name="name" placeholder="Name" data-include-add="" />
+        <input
+            type="text"
+            name="ownerName"
+            placeholder="Owner Name"
+            data-include-add=""
+        />
+        <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            data-include-add=""
+        />
+        <input type="text" name="city" placeholder="City" data-include-add="" />
+        <input
+            type="text"
+            name="email"
+            placeholder="Email"
+            data-include-add=""
+        />
+        <input
+            type="text"
+            name="service"
+            placeholder="Service"
+            data-include-add=""
+        />
+        <input
+            type="text"
+            name="quantity"
+            placeholder="Quantity"
+            data-include-add=""
+        />
+        <input
+            type="text"
+            name="price"
+            placeholder="Price"
+            data-include-add=""
+        />
+        <br />
+        <br />
+        <div class="action-buttons">
+            <button
+                class="btn-primary"
+                _="on click trigger closeModal"
+                hx-post="/dogs"
+                hx-target="#dogs"
+                hx-indicator="#spinner"
+                hx-include="input[data-include-add]"
+            >
+                Save
+            </button>
+            <button
+                class="btn-danger"
+                _="on click trigger closeModal"
+                hx-target="#dogs"
+            >
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>

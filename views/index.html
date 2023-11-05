@@ -8,19 +8,37 @@
             rel="icon"
             href="https://em-content.zobj.net/source/google/350/dollar-banknote_1f4b5.png"
         />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+        <link href="css/style.css" rel="stylesheet" />
+        <link
+            href="https://www.nerdfonts.com/assets/css/webfont.css"
+            rel="stylesheet"
+        />
         <script
             src="https://unpkg.com/htmx.org@1.9.6"
             integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
             crossorigin="anonymous"
         ></script>
+        <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
     </head>
     <body>
         <main>
-            <div>
-                <br />
-                <h1 class="text-3xl">Invoices</h1>
-                <div>{{ template "dogs" . }}</div>
-            </div>
+            <header>
+                <h1>Canine Club</h1>
+                <button
+                    class="btn-add"
+                    hx-get="/dogs/add"
+                    hx-target="body"
+                    hx-swap="beforeend"
+                >
+                    ADD
+                </button>
+            </header>
+            <div>{{ template "dogs" . }}</div>
         </main>
     </body>
 </html>

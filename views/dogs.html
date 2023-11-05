@@ -1,32 +1,6 @@
 <div id="dogs">
-    <div id="processing" class="htmx-indicator">Processing...</div>
-    <div>
-        <button
-            hx-get="/dogs/add"
-            hx-target="#table-body"
-            hx-swap="outerHTML"
-            hx-indicator="#processing"
-            href=""
-        >
-            Add
-        </button>
+    <div id="spinner" class="htmx-indicator">
+        <div id="spinner-circle"></div>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Owner Name</th>
-                <th>Address</th>
-                <th>City</th>
-                <th>Email</th>
-                <th>Service</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="table-body"></tbody>
-        {{ range .dogs }} {{ template "row" . }} {{ end }}
-    </table>
+    <div id="cards">{{ range .dogs }} {{ template "card" . }} {{ end }}</div>
 </div>

@@ -1,0 +1,240 @@
+body {
+    color: #333;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    margin: 0;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    background-color: #37474f;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0px;
+    height: 35px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+header button {
+    border: none;
+    border-radius: 15px;
+    padding: 5px;
+    background-color: #4caf50;
+    color: #fff;
+    width: 100px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+header h1 {
+    margin: auto 0;
+    font-size: 20px;
+}
+
+#spinner {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+#spinner-circle {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 0.2s linear infinite;
+}
+
+#cards {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.card {
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    flex: 0 1 300px;
+    min-width: 300px;
+    max-width: 600px;
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+}
+
+.card-title h2 {
+    font-size: 18px;
+    padding-left: 10px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.action-buttons button,
+.action-buttons a,
+#modal button {
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    width: 22%;
+    padding: 5px;
+}
+
+.btn-primary {
+    background-color: #0097a7;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-primary:hover {
+    background-color: #006978;
+}
+
+.btn-danger {
+    background-color: #e64a19;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #ac0800;
+}
+
+#modal {
+    /* Underlay covers entire screen. */
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+
+    /* Flexbox centers the .modal-content vertically and horizontally */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* Animate when opening */
+    animation-name: fadeIn;
+    animation-duration: 150ms;
+    animation-timing-function: ease;
+}
+
+#modal > .modal-underlay {
+    /* underlay takes up the entire viewport. This is only
+	required if you want to click to dismiss the popup */
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+#modal > .modal-content {
+    /* Position visible dialog near the top of the window */
+    margin-top: 10vh;
+
+    /* Sizing for visible dialog */
+    width: 80%;
+    max-width: 600px;
+
+    /* Display properties for visible dialog*/
+    border: solid 1px #999;
+    border-radius: 8px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    padding: 20px;
+
+    /* Animate when opening */
+    animation-name: zoomIn;
+    animation-duration: 150ms;
+    animation-timing-function: ease;
+}
+
+#modal.closing {
+    /* Animate when closing */
+    animation-name: fadeOut;
+    animation-duration: 150ms;
+    animation-timing-function: ease;
+}
+
+#modal.closing > .modal-content {
+    /* Animate when closing */
+    animation-name: zoomOut;
+    animation-duration: 150ms;
+    animation-timing-function: ease;
+}
+
+#modal input[type="text"] {
+    width: 95%;
+    padding: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes zoomIn {
+    0% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes zoomOut {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0.9);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -1,0 +1,58 @@
+<div class="card">
+    <div class="card-title">
+        <i class="nf nf-md-dog_side"></i>
+        <h2>{{ .Name }}</h2>
+    </div>
+    <div class="card-subtitle">
+        <p>{{ .OwnerName }}</p>
+    </div>
+    <div class="address">
+        <p>{{ .Address }}</p>
+        <p>{{ .City }}</p>
+        <p>{{ .Email }}</p>
+    </div>
+    <div class="services">
+        <p>
+            <b>{{ .Quantity }}</b> X <b>{{ .Service }}</b> @
+            <b>${{ .Price }}</b>
+        </p>
+    </div>
+    <div class="action-buttons">
+        <button
+            class="btn-primary"
+            hx-get="/dogs/edit/{{.ID}}"
+            hx-target="#cards"
+            hx-swap="outerHTML"
+            hx-indicator="#spinner"
+            href=""
+        >
+            Edit
+        </button>
+        <a
+            class="btn-primary"
+            href="/invoice/{{.ID}}"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Preview</a
+        >
+        <button
+            class="btn-primary"
+            hx-post="/invoice/{{.ID}}"
+            hx-indicator="#spinner"
+            href=""
+        >
+            Send
+        </button>
+        <button
+            class="btn-danger"
+            hx-delete="/dogs/{{.ID}}"
+            hx-target="#cards"
+            hx-swap="outerHTML"
+            hx-confirm="Are you sure you want to delete {{.Name}}?"
+            hx-indicator="#spinner"
+            href=""
+        >
+            Delete
+        </button>
+    </div>
+</div>

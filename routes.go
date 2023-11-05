@@ -9,6 +9,9 @@ import (
 )
 
 func SetRoutes(app *fiber.App) {
+	// Public files
+	app.Static("/", "./public")
+
 	// Renders the index view with a list of all dogs.
 	app.Get("/", func(c *fiber.Ctx) error {
 		dogs, err := GetDogs()
@@ -32,7 +35,7 @@ func SetRoutes(app *fiber.App) {
 	})
 
 	app.Get("/dogs/add", func(c *fiber.Ctx) error {
-		return c.Render("row-add", nil)
+		return c.Render("modal-add", nil)
 	})
 
 	// Adds a new dog to the database and returns the updated list of dogs.
@@ -81,7 +84,7 @@ func SetRoutes(app *fiber.App) {
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
-		return c.Render("row-edit", dog)
+		return c.Render("modal-edit", dog)
 	})
 
 	app.Put("/dogs/:id", func(c *fiber.Ctx) error {
@@ -152,14 +155,6 @@ func SetRoutes(app *fiber.App) {
 		if err != nil {
 			return c.Status(500).SendString(err.Error())
 		}
-
-		dogs, err := GetDogs()
-		if err != nil {
-			return c.Status(500).SendString(err.Error())
-		}
-
-		return c.Render("dogs", fiber.Map{
-			"dogs": dogs,
-		})
+		return c.SendString("Done!")
 	})
 }
