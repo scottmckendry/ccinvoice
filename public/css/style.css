@@ -40,14 +40,14 @@ header h1 {
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
     pointer-events: none;
 }
 
 #spinner-circle {
-    border: 16px solid #f3f3f3;
+    border: 16px solid transparent;
     border-top: 16px solid #3498db;
+    margin-top: 40%;
     border-radius: 50%;
     width: 120px;
     height: 120px;
