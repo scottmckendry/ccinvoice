@@ -145,6 +145,24 @@ func SetRoutes(app *fiber.App) {
 		})
 	})
 
+	// Returns a PDF of the invoice for a given dog.
+	app.Get("/invoice/:id/pdf", func(c *fiber.Ctx) error {
+		id, err := strconv.Atoi(c.Params("id"))
+		if err != nil {
+			return c.Status(400).SendString(err.Error())
+		}
+		dog, err := GetDog(id)
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+		pdfPath, err := generatePdf(dog)
+		if err != nil {
+			return c.Status(500).SendString(err.Error())
+		}
+
+		return c.SendFile(pdfPath)
+	})
+
 	// Generates a PDF of the invoice for a given dog and emails it to the owner.
 	app.Post("/invoice/:id", func(c *fiber.Ctx) error {
 		id, err := strconv.Atoi(c.Params("id"))

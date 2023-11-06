@@ -21,7 +21,7 @@ func sendInvoice(id int) error {
 	}
 
 	log.Println("Creating PDF")
-	err = generatePdf(dog)
+	_, err = generatePdf(dog)
 	if err != nil {
 		log.Fatal("Error generating PDF: ", err)
 		return err
@@ -37,11 +37,11 @@ func sendInvoice(id int) error {
 	return nil
 }
 
-func generatePdf(dog Dog) error {
+func generatePdf(dog Dog) (string, error) {
 	log.Println("Creating PDF")
 	pdfGenerator, err := wkhtmltopdf.NewPDFGenerator()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	page := wkhtmltopdf.NewPage(os.Getenv("BASE_URL") + "/invoice/" + strconv.Itoa(dog.ID))
@@ -50,22 +50,22 @@ func generatePdf(dog Dog) error {
 
 	err = pdfGenerator.Create()
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	invoiceFile := fmt.Sprintf("./%s.pdf", getInvoiceNumber(dog))
+	invoiceFile := fmt.Sprintf("./public/%s.pdf", getInvoiceNumber(dog))
 
 	err = pdfGenerator.WriteFile(invoiceFile)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	return nil
+	return invoiceFile, nil
 }
 
 func sendEmail(dog Dog) error {
 	log.Println("Sending email")
-	invoiceFile := fmt.Sprintf("./%s.pdf", getInvoiceNumber(dog))
+	invoiceFile := fmt.Sprintf("./public/%s.pdf", getInvoiceNumber(dog))
 	smtpPort, err := strconv.Atoi(os.Getenv("SMTP_PORT"))
 	if err != nil {
 		return fmt.Errorf("error converting SMTP_PORT to int: %s", err)
