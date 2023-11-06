@@ -268,3 +268,28 @@ hr {
         transform: rotate(360deg);
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1b1a19;
+        color: #fff;
+    }
+
+    header {
+        background-color: #323130;
+    }
+
+    .card {
+        background-color: #323130;
+    }
+
+    #modal > .modal-content {
+        background-color: #323130;
+    }
+
+    #modal input[type="text"] {
+        border: 1px solid #fff;
+        background-color: #323130;
+        color: #fff;
+    }
+}
