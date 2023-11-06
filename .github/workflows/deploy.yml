@@ -1,7 +1,6 @@
 name: Deploy Published Image
 on:
-  registry_package:
-    types: [published,updated]
+  workflow_call:
 jobs:
   check-bats-version:
     runs-on: self-hosted
