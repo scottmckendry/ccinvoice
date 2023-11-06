@@ -283,6 +283,10 @@ hr {
         background-color: #323130;
     }
 
+    hr {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     #modal > .modal-content {
         background-color: #323130;
     }
