@@ -97,4 +97,5 @@ jobs:
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
   deploy:
-      uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/deploy.yml
+    needs: build
