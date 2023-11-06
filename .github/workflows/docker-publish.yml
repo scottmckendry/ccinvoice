@@ -97,6 +97,4 @@ jobs:
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
   deploy:
-    deploy-on-runner:
-      runs-on: self-hosted
       uses: ./.github/workflows/deploy.yml
