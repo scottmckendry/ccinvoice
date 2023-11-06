@@ -5,5 +5,4 @@ jobs:
   check-bats-version:
     runs-on: self-hosted
     steps:
-      - run: cd /srv/docker/ccinvoice
-      - run: docker compose pull && docker compose up -d --force-recreate
+      - run: cd /srv/docker/ccinvoice && docker compose pull && docker compose up -d --force-recreate
