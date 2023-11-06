@@ -2,7 +2,8 @@ name: Deploy Published Image
 on:
   workflow_call:
 jobs:
-  check-bats-version:
+  update-docker-image:
+    name: Update Docker Image & Restart
     runs-on: self-hosted
     steps:
       - run: cd /srv/docker/ccinvoice && docker compose pull && docker compose up -d --force-recreate
