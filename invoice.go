@@ -93,7 +93,9 @@ func sendEmail(dog Dog) error {
 	m.SetHeader("Subject", "Canine Club - Invoice for "+dog.Name)
 	m.SetBody(
 		"text/html",
-		"Hi "+ownerFirstName+",<br><br>Please find attached the invoice for "+dog.Name+"'s "+walkOrWalks+" this week.<p style='font-weight:lighter;'>Please use '<b>"+dog.Name+"</b>' as the reference when making payment. Also note that payment is due by "+nextMonday().Format("Monday, 2 January 2006")+
+		"Hi "+ownerFirstName+",<br><br>Please find attached the invoice for "+dog.Name+"'s "+walkOrWalks+" this week.<p style='font-weight:lighter;'>Please use '<b>"+dog.Name+"</b>' as the reference when making payment. Also note that payment is due by "+nextMonday(
+			time.Now(),
+		).Format("Monday, 2 January 2006")+
 			".</p><br>Any questions let me know,<br>Thank you!<br><br>"+fromFirstName+"<br>Canine Club",
 	)
 	m.Attach(invoiceFile)
@@ -111,11 +113,12 @@ func getInvoiceNumber(dog Dog) string {
 	return prefix + time.Now().Format("20060102")
 }
 
-func nextMonday() time.Time {
-	today := time.Now()
-	daysUntilMonday := int(time.Monday - today.Weekday())
-	if daysUntilMonday < 0 {
-		daysUntilMonday += 7
+func nextMonday(t time.Time) time.Time {
+	if t.Weekday() == time.Monday {
+		return t.AddDate(0, 0, 7)
 	}
-	return today.AddDate(0, 0, daysUntilMonday)
+	for t.Weekday() != time.Monday {
+		t = t.AddDate(0, 0, 1)
+	}
+	return t
 }

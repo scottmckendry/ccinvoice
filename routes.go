@@ -124,7 +124,7 @@ func SetRoutes(app *fiber.App) {
 		return c.Render("invoice", fiber.Map{
 			"InvoiceNumber": getInvoiceNumber(dog),
 			"Date":          time.Now().Format("Monday, 2 January 2006"),
-			"DueDate":       nextMonday().Format("Monday, 2 January 2006"),
+			"DueDate":       nextMonday(time.Now()).Format("Monday, 2 January 2006"),
 			"FromName":      os.Getenv("FROM_NAME"),
 			"FromAddress":   os.Getenv("FROM_ADDRESS"),
 			"FromCity":      os.Getenv("FROM_CITY"),
