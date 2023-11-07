@@ -9,7 +9,8 @@ on:
 
 jobs:
 
-  build:
+  test:
+    name: Test ccinvoice
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -20,7 +21,7 @@ jobs:
         go-version: '1.21'
 
     - name: Install Dependencies
-      run: apt update && apt install wkhtmltopdf
+      run: sudo apt-get update && sudo apt-get install wkhtmltopdf
 
     - name: Test
       run: go test -v
