@@ -1,5 +1,6 @@
 name: Deploy Published Image
 on:
+  workflow_call:
   workflow_run:
     workflows: [Docker Build & Publish]
     types:
