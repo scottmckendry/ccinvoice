@@ -1,9 +1,9 @@
 <h1 align="center">💸 Canine Club Invoicing System 💸</h1>
 <p align="center">
-    <a href="https://github.com/scottmckendry/Windots/actions/workflows/test.yml">
+    <a href="https://github.com/scottmckendry/ccinvoice/actions/workflows/test.yml">
         <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/scottmckendry/ccinvoice/test.yml?style=for-the-badge&logo=github&label=CI&color=%237dcfff">
     </a>
-    <a href="https://github.com/scottmckendry/Windots/actions/workflows/deploy.yml">
+    <a href="https://github.com/scottmckendry/ccinvoice/actions/workflows/deploy.yml">
         <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/scottmckendry/ccinvoice/test.yml?style=for-the-badge&logo=github&label=CD&color=%23bb9af7">
     </a>
     <a href="https://github.com/scottmckendry/ccinvoice/blob/main/LICENSE">
