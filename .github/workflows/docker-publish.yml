@@ -2,6 +2,7 @@ name: Docker Build & Publish
 
 on:
   workflow_dispatch:
+  workflow_call:
   workflow_run:
     workflows: [Test]
     types:
