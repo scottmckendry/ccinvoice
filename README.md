@@ -1,4 +1,15 @@
-# Canine Club Invoicing System
+<h1 align="center">💸 Canine Club Invoicing System 💸</h1>
+<p align="center">
+    <a href="https://github.com/scottmckendry/Windots/actions/workflows/test.yml">
+        <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/scottmckendry/ccinvoice/test.yml?style=for-the-badge&logo=github&label=CI&color=%237dcfff">
+    </a>
+    <a href="https://github.com/scottmckendry/Windots/actions/workflows/deploy.yml">
+        <img alt="GitHub Workflow Status (with event)" src="https://img.shields.io/github/actions/workflow/status/scottmckendry/ccinvoice/test.yml?style=for-the-badge&logo=github&label=CD&color=%23bb9af7">
+    </a>
+    <a href="https://github.com/scottmckendry/ccinvoice/blob/main/LICENSE">
+        <img alt="License" src="https://img.shields.io/github/license/scottmckendry/ccinvoice?style=for-the-badge&logo=github&color=%239ece6a">
+    </a>
+</p>
 A mobile-first web application I built for my wife's dog walking business. Built with [Go](https://go.dev) and [HTMX](https://htmx.org).
 
 <p float="left">
