@@ -1,18 +1,11 @@
 name: Docker Build & Publish
 
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_run:
+    workflows: [Test]
+    types:
+      - completed
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -23,6 +16,7 @@ env:
 
 jobs:
   build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Build & Publish
     runs-on: ubuntu-latest
     permissions:
@@ -97,6 +91,7 @@ jobs:
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
   deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Deploy Published Image
     uses: ./.github/workflows/deploy.yml
     needs: build

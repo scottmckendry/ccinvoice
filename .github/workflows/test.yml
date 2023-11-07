@@ -1,0 +1,30 @@
+name: Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  test:
+    name: Test ccinvoice
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+
+    - name: Install Dependencies
+      run: sudo apt-get update && sudo apt-get install wkhtmltopdf
+
+    - name: Set Environment Variables & Test
+      # This is specifically for generating PDFs - setting this variable means we don't have to run the server to provide the HTML
+      # response for wkhtmltopdf to create the PDF from. We're only testing the file is created and placed in the right directory,
+      # so the content doesn't really matter.
+      run: export BASE_URL=https://duckduckgo.com/?q= && go test -v
