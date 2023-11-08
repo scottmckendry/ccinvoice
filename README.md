@@ -10,6 +10,7 @@
         <img alt="License" src="https://img.shields.io/github/license/scottmckendry/ccinvoice?style=for-the-badge&logo=github&color=%239ece6a">
     </a>
 </p>
+
 A mobile-first web application I built for my wife's dog walking business. Built with [Go](https://go.dev) and [HTMX](https://htmx.org).
 
 <p float="left">
