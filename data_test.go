@@ -147,6 +147,19 @@ func TestUpdateDog(t *testing.T) {
 	if dog.Name != "Fred" {
 		t.Errorf("UpdateDog() failed to update dog")
 	}
+
+	// Force error
+	Db.Exec("DROP TABLE dogs")
+	err = UpdateDog(testDog)
+
+	if err == nil {
+		t.Errorf("no error returned when expected")
+	}
+
+	t.Cleanup(func() {
+		Init()
+		_ = AddDog(testDog)
+	})
 }
 
 func TestGetDogs(t *testing.T) {
