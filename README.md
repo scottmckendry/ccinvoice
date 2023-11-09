@@ -11,12 +11,9 @@
     </a>
 </p>
 
-A mobile-first web application I built for my wife's dog walking business. Built with [Go](https://go.dev) and [HTMX](https://htmx.org).
-
-<p float="left">
-    <img src="https://github.com/scottmckendry/ccinvoice/assets/39483124/66412d39-31fe-45a3-8fc3-999278938b22" width="30%"/>
-    <img src="https://github.com/scottmckendry/ccinvoice/assets/39483124/a27708e9-59eb-4f1f-be03-b192a5ca90c6" width="30%"/>
-    <img src="https://github.com/scottmckendry/ccinvoice/assets/39483124/6c2bb986-0d8a-47f2-9bd5-19702717542f" width="30%"/>
+<p align="center">
+    A mobile-first web application I built for my wife's dog-walking business. Built with <a href="https://go.dev">Go</a> and <a href="https://htmx.org">HTMX</a><br><br>
+    <img alt="demo" src="https://github.com/scottmckendry/ccinvoice/assets/39483124/cccc727d-b9b2-419b-9766-20116f1b2c87">
 </p>
 
 ## 🚀 Deploying
