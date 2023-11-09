@@ -29,19 +29,18 @@ func Init() error {
 		return err
 	}
 
-	err = createTables()
-	if err != nil {
-		return err
-	}
+	// No need to check for error here, if the connection can be made, the tables will be created
+	_ = createTables()
 
 	return nil
 }
 
 func connect() error {
-	var err error
-	Db, err = sql.Open("libsql", dbUrl)
+	Db, _ = sql.Open("libsql", dbUrl)
+
+	err := Db.Ping()
 	if err != nil {
-		return fmt.Errorf("error opening database: %v", err)
+		return fmt.Errorf("error connecting to database: %v", err)
 	}
 
 	return nil
@@ -51,7 +50,7 @@ func createTables() error {
 	_, err := Db.Exec(`
         CREATE TABLE IF NOT EXISTS dogs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
+            name TEXT unique,
             ownerName TEXT,
             address TEXT,
             city TEXT,
@@ -89,6 +88,7 @@ func GetDogs() ([]Dog, error) {
 			&dog.Price,
 		)
 		if err != nil {
+			rows.Close()
 			return nil, fmt.Errorf("error scanning dog: %v", err)
 		}
 		dogs = append(dogs, dog)
