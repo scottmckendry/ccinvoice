@@ -34,7 +34,7 @@ func TestGetNextMonday(t *testing.T) {
 }
 
 func TestGeneratePdf(t *testing.T) {
-	want := "./public/FID" + time.Now().Format("20060102") + ".pdf"
+	want := "./public/FRE" + time.Now().Format("20060102") + ".pdf"
 	got, err := generatePdf(testDog)
 	if err != nil {
 		t.Errorf("generatePdf() error = %q", err)
@@ -45,6 +45,9 @@ func TestGeneratePdf(t *testing.T) {
 }
 
 func TestSendEmail(t *testing.T) {
+	db.Exec("DROP TABLE dogs")
+	Init()
+	_ = addDog(testDog)
 	err := sendEmail(testDog)
 	if err != nil {
 		t.Errorf("sendEmail() error = %q", err)
