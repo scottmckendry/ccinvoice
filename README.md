@@ -50,7 +50,7 @@ services:
     restart: unless-stopped
 ```
 
-This will run the app on port 3000. I recommend using [Traefik](https://traefik.io) as a reverse proxy. Take a look at my [setup guide](https://scottmckendry.tech/posts/traefik-setup/) for more information.
+This will run the app on port 3000. I recommend using [Traefik](https://traefik.io) as a reverse proxy. Take a look at my [setup guide](https://scottmckendry.tech/traefik-setup/) for more information.
 
 > [!WARNING]\
 > Do not expose the app to the internet without a reverse proxy running authentication middleware. The app does not have any authentication built in.
