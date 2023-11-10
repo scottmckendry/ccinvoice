@@ -27,7 +27,7 @@ func main() {
 	app.Use(recover.New())
 	app.Use(logger.New())
 
-	SetRoutes(app)
+	setRoutes(app)
 
 	err = app.Listen(":3000")
 	if err != nil {

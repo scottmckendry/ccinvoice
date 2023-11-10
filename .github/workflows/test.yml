@@ -27,4 +27,4 @@ jobs:
       # This is specifically for generating PDFs - setting this variable means we don't have to run the server to provide the HTML
       # response for wkhtmltopdf to create the PDF from. We're only testing the file is created and placed in the right directory,
       # so the content doesn't really matter.
-      run: export BASE_URL=https://duckduckgo.com/?q= && go test -v
+      run: export BASE_URL=https://duckduckgo.com/?q= && go test -v -cover

@@ -10,7 +10,7 @@ import (
 
 // Renders the index page.
 func renderIndex(c *fiber.Ctx) error {
-	dogs, err := GetDogs()
+	dogs, err := getDogs()
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
@@ -21,7 +21,7 @@ func renderIndex(c *fiber.Ctx) error {
 
 // Renders the cards for all dogs.
 func renderDogs(c *fiber.Ctx) error {
-	dogs, err := GetDogs()
+	dogs, err := getDogs()
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
@@ -41,7 +41,7 @@ func renderEdit(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(400).SendString(err.Error())
 	}
-	dog, err := GetDog(id)
+	dog, err := getDog(id)
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
@@ -54,7 +54,7 @@ func renderInvoice(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(400).SendString(err.Error())
 	}
-	dog, err := GetDog(id)
+	dog, err := getDog(id)
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
@@ -88,7 +88,7 @@ func renderInvoicePdf(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(400).SendString(err.Error())
 	}
-	dog, err := GetDog(id)
+	dog, err := getDog(id)
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
@@ -105,11 +105,11 @@ func handleDogAdd(c *fiber.Ctx) error {
 	if err := c.BodyParser(dog); err != nil {
 		return c.Status(400).SendString(err.Error())
 	}
-	err := AddDog(*dog)
+	err := addDog(*dog)
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
-	dogs, err := GetDogs()
+	dogs, err := getDogs()
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
@@ -129,11 +129,11 @@ func handleDogUpdate(c *fiber.Ctx) error {
 	if err := c.BodyParser(dog); err != nil {
 		return c.Status(400).SendString(err.Error())
 	}
-	err = UpdateDog(*dog)
+	err = updateDog(*dog)
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
-	dogs, err := GetDogs()
+	dogs, err := getDogs()
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
@@ -148,11 +148,11 @@ func handleDogDelete(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(400).SendString(err.Error())
 	}
-	err = DeleteDog(id)
+	err = deleteDog(id)
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
-	dogs, err := GetDogs()
+	dogs, err := getDogs()
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}

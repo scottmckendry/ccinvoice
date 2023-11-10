@@ -3,7 +3,6 @@ package main
 import (
 	"crypto/tls"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -14,23 +13,18 @@ import (
 )
 
 func sendInvoice(id int) error {
-	dog, err := GetDog(id)
+	dog, err := getDog(id)
 	if err != nil {
-		log.Fatal("Error getting dog: ", err)
 		return err
 	}
 
-	log.Println("Creating PDF")
 	_, err = generatePdf(dog)
 	if err != nil {
-		log.Fatal("Error generating PDF: ", err)
 		return err
 	}
 
-	log.Println("Sending email")
 	err = sendEmail(dog)
 	if err != nil {
-		log.Fatal("Error sending email: ", err)
 		return err
 	}
 
@@ -38,7 +32,6 @@ func sendInvoice(id int) error {
 }
 
 func generatePdf(dog Dog) (string, error) {
-	log.Println("Creating PDF")
 	pdfGenerator, err := wkhtmltopdf.NewPDFGenerator()
 	if err != nil {
 		return "", err
@@ -64,7 +57,6 @@ func generatePdf(dog Dog) (string, error) {
 }
 
 func sendEmail(dog Dog) error {
-	log.Println("Sending email")
 	invoiceFile := fmt.Sprintf("./public/%s.pdf", getInvoiceNumber(dog))
 	smtpPort, err := strconv.Atoi(os.Getenv("SMTP_PORT"))
 	if err != nil {

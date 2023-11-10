@@ -4,7 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetRoutes(app *fiber.App) {
+func setRoutes(app *fiber.App) {
 	// Serve static files from the public directory
 	app.Static("/", "./public")
 

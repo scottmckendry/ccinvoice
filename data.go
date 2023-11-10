@@ -9,7 +9,7 @@ import (
 )
 
 var dbUrl = "file:./db.sqlite3"
-var Db *sql.DB
+var db *sql.DB
 
 type Dog struct {
 	ID        int
@@ -36,9 +36,9 @@ func Init() error {
 }
 
 func connect() error {
-	Db, _ = sql.Open("libsql", dbUrl)
+	db, _ = sql.Open("libsql", dbUrl)
 
-	err := Db.Ping()
+	err := db.Ping()
 	if err != nil {
 		return fmt.Errorf("error connecting to database: %v", err)
 	}
@@ -47,7 +47,7 @@ func connect() error {
 }
 
 func createTables() error {
-	_, err := Db.Exec(`
+	_, err := db.Exec(`
         CREATE TABLE IF NOT EXISTS dogs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT unique,
@@ -67,8 +67,8 @@ func createTables() error {
 	return nil
 }
 
-func GetDogs() ([]Dog, error) {
-	rows, err := Db.Query("SELECT * FROM dogs")
+func getDogs() ([]Dog, error) {
+	rows, err := db.Query("SELECT * FROM dogs")
 	if err != nil {
 		return nil, fmt.Errorf("error getting dogs: %v", err)
 	}
@@ -97,9 +97,9 @@ func GetDogs() ([]Dog, error) {
 	return dogs, nil
 }
 
-func GetDog(id int) (Dog, error) {
+func getDog(id int) (Dog, error) {
 	var dog Dog
-	err := Db.QueryRow("SELECT * FROM dogs WHERE id = ?", id).Scan(
+	err := db.QueryRow("SELECT * FROM dogs WHERE id = ?", id).Scan(
 		&dog.ID,
 		&dog.Name,
 		&dog.OwnerName,
@@ -117,8 +117,8 @@ func GetDog(id int) (Dog, error) {
 	return dog, nil
 }
 
-func AddDog(dog Dog) error {
-	_, err := Db.Exec(`
+func addDog(dog Dog) error {
+	_, err := db.Exec(`
         INSERT INTO dogs (
             name,
             ownerName,
@@ -137,8 +137,8 @@ func AddDog(dog Dog) error {
 	return nil
 }
 
-func UpdateDog(dog Dog) error {
-	_, err := Db.Exec(`
+func updateDog(dog Dog) error {
+	_, err := db.Exec(`
         UPDATE dogs SET
             name = ?,
             ownerName = ?,
@@ -157,8 +157,8 @@ func UpdateDog(dog Dog) error {
 	return nil
 }
 
-func DeleteDog(id int) error {
-	_, err := Db.Exec("DELETE FROM dogs WHERE id = ?", id)
+func deleteDog(id int) error {
+	_, err := db.Exec("DELETE FROM dogs WHERE id = ?", id)
 	if err != nil {
 		return fmt.Errorf("error deleting dog: %v", err)
 	}

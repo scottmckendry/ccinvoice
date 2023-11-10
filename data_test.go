@@ -22,7 +22,7 @@ func TestInit(t *testing.T) {
 		t.Errorf("Init() error = %q", err)
 	}
 
-	if Db == nil {
+	if db == nil {
 		t.Errorf("Init() Db is nil")
 	}
 
@@ -46,7 +46,7 @@ func TestConnect(t *testing.T) {
 		t.Errorf("connect() error = %q", err)
 	}
 
-	if Db == nil {
+	if db == nil {
 		t.Errorf("connect() Db is nil")
 	}
 
@@ -70,7 +70,7 @@ func TestCreateTables(t *testing.T) {
 		t.Errorf("createTables() error = %q", err)
 	}
 
-	_, err = Db.Exec(`
+	_, err = db.Exec(`
         INSERT INTO dogs (
             name,
             ownerName,
@@ -99,18 +99,18 @@ func TestCreateTables(t *testing.T) {
 	t.Cleanup(func() {
 		dbUrl = oldDbUrl
 		_ = connect()
-		Db.Exec("DROP TABLE dogs")
+		db.Exec("DROP TABLE dogs")
 		Init()
 	})
 }
 
 func TestAddDog(t *testing.T) {
-	err := AddDog(testDog)
+	err := addDog(testDog)
 	if err != nil {
 		t.Errorf("AddDog() error = %q", err)
 	}
 
-	dog, err := GetDog(1)
+	dog, err := getDog(1)
 	if err != nil {
 		t.Errorf("GetDog() error = %q", err)
 	}
@@ -125,7 +125,7 @@ func TestAddDog(t *testing.T) {
 	badDog := Dog{
 		Name: "Fido", // Column is unique
 	}
-	err = AddDog(badDog)
+	err = addDog(badDog)
 	if err == nil {
 		t.Errorf("no error returned when expected")
 	}
@@ -134,12 +134,12 @@ func TestAddDog(t *testing.T) {
 func TestUpdateDog(t *testing.T) {
 	testDog.ID = 1
 	testDog.Name = "Fred"
-	err := UpdateDog(testDog)
+	err := updateDog(testDog)
 	if err != nil {
 		t.Errorf("UpdateDog() error = %q", err)
 	}
 
-	dog, err := GetDog(1)
+	dog, err := getDog(1)
 	if err != nil {
 		t.Errorf("GetDog() error = %q", err)
 	}
@@ -149,8 +149,8 @@ func TestUpdateDog(t *testing.T) {
 	}
 
 	// Force error
-	Db.Exec("DROP TABLE dogs")
-	err = UpdateDog(testDog)
+	db.Exec("DROP TABLE dogs")
+	err = updateDog(testDog)
 
 	if err == nil {
 		t.Errorf("no error returned when expected")
@@ -158,12 +158,12 @@ func TestUpdateDog(t *testing.T) {
 
 	t.Cleanup(func() {
 		Init()
-		_ = AddDog(testDog)
+		_ = addDog(testDog)
 	})
 }
 
 func TestGetDogs(t *testing.T) {
-	dogs, err := GetDogs()
+	dogs, err := getDogs()
 	if err != nil {
 		t.Errorf("GetDogs() error = %q", err)
 	}
@@ -179,31 +179,31 @@ func TestGetDogs(t *testing.T) {
 	}
 
 	// Force scan error
-	Db.Exec("insert into dogs (name) values (NULL)")
-	_, err = GetDogs()
+	db.Exec("insert into dogs (name) values (NULL)")
+	_, err = getDogs()
 	if err == nil {
 		t.Errorf("no error returned when expected")
 	}
 
 	// Force query error
-	_, err = Db.Exec("drop table dogs;")
+	_, err = db.Exec("drop table dogs;")
 	if err != nil {
 		t.Errorf("error dropping table: %v", err)
 	}
-	_, err = GetDogs()
+	_, err = getDogs()
 	if err == nil {
 		t.Errorf("no error returned when expected")
 	}
 
 	t.Cleanup(func() {
 		Init()
-		_ = AddDog(testDog)
+		_ = addDog(testDog)
 	})
 
 }
 
 func TestGetDog(t *testing.T) {
-	dog, err := GetDog(1)
+	dog, err := getDog(1)
 	if err != nil {
 		t.Errorf("GetDog() error = %q", err)
 	}
@@ -214,26 +214,31 @@ func TestGetDog(t *testing.T) {
 }
 
 func TestDeleteDog(t *testing.T) {
-	err := DeleteDog(1)
+	err := deleteDog(1)
 	if err != nil {
 		t.Errorf("DeleteDog() error = %q", err)
 	}
 
-	_, err = GetDog(1)
+	_, err = getDog(1)
 	if err == nil {
 		t.Errorf("DeleteDog() failed to delete dog")
 	}
 
 	// Force error
-	Db.Exec("DROP TABLE dogs")
-	err = DeleteDog(1)
+	db.Exec("DROP TABLE dogs")
+	err = deleteDog(1)
 	if err == nil {
 		t.Errorf("no error returned when expected")
 	}
+
+	t.Cleanup(func() {
+		Init()
+		_ = addDog(testDog)
+	})
 }
 
 func createBadTable() error {
-	_, err := Db.Exec(`
+	_, err := db.Exec(`
         CREATE TABLE dogs (
             id integer PRIMARY KEY,
             name text,
