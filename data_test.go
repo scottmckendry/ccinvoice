@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"testing"
 )
 
@@ -234,6 +235,40 @@ func TestDeleteDog(t *testing.T) {
 	t.Cleanup(func() {
 		Init()
 		_ = addDog(testDog)
+	})
+}
+
+func TestLoadEnv(t *testing.T) {
+	// Create .env file if it doesn't exist
+	_, err := os.Stat(".env")
+	if os.IsNotExist(err) {
+		_, err := os.Create(".env")
+		if err != nil {
+			t.Errorf("error creating .env file: %v", err)
+		}
+	}
+
+	err = loadEnv()
+	if err != nil {
+		t.Errorf("loadEnv() error = %q", err)
+	}
+
+	// Rename .env file to force error
+	err = os.Rename(".env", ".env.bak")
+	if err != nil {
+		t.Errorf("error renaming .env file: %v", err)
+	}
+
+	err = loadEnv()
+	if err == nil {
+		t.Errorf("no error returned when expected")
+	}
+
+	t.Cleanup(func() {
+		err = os.Rename(".env.bak", ".env")
+		if err != nil {
+			t.Errorf("error renaming .env file: %v", err)
+		}
 	})
 }
 

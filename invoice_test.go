@@ -33,26 +33,27 @@ func TestGetNextMonday(t *testing.T) {
 	}
 }
 
-// Test currently fails because it relies on the web server running
 func TestGeneratePdf(t *testing.T) {
-	dog := Dog{
-		ID:        1,
-		Name:      "Fido",
-		OwnerName: "John Doe",
-		Address:   "123 Fake Street",
-		City:      "Fakeville",
-		Email:     "johndoe@example.com",
-		Service:   "walk",
-		Quantity:  1,
-		Price:     25,
-	}
-
 	want := "./public/FID" + time.Now().Format("20060102") + ".pdf"
-	got, err := generatePdf(dog)
+	got, err := generatePdf(testDog)
 	if err != nil {
 		t.Errorf("generatePdf() error = %q", err)
 	}
 	if got != want {
 		t.Errorf("generateInvoice() = %q, want %q", got, want)
+	}
+}
+
+func TestSendEmail(t *testing.T) {
+	err := sendEmail(testDog)
+	if err != nil {
+		t.Errorf("sendEmail() error = %q", err)
+	}
+}
+
+func TestSendInvoice(t *testing.T) {
+	err := sendInvoice(testDog.ID)
+	if err != nil {
+		t.Errorf("sendInvoice() error = %q", err)
 	}
 }

@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
+	err := loadEnv()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
@@ -21,6 +21,23 @@ func main() {
 		log.Fatal("Error initializing database: ", err)
 	}
 
+	app := startServer()
+	err = app.Listen(":3000")
+	if err != nil {
+		log.Fatal("Error starting server: ", err)
+	}
+}
+
+func loadEnv() error {
+	err := godotenv.Load()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func startServer() *fiber.App {
 	app := fiber.New(fiber.Config{
 		Views: html.New("./views", ".html"),
 	})
@@ -29,8 +46,5 @@ func main() {
 
 	setRoutes(app)
 
-	err = app.Listen(":3000")
-	if err != nil {
-		log.Fatal("Error starting server: ", err)
-	}
+	return app
 }

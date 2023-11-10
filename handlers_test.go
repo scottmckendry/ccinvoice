@@ -15,11 +15,11 @@ import (
 var app *fiber.App
 
 func TestViews(t *testing.T) {
-	app = fiber.New(fiber.Config{
-		Views: html.New("./views", ".html"),
-	})
-	app.Use(recover.New())
-	setRoutes(app)
+	app = startServer()
+
+	if app == nil {
+		t.Error("Expected app to be initialized")
+	}
 
 	routes := []string{"/", "/dogs", "/dogs/add", "/dogs/edit/1", "/invoice/1", "/invoice/1/pdf"}
 
@@ -72,11 +72,7 @@ func TestViews(t *testing.T) {
 }
 
 func TestBadPaths(t *testing.T) {
-	app = fiber.New(fiber.Config{
-		Views: html.New("./views", ".html"),
-	})
-	app.Use(recover.New())
-	setRoutes(app)
+	app = startServer()
 
 	routes := []string{
 		"/badpath",
@@ -103,11 +99,7 @@ func TestBadPaths(t *testing.T) {
 }
 
 func TestPostReq(t *testing.T) {
-	app = fiber.New(fiber.Config{
-		Views: html.New("./views", ".html"),
-	})
-	app.Use(recover.New())
-	setRoutes(app)
+	app = startServer()
 
 	formData := url.Values{
 		"name":      {"Rex"},
@@ -148,11 +140,7 @@ func TestPostReq(t *testing.T) {
 }
 
 func TestPutReq(t *testing.T) {
-	app = fiber.New(fiber.Config{
-		Views: html.New("./views", ".html"),
-	})
-	app.Use(recover.New())
-	setRoutes(app)
+	app = startServer()
 
 	formData := url.Values{
 		"name":      {"Ralph"},
@@ -236,35 +224,30 @@ func TestDeleteReq(t *testing.T) {
 	}
 }
 
-// Ignoreing this test for now - need proper SMTP settings in place to test which I haven't configure in GH actions yet.
-// func TestInvoicePostReq(t *testing.T) {
-// 	app = fiber.New(fiber.Config{
-// 		Views: html.New("./views", ".html"),
-// 	})
-// 	app.Use(recover.New())
-// 	setRoutes(app)
-//
-// 	req := httptest.NewRequest("POST", "/invoice/2", nil)
-// 	resp, err := app.Test(req, 10000)
-// 	if err != nil {
-// 		t.Error("Error sending request to Fiber: ", err)
-// 	}
-//
-// 	if resp.StatusCode != 200 {
-// 		t.Error("Expected status code 200, got ", resp.StatusCode)
-// 		bodyString, _ := io.ReadAll(resp.Body)
-// 		t.Error("Body: ", string(bodyString))
-// 	}
-//
-// 	req = httptest.NewRequest("POST", "/invoice/abc", nil)
-// 	resp, err = app.Test(req, 10000)
-// 	if err != nil {
-// 		t.Error("Error sending request to Fiber: ", err)
-// 	}
-//
-// 	if resp.StatusCode != 400 {
-// 		t.Error("Expected status code 400, got ", resp.StatusCode)
-// 		bodyString, _ := io.ReadAll(resp.Body)
-// 		t.Error("Body: ", string(bodyString))
-// 	}
-// }
+func TestInvoicePostReq(t *testing.T) {
+	app = startServer()
+
+	req := httptest.NewRequest("POST", "/invoice/2", nil)
+	resp, err := app.Test(req, 10000)
+	if err != nil {
+		t.Error("Error sending request to Fiber: ", err)
+	}
+
+	if resp.StatusCode != 200 {
+		t.Error("Expected status code 200, got ", resp.StatusCode)
+		bodyString, _ := io.ReadAll(resp.Body)
+		t.Error("Body: ", string(bodyString))
+	}
+
+	req = httptest.NewRequest("POST", "/invoice/abc", nil)
+	resp, err = app.Test(req, 10000)
+	if err != nil {
+		t.Error("Error sending request to Fiber: ", err)
+	}
+
+	if resp.StatusCode != 400 {
+		t.Error("Expected status code 400, got ", resp.StatusCode)
+		bodyString, _ := io.ReadAll(resp.Body)
+		t.Error("Body: ", string(bodyString))
+	}
+}
