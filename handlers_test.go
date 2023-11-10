@@ -104,6 +104,7 @@ func TestPostReq(t *testing.T) {
 	formData := url.Values{
 		"name":      {"Rex"},
 		"ownerName": {"Jane Doe"},
+		"email":     {"janedoe@example.com"},
 	}
 
 	req := httptest.NewRequest("POST", "/dogs", strings.NewReader(formData.Encode()))
