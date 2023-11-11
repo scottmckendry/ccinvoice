@@ -11,7 +11,7 @@ var testDog Dog = Dog{
 	OwnerName: "John Doe",
 	Address:   "123 Fake Street",
 	City:      "Fakeville",
-	Email:     "johndoe@example.com",
+	Email:     "noreply@scottmckendry.tech",
 	Service:   "walk",
 	Quantity:  1,
 	Price:     25,
