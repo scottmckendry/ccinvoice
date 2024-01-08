@@ -6,7 +6,7 @@ require (
 	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.2
 	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69
 	github.com/gofiber/fiber/v2 v2.52.0
-	github.com/gofiber/template/html/v2 v2.0.5
+	github.com/gofiber/template/html/v2 v2.1.0
 	github.com/joho/godotenv v1.5.1
 	modernc.org/sqlite v1.28.0
 )
