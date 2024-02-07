@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 	"strconv"
 	"time"
@@ -169,7 +170,10 @@ func handleSendInvoice(c *fiber.Ctx) error {
 	}
 	err = sendInvoice(id)
 	if err != nil {
-		return c.Status(500).SendString(err.Error())
+		log.Println(err)
+		// We're intentionally not returning the error to the client here. HTMX won't update the element if the response is an error.
+		// Not sure why this is the case, but probably worth revisiting in the future.
+		return c.SendString("Failed :(")
 	}
 	return c.SendString("Done!")
 }

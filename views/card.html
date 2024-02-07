@@ -43,6 +43,8 @@
             class="btn-primary"
             hx-post="/invoice/{{.ID}}"
             hx-indicator="#spinner"
+            hx-swap="innerHTML"
+            hx-target="this"
             href=""
         >
             Send

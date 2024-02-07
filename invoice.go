@@ -69,6 +69,7 @@ func sendEmail(dog Dog) error {
 		os.Getenv("SMTP_USER"),
 		os.Getenv("SMTP_PASS"),
 	)
+	d.Timeout = 30 * time.Second
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 
 	ownerFirstName := strings.Split(dog.OwnerName, " ")[0]
