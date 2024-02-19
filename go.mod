@@ -6,7 +6,7 @@ require (
 	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.2
 	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69
 	github.com/gofiber/fiber/v2 v2.52.0
-	github.com/gofiber/template/html/v2 v2.1.0
+	github.com/gofiber/template/html/v2 v2.1.1
 	github.com/joho/godotenv v1.5.1
 	github.com/tursodatabase/libsql-client-go v0.0.0-20240130154219-693ad24d6659
 	modernc.org/sqlite v1.29.1
@@ -16,7 +16,7 @@ require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/antlr/antlr4/runtime/Go/antlr/v4 v4.0.0-20230512164433-5d1fd1a340c9 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
-	github.com/gofiber/template v1.8.2 // indirect
+	github.com/gofiber/template v1.8.3 // indirect
 	github.com/gofiber/utils v1.1.0 // indirect
 	github.com/google/uuid v1.5.0 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
