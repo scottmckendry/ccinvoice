@@ -15,7 +15,7 @@ var testDog Dog = Dog{
 	Service:   "walk",
 	Quantity:  1,
 	Price:     25,
-	Weekday:   2,
+	Grouping:   2,
 }
 
 func TestInit(t *testing.T) {
@@ -82,9 +82,9 @@ func TestCreateTables(t *testing.T) {
             service,
             quantity,
             price,
-            weekday
+            grouping
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, testDog.Name, testDog.OwnerName, testDog.Address, testDog.City, testDog.Email, testDog.Service, testDog.Quantity, testDog.Price, testDog.Weekday)
+    `, testDog.Name, testDog.OwnerName, testDog.Address, testDog.City, testDog.Email, testDog.Service, testDog.Quantity, testDog.Price, testDog.Grouping)
 
 	if err != nil {
 		t.Errorf("createTables() error = %q", err)
