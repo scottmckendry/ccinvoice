@@ -94,7 +94,7 @@ func updateTables() error {
 }
 
 func getDogs() ([]Dog, error) {
-	rows, err := db.Query("SELECT * FROM dogs group by grouping")
+	rows, err := db.Query("SELECT * FROM dogs order by grouping")
 	if err != nil {
 		return nil, fmt.Errorf("error getting dogs: %v", err)
 	}
