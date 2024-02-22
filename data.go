@@ -83,6 +83,11 @@ func updateTables() error {
 		return nil
 	}
 
+	// Set default value for grouping
+	_, err = db.Exec(`
+        UPDATE dogs SET grouping = 0 where grouping is null;
+    `)
+
 	return fmt.Errorf("error updating dogs table: %v", err)
 }
 
