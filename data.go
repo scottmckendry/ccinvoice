@@ -79,20 +79,22 @@ func updateTables() error {
 	_, err := db.Exec(`
         ALTER TABLE dogs ADD COLUMN grouping INTEGER;
     `)
-	if err == nil || strings.Contains(err.Error(), "duplicate column name") {
-		return nil
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		return fmt.Errorf("error updating dogs table: %v", err)
 	}
 
-	// Set default value for grouping
 	_, err = db.Exec(`
-        UPDATE dogs SET grouping = 0 where grouping is null;
+        UPDATE dogs SET grouping = 0 WHERE grouping IS NULL
     `)
+	if err != nil {
+		return fmt.Errorf("error updating dogs table: %v", err)
+	}
 
-	return fmt.Errorf("error updating dogs table: %v", err)
+	return nil
 }
 
 func getDogs() ([]Dog, error) {
-	rows, err := db.Query("SELECT * FROM dogs group by grouping, id")
+	rows, err := db.Query("SELECT * FROM dogs group by grouping, id;")
 	if err != nil {
 		return nil, fmt.Errorf("error getting dogs: %v", err)
 	}
