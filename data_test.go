@@ -15,6 +15,7 @@ var testDog Dog = Dog{
 	Service:   "walk",
 	Quantity:  1,
 	Price:     25,
+	Grouping:   2,
 }
 
 func TestInit(t *testing.T) {
@@ -80,9 +81,10 @@ func TestCreateTables(t *testing.T) {
             email,
             service,
             quantity,
-            price
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `, testDog.Name, testDog.OwnerName, testDog.Address, testDog.City, testDog.Email, testDog.Service, testDog.Quantity, testDog.Price)
+            price,
+            grouping
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, testDog.Name, testDog.OwnerName, testDog.Address, testDog.City, testDog.Email, testDog.Service, testDog.Quantity, testDog.Price, testDog.Grouping)
 
 	if err != nil {
 		t.Errorf("createTables() error = %q", err)
@@ -102,6 +104,27 @@ func TestCreateTables(t *testing.T) {
 		_ = connect()
 		db.Exec("DROP TABLE dogs")
 		Init()
+	})
+}
+
+func TestUpdateTables(t *testing.T) {
+	err := updateTables()
+	if err != nil {
+		t.Errorf("updateTables() error = %q", err)
+	}
+
+	// Force error
+	oldDbUrl := dbUrl
+	dbUrl = "someBadUrl"
+	_ = connect()
+	err = updateTables()
+	if err == nil {
+		t.Errorf("no error returned when expected")
+	}
+
+	t.Cleanup(func() {
+		dbUrl = oldDbUrl
+		_ = connect()
 	})
 }
 

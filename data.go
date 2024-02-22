@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"strings"
 
 	_ "github.com/tursodatabase/libsql-client-go/libsql"
 	_ "modernc.org/sqlite"
@@ -21,6 +22,7 @@ type Dog struct {
 	Service   string
 	Quantity  int
 	Price     float64
+	Grouping  int
 }
 
 func Init() error {
@@ -31,6 +33,11 @@ func Init() error {
 
 	// No need to check for error here, if the connection can be made, the tables will be created
 	_ = createTables()
+
+	err = updateTables()
+	if err != nil {
+		return fmt.Errorf("error updating tables: %v", err)
+	}
 
 	return nil
 }
@@ -58,6 +65,7 @@ func createTables() error {
             service TEXT,
             quantity INTEGER,
             price INTEGER
+            grouping INTEGER
         );
     `)
 	if err != nil {
@@ -67,8 +75,19 @@ func createTables() error {
 	return nil
 }
 
+func updateTables() error {
+	_, err := db.Exec(`
+        ALTER TABLE dogs ADD COLUMN grouping INTEGER;
+    `)
+	if err == nil || strings.Contains(err.Error(), "duplicate column name") {
+		return nil
+	}
+
+	return fmt.Errorf("error updating dogs table: %v", err)
+}
+
 func getDogs() ([]Dog, error) {
-	rows, err := db.Query("SELECT * FROM dogs")
+	rows, err := db.Query("SELECT * FROM dogs group by grouping, id")
 	if err != nil {
 		return nil, fmt.Errorf("error getting dogs: %v", err)
 	}
@@ -86,6 +105,7 @@ func getDogs() ([]Dog, error) {
 			&dog.Service,
 			&dog.Quantity,
 			&dog.Price,
+			&dog.Grouping,
 		)
 		if err != nil {
 			rows.Close()
@@ -109,6 +129,7 @@ func getDog(id int) (Dog, error) {
 		&dog.Service,
 		&dog.Quantity,
 		&dog.Price,
+		&dog.Grouping,
 	)
 	if err != nil {
 		return Dog{}, fmt.Errorf("error getting dog: %v", err)
@@ -127,9 +148,10 @@ func addDog(dog Dog) error {
             email,
             service,
             quantity,
-            price
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Service, dog.Quantity, dog.Price)
+            price,
+            grouping
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Service, dog.Quantity, dog.Price, dog.Grouping)
 	if err != nil {
 		return fmt.Errorf("error adding dog: %v", err)
 	}
@@ -147,9 +169,10 @@ func updateDog(dog Dog) error {
             email = ?,
             service = ?,
             quantity = ?,
-            price = ?
+            price = ?,
+            grouping = ?
         WHERE id = ?
-    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Service, dog.Quantity, dog.Price, dog.ID)
+    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Service, dog.Quantity, dog.Price, dog.Grouping, dog.ID)
 	if err != nil {
 		return fmt.Errorf("error updating dog: %v", err)
 	}
