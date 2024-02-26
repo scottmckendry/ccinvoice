@@ -9,7 +9,7 @@ require (
 	github.com/gofiber/template/html/v2 v2.1.1
 	github.com/joho/godotenv v1.5.1
 	github.com/tursodatabase/libsql-client-go v0.0.0-20240130154219-693ad24d6659
-	modernc.org/sqlite v1.29.1
+	modernc.org/sqlite v1.29.2
 )
 
 require (
