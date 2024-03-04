@@ -5,7 +5,7 @@ go 1.22
 require (
 	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.2
 	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69
-	github.com/gofiber/fiber/v2 v2.52.1
+	github.com/gofiber/fiber/v2 v2.52.2
 	github.com/gofiber/template/html/v2 v2.1.1
 	github.com/joho/godotenv v1.5.1
 	github.com/tursodatabase/libsql-client-go v0.0.0-20240130154219-693ad24d6659
