@@ -9,7 +9,7 @@ require (
 	github.com/gofiber/template/html/v2 v2.1.1
 	github.com/joho/godotenv v1.5.1
 	github.com/tursodatabase/libsql-client-go v0.0.0-20240130154219-693ad24d6659
-	modernc.org/sqlite v1.29.6
+	modernc.org/sqlite v1.29.8
 )
 
 require (
@@ -18,7 +18,7 @@ require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/gofiber/template v1.8.3 // indirect
 	github.com/gofiber/utils v1.1.0 // indirect
-	github.com/google/uuid v1.5.0 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
 	github.com/klauspost/compress v1.17.0 // indirect
 	github.com/libsql/sqlite-antlr4-parser v0.0.0-20230802215326-5cb5bb604475 // indirect
@@ -32,12 +32,12 @@ require (
 	github.com/valyala/fasthttp v1.51.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/exp v0.0.0-20231108232855-2478ac86f678 // indirect
-	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/sys v0.19.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	modernc.org/gc/v3 v3.0.0-20240107210532-573471604cb6 // indirect
-	modernc.org/libc v1.41.0 // indirect
+	modernc.org/libc v1.49.3 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
-	modernc.org/memory v1.7.2 // indirect
+	modernc.org/memory v1.8.0 // indirect
 	modernc.org/strutil v1.2.0 // indirect
 	modernc.org/token v1.1.0 // indirect
 	nhooyr.io/websocket v1.8.7 // indirect
