@@ -34,6 +34,16 @@ header h1 {
     font-size: 20px;
 }
 
+.logo {
+    display: flex;
+}
+
+.logo img {
+    height: 30px;
+    margin-right: 10px;
+    filter: grayscale(100%) brightness(0) invert(1);
+}
+
 #spinner {
     position: fixed;
     width: 100%;
