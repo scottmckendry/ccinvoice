@@ -1,5 +1,5 @@
-github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.2 h1:enQwehstpeaAnsyse1Aqb6r0sU5UJbiNvIqVmPo+KWI=
-github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.2/go.mod h1:SQq4xfIdvf6WYKSDxAJc+xOJdolt+/bc1jnQKMtPMvQ=
+github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.3 h1:vrA6+R1BMLKMTbos8jAeuBrImHPGtY4gTlcue3OIej8=
+github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.3/go.mod h1:SQq4xfIdvf6WYKSDxAJc+xOJdolt+/bc1jnQKMtPMvQ=
 github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69 h1:gPoXdwo3sKq8qcfMu/Nc/wkJMLKwe7kaG9Uo8tOj3cU=
 github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69/go.mod h1:RS+Gaowa0M+gCuiFAiRMGBCMqxLrNA7TESTU/Wbblm8=
 github.com/andybalholm/brotli v1.0.5 h1:8uQZIdzKmjc/iuPu7O2ioW48L81FgatrcpfFmiq/cCs=
