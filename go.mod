@@ -3,7 +3,7 @@ module ccinvoice
 go 1.22
 
 require (
-	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.2
+	github.com/SebastiaanKlippert/go-wkhtmltopdf v1.9.3
 	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/gofiber/template/html/v2 v2.1.1
