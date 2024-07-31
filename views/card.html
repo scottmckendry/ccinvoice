@@ -44,6 +44,7 @@
             hx-post="/invoice/{{.ID}}"
             hx-indicator="#spinner"
             hx-swap="innerHTML"
+            hx-confirm="Are you sure you want to send {{.Name}}'s invoice?"
             hx-target="this"
             href=""
         >
