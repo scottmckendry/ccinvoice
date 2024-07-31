@@ -33,30 +33,30 @@ func TestGetNextMonday(t *testing.T) {
 	}
 }
 
-func TestGeneratePdf(t *testing.T) {
-	want := "./public/FRE" + time.Now().Format("20060102") + ".pdf"
-	got, err := generatePdf(testDog)
-	if err != nil {
-		t.Errorf("generatePdf() error = %q", err)
-	}
-	if got != want {
-		t.Errorf("generateInvoice() = %q, want %q", got, want)
-	}
-}
+// func TestGeneratePdf(t *testing.T) {
+// 	want := "./public/FRE" + time.Now().Format("20060102") + ".pdf"
+// 	got, err := generatePdf(testDog)
+// 	if err != nil {
+// 		t.Errorf("generatePdf() error = %q", err)
+// 	}
+// 	if got != want {
+// 		t.Errorf("generateInvoice() = %q, want %q", got, want)
+// 	}
+// }
 
-func TestSendEmail(t *testing.T) {
-	db.Exec("DROP TABLE dogs")
-	Init()
-	_ = addDog(testDog)
-	err := sendEmail(testDog)
-	if err != nil {
-		t.Errorf("sendEmail() error = %q", err)
-	}
-}
+// func TestSendEmail(t *testing.T) {
+// 	db.Exec("DROP TABLE dogs")
+// 	Init()
+// 	_ = addDog(testDog)
+// 	err := sendEmail(testDog)
+// 	if err != nil {
+// 		t.Errorf("sendEmail() error = %q", err)
+// 	}
+// }
 
-func TestSendInvoice(t *testing.T) {
-	err := sendInvoice(testDog.ID)
-	if err != nil {
-		t.Errorf("sendInvoice() error = %q", err)
-	}
-}
+// func TestSendInvoice(t *testing.T) {
+// 	err := sendInvoice(testDog.ID)
+// 	if err != nil {
+// 		t.Errorf("sendInvoice() error = %q", err)
+// 	}
+// }

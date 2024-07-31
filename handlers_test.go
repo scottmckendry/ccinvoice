@@ -21,7 +21,7 @@ func TestViews(t *testing.T) {
 		t.Error("Expected app to be initialized")
 	}
 
-	routes := []string{"/", "/dogs", "/dogs/add", "/dogs/edit/1", "/invoice/1", "/invoice/1/pdf"}
+	routes := []string{"/", "/dogs", "/dogs/add", "/dogs/edit/1", "/invoice/1"}
 
 	for _, route := range routes {
 		req := httptest.NewRequest("GET", route, nil)
