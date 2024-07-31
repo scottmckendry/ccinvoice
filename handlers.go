@@ -177,5 +177,5 @@ func handleSendInvoice(c *fiber.Ctx) error {
 		// Not sure why this is the case, but probably worth revisiting in the future.
 		return c.SendString("Failed :(")
 	}
-	return c.SendString("Queued!")
+	return c.SendString("<button class=\"btn-disabled\" disabled>Queued!</button>")
 }

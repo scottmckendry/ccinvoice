@@ -158,6 +158,11 @@ hr {
     background-color: #ac0800;
 }
 
+.btn-disabled {
+    background-color: #777;
+    color: #fff !important;
+}
+
 #modal {
     /* Underlay covers entire screen. */
     position: fixed;
