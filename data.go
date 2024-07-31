@@ -25,14 +25,23 @@ type Dog struct {
 	Grouping  int
 }
 
+type Email struct {
+	ID     int
+	DogID  int
+	Queued sql.NullString
+	Sent   sql.NullString
+}
+
 func Init() error {
 	err := connect()
 	if err != nil {
 		return err
 	}
 
-	// No need to check for error here, if the connection can be made, the tables will be created
-	_ = createTables()
+	err = createTables()
+	if err != nil {
+		return fmt.Errorf("error creating tables: %v", err)
+	}
 
 	err = updateTables()
 	if err != nil {
@@ -70,6 +79,19 @@ func createTables() error {
     `)
 	if err != nil {
 		return fmt.Errorf("error creating dogs table: %v", err)
+	}
+
+	_, err = db.Exec(`
+        CREATE TABLE IF NOT EXISTS email_queue (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            dog_id INTEGER,
+            queued TEXT,
+            sent TEXT
+        );
+    `)
+
+	if err != nil {
+		return fmt.Errorf("error creating email_queue table: %v", err)
 	}
 
 	return nil
@@ -191,6 +213,62 @@ func deleteDog(id int) error {
 	_, err := db.Exec("DELETE FROM dogs WHERE id = ?", id)
 	if err != nil {
 		return fmt.Errorf("error deleting dog: %v", err)
+	}
+
+	return nil
+}
+
+func queueEmail(dogID int) error {
+	_, err := db.Exec(`
+        INSERT INTO email_queue (
+            dog_id, queued, sent
+        ) VALUES (?, datetime('now'), NULL)
+    `, dogID)
+	if err != nil {
+		return fmt.Errorf("error queuing email: %v", err)
+	}
+
+	return nil
+}
+
+func getEmailQueue() ([]Email, error) {
+	rows, err := db.Query("SELECT * FROM email_queue WHERE sent IS NULL")
+	if err != nil {
+		return nil, fmt.Errorf("error getting email queue: %v", err)
+	}
+
+	var emails []Email
+	for rows.Next() {
+		var email Email
+		err := rows.Scan(
+			&email.ID,
+			&email.DogID,
+			&email.Queued,
+			&email.Sent,
+		)
+		if err != nil {
+			rows.Close()
+			return nil, fmt.Errorf("error scanning email: %v", err)
+		}
+		emails = append(emails, email)
+	}
+
+	return emails, nil
+}
+
+func markEmailInProcess(id int) error {
+	_, err := db.Exec("UPDATE email_queue SET sent = 'in_process' WHERE id = ?", id)
+	if err != nil {
+		return fmt.Errorf("error marking email in process: %v", err)
+	}
+
+	return nil
+}
+
+func markEmailSent(id int) error {
+	_, err := db.Exec("UPDATE email_queue SET sent = datetime('now') WHERE id = ?", id)
+	if err != nil {
+		return fmt.Errorf("error marking email sent: %v", err)
 	}
 
 	return nil

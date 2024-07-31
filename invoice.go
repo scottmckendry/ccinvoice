@@ -31,6 +31,31 @@ func sendInvoice(id int) error {
 	return nil
 }
 
+func sendInvoices() (status string, err error) {
+	emails, err := getEmailQueue()
+	if err != nil {
+		return "", err
+	}
+
+	for _, email := range emails {
+		err := markEmailInProcess(email.ID)
+		if err != nil {
+			return "", err
+		}
+		err = sendInvoice(email.DogID)
+		if err != nil {
+			return "", err
+		}
+
+		err = markEmailSent(email.ID)
+		if err != nil {
+			return "", err
+		}
+	}
+
+	return "Processed " + strconv.Itoa(len(emails)) + " emails", nil
+}
+
 func generatePdf(dog Dog) (string, error) {
 	pdfGenerator, err := wkhtmltopdf.NewPDFGenerator()
 	if err != nil {

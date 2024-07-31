@@ -2,7 +2,9 @@ package main
 
 import (
 	"log"
+	"time"
 
+	"github.com/go-co-op/gocron/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
@@ -21,6 +23,11 @@ func main() {
 		log.Fatal("Error initializing database: ", err)
 	}
 
+	err = startScheduler()
+	if err != nil {
+		log.Fatal("Error starting scheduler: ", err)
+	}
+
 	app := startServer()
 	err = app.Listen(":3000")
 	if err != nil {
@@ -33,6 +40,33 @@ func loadEnv() error {
 	if err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func startScheduler() error {
+	s, err := gocron.NewScheduler()
+	if err != nil {
+		return err
+	}
+
+	j, err := s.NewJob(
+		gocron.DurationJob(10*time.Second),
+		gocron.NewTask(func() {
+			status, err := sendInvoices()
+			if err != nil {
+				log.Println("Error sending invoices: ", err)
+			}
+			log.Println(status)
+		}),
+	)
+
+	if err != nil {
+		return err
+	}
+
+	log.Println("Job ID: ", j.ID())
+	s.Start()
 
 	return nil
 }

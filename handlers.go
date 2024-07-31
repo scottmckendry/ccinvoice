@@ -168,12 +168,14 @@ func handleSendInvoice(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(400).SendString(err.Error())
 	}
-	err = sendInvoice(id)
+	// err = sendInvoice(id)
+	// err = nil // replace with db insert into email queue table
+	err = queueEmail(id)
 	if err != nil {
 		log.Println(err)
 		// We're intentionally not returning the error to the client here. HTMX won't update the element if the response is an error.
 		// Not sure why this is the case, but probably worth revisiting in the future.
 		return c.SendString("Failed :(")
 	}
-	return c.SendString("Done!")
+	return c.SendString("Queued!")
 }
