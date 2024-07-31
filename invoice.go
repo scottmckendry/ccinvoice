@@ -37,8 +37,12 @@ func sendInvoices() (status string, err error) {
 		return "", err
 	}
 
+	err = markEmailsInProcess(emails)
+	if err != nil {
+		return "", err
+	}
+
 	for _, email := range emails {
-		err := markEmailInProcess(email.ID)
 		if err != nil {
 			return "", err
 		}

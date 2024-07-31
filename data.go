@@ -256,10 +256,16 @@ func getEmailQueue() ([]Email, error) {
 	return emails, nil
 }
 
-func markEmailInProcess(id int) error {
-	_, err := db.Exec("UPDATE email_queue SET sent = 'in_process' WHERE id = ?", id)
-	if err != nil {
-		return fmt.Errorf("error marking email in process: %v", err)
+func markEmailsInProcess(emails []Email) error {
+	errs := []string{}
+	for _, email := range emails {
+		_, err := db.Exec("UPDATE email_queue SET sent = datetime('now') WHERE id = ?", email.ID)
+		if err != nil {
+			errs = append(errs, fmt.Sprintf("error marking email in process: %v", err))
+		}
+	}
+	if len(errs) > 0 {
+		return fmt.Errorf(strings.Join(errs, "\n"))
 	}
 
 	return nil
