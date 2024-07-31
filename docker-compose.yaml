@@ -1,11 +1,10 @@
-version: '3'
 services:
-  app:
-    container_name: 'ccinvoice'
-    build:
-      context: ./
-      dockerfile: dev.dockerfile
-    volumes:
-      - ./:/app
-    ports:
-      - 3000:3000
+    app:
+        container_name: "ccinvoice"
+        build:
+            context: ./
+            dockerfile: dev.dockerfile
+        volumes:
+            - ./:/app
+        ports:
+            - 3000:3000
