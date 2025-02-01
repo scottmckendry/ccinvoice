@@ -1,0 +1,3 @@
+ALTER TABLE dogs DROP COLUMN service;
+ALTER TABLE dogs DROP COLUMN quantity;
+ALTER TABLE dogs DROP COLUMN price;

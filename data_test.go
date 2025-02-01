@@ -131,28 +131,8 @@ func TestCreateTables(t *testing.T) {
 		_ = connect()
 		db.Exec("DROP TABLE dog_services")
 		db.Exec("DROP TABLE dogs")
+		db.Exec("DROP TABLE migrations")
 		Init()
-	})
-}
-
-func TestUpdateTables(t *testing.T) {
-	err := updateTables()
-	if err != nil {
-		t.Errorf("updateTables() error = %q", err)
-	}
-
-	// Force error
-	oldDbUrl := dbUrl
-	dbUrl = "someBadUrl"
-	_ = connect()
-	err = updateTables()
-	if err == nil {
-		t.Errorf("no error returned when expected")
-	}
-
-	t.Cleanup(func() {
-		dbUrl = oldDbUrl
-		_ = connect()
 	})
 }
 
@@ -209,6 +189,7 @@ func TestUpdateDog(t *testing.T) {
 	}
 
 	t.Cleanup(func() {
+		db.Exec("DROP TABLE migrations")
 		Init()
 		_ = addDog(testDog)
 	})
@@ -249,6 +230,7 @@ func TestGetDogs(t *testing.T) {
 	}
 
 	t.Cleanup(func() {
+		db.Exec("DROP TABLE migrations")
 		Init()
 		_ = addDog(testDog)
 	})
@@ -284,6 +266,7 @@ func TestDeleteDog(t *testing.T) {
 	}
 
 	t.Cleanup(func() {
+		db.Exec("DROP TABLE migrations")
 		Init()
 		_ = addDog(testDog)
 	})

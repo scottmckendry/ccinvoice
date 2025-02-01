@@ -3,6 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"os"
+	"path/filepath"
+	"sort"
 	"strings"
 
 	_ "github.com/tursodatabase/libsql-client-go/libsql"
@@ -48,9 +51,9 @@ func Init() error {
 		return fmt.Errorf("error creating tables: %v", err)
 	}
 
-	err = updateTables()
+	err = applyMigrations()
 	if err != nil {
-		return fmt.Errorf("error updating tables: %v", err)
+		return fmt.Errorf("error applying migrations: %v", err)
 	}
 
 	return nil
@@ -76,9 +79,16 @@ func createTables() error {
             address TEXT,
             city TEXT,
             email TEXT,
-            grouping INTEGER
+            grouping INTEGER,
+
+            service TEXT,
+            quantity INTEGER,
+            price REAL
         );
     `)
+	// NOTE: The last three columns in the dogs table are not used in the application
+	// and are only required to satisfy migrations for new databases. They will be
+	// dropped immediately during the startup process
 	if err != nil {
 		return fmt.Errorf("error creating dogs table: %v", err)
 	}
@@ -105,27 +115,72 @@ func createTables() error {
             sent TEXT
         );
     `)
-
 	if err != nil {
 		return fmt.Errorf("error creating email_queue table: %v", err)
+	}
+
+	_, err = db.Exec(`
+        CREATE TABLE IF NOT EXISTS migrations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            applied TEXT
+        );
+    `)
+	if err != nil {
+		return fmt.Errorf("error creating migrations table: %v", err)
 	}
 
 	return nil
 }
 
-func updateTables() error {
-	_, err := db.Exec(`
-        ALTER TABLE dogs ADD COLUMN grouping INTEGER;
-    `)
-	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
-		return fmt.Errorf("error updating dogs table: %v", err)
+func applyMigrations() error {
+	files, err := filepath.Glob(filepath.Join("migrations", "*.sql"))
+	if err != nil {
+		return fmt.Errorf("error reading migrations directory: %v", err)
 	}
 
-	_, err = db.Exec(`
-        UPDATE dogs SET grouping = 0 WHERE grouping IS NULL
-    `)
-	if err != nil {
-		return fmt.Errorf("error updating dogs table: %v", err)
+	sort.Strings(files)
+
+	for _, file := range files {
+		var count int
+		err := db.QueryRow("SELECT COUNT(*) FROM migrations WHERE name = ?",
+			filepath.Base(file)).Scan(&count)
+		if err != nil {
+			return fmt.Errorf("error checking migration status: %v", err)
+		}
+
+		if count > 0 {
+			continue
+		}
+
+		content, err := os.ReadFile(file)
+		if err != nil {
+			return fmt.Errorf("error reading migration file %s: %v", file, err)
+		}
+
+		tx, err := db.Begin()
+		if err != nil {
+			return fmt.Errorf("error beginning transaction: %v", err)
+		}
+
+		_, err = tx.Exec(string(content))
+		if err != nil {
+			tx.Rollback()
+			return fmt.Errorf("error executing migration %s: %v", file, err)
+		}
+
+		_, err = tx.Exec(
+			"INSERT INTO migrations (name, applied) VALUES (?, datetime('now'))",
+			filepath.Base(file))
+		if err != nil {
+			tx.Rollback()
+			return fmt.Errorf("error recording migration %s: %v", file, err)
+		}
+
+		err = tx.Commit()
+		if err != nil {
+			return fmt.Errorf("error committing migration %s: %v", file, err)
+		}
 	}
 
 	return nil
