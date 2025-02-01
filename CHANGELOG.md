@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/scottmckendry/ccinvoice/compare/v2.0.0...v2.0.1) (2025-02-01)
+
+
+### Bug Fixes
+
+* **log:** only log when 1 or more emails are processed ([b3095e9](https://github.com/scottmckendry/ccinvoice/commit/b3095e92a111ccdd6f0a3b81cb89786b59ae3138))
+
 ## [2.0.0](https://github.com/scottmckendry/ccinvoice/compare/v1.0.0...v2.0.0) (2025-02-01)
 
 
