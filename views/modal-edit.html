@@ -86,19 +86,18 @@
             class="btn-primary"
             onclick="
                 const container = document.getElementById('services-container');
-                const lastEntry = container.lastElementChild;
-                const lastInputName = lastEntry.querySelector('input').name;
-                const newIndex = parseInt(lastInputName.match(/\[(\d+)\]/)[1]) + 1;
+                const template = '<div class=\'service-entry\' data-include-edit>' +
+                    '<input type=\'text\' name=\'services[0].service\' placeholder=\'Service\' value=\'\' />' +
+                    '<input type=\'number\' name=\'services[0].quantity\' placeholder=\'Quantity\' value=\'\' />' +
+                    '<input type=\'number\' step=\'0.01\' name=\'services[0].price\' placeholder=\'Price\' value=\'\' />' +
+                    '<button type=\'button\' class=\'btn-danger\' onclick=\'this.closest(&quot;.service-entry&quot;).remove()\'>' +
+                        '<i class=\'nf nf-cod-trash\'></i>' +
+                    '</button>' +
+                '</div>';
                 
-                const template = container.firstElementChild.cloneNode(true);
-                const inputs = template.querySelectorAll('input');
-                
-                inputs[0].name = `services[${newIndex}].service`;
-                inputs[1].name = `services[${newIndex}].quantity`;
-                inputs[2].name = `services[${newIndex}].price`;
-                inputs.forEach(input => input.value = '');
-                
-                container.appendChild(template);"
+                const newIndex = container.children.length;
+                const newEntry = template.replace(/\[0\]/g, '[' + newIndex + ']');
+                container.insertAdjacentHTML('beforeend', newEntry);"
         >
             +
         </button>
