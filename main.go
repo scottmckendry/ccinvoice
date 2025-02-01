@@ -57,7 +57,9 @@ func startScheduler() error {
 			if err != nil {
 				log.Println("Error sending invoices: ", err)
 			}
-			log.Println(status)
+			if status != "Processed 0 emails" {
+				log.Println(status)
+			}
 		}),
 	)
 
