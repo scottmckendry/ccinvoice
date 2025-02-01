@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.0.0](https://github.com/scottmckendry/ccinvoice/compare/v1.0.0...v2.0.0) (2025-02-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* add support for multiple line items
+
+### Features
+
+* add support for multiple line items ([3fad786](https://github.com/scottmckendry/ccinvoice/commit/3fad7867e19e682f32abf7055ec17bfe2d6ade0f))
+* **db:** add migrations logic and scripts for changes to services ([41b06fe](https://github.com/scottmckendry/ccinvoice/commit/41b06fedf50bde116f8592a98fa266e7cf27b3f1))
+* update invoice styling ([1690667](https://github.com/scottmckendry/ccinvoice/commit/1690667846535b1a7330d52664e0a18883dc4587))
+
+
+### Bug Fixes
+
+* **ui:** handle cases where all services are removed ([9e5ebe3](https://github.com/scottmckendry/ccinvoice/commit/9e5ebe357a5bcef394f425a78a197896ce664216))
+* **ui:** handle re-ordering of the services container ([be1d8c3](https://github.com/scottmckendry/ccinvoice/commit/be1d8c3a4ca8153f102a0b18b6893792c8cd2cec))
+
 ## 1.0.0 (2025-01-31)
 
 
