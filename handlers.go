@@ -59,6 +59,12 @@ func renderInvoice(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
 	}
+
+	total := 0.0
+	for _, service := range dog.Services {
+		total += float64(service.Quantity) * service.Price
+	}
+
 	return c.Render("invoice", fiber.Map{
 		"InvoiceNumber": getInvoiceNumber(dog),
 		"Date":          time.Now().Format("Monday, 2 January 2006"),
@@ -71,15 +77,8 @@ func renderInvoice(c *fiber.Ctx) error {
 		"OwnerName":     dog.OwnerName,
 		"Address":       dog.Address,
 		"City":          dog.City,
-		"Service":       dog.Service,
-		"Quantity":      dog.Quantity,
-		"Price":         strconv.FormatFloat(dog.Price, 'f', 2, 64),
-		"Total": strconv.FormatFloat(
-			(float64(dog.Quantity) * dog.Price),
-			'f',
-			2,
-			64,
-		),
+		"Services":      dog.Services,
+		"Total":         strconv.FormatFloat(total, 'f', 2, 64),
 	})
 }
 

@@ -148,11 +148,13 @@
                     <td>Price</td>
                 </tr>
 
+                {{range .Services}}
                 <tr class="item">
                     <td>{{.Service}}</td>
                     <td>{{.Quantity}}</td>
-                    <td>${{.Price}}</td>
+                    <td>${{printf "%.2f" .Price}}</td>
                 </tr>
+                {{end}}
 
                 <tr class="total">
                     <td></td>

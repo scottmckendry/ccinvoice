@@ -104,18 +104,13 @@ func sendEmail(dog Dog) error {
 	ownerFirstName := strings.Split(dog.OwnerName, " ")[0]
 	fromFirstName := strings.Split(os.Getenv("FROM_NAME"), " ")[0]
 
-	walkOrWalks := "walk"
-	if dog.Quantity > 1 {
-		walkOrWalks = "walks"
-	}
-
 	m := gomail.NewMessage()
 	m.SetHeader("From", fmt.Sprintf("Canine Club<%s>", os.Getenv("SMTP_USER")))
 	m.SetHeader("To", fmt.Sprintf("%s <%s>", dog.OwnerName, dog.Email))
 	m.SetHeader("Subject", "Canine Club - Invoice for "+dog.Name)
 	m.SetBody(
 		"text/html",
-		"Hi "+ownerFirstName+",<br><br>Please find attached the invoice for "+dog.Name+"'s "+walkOrWalks+" this week.<p style='font-weight:lighter;'>Please use '<b>"+dog.Name+"</b>' as the reference when making payment. Also note that payment is due by "+nextMonday(
+		"Hi "+ownerFirstName+",<br><br>Please find attached the invoice for "+dog.Name+"'s walks this week.<p style='font-weight:lighter;'>Please use '<b>"+dog.Name+"</b>' as the reference when making payment. Also note that payment is due by "+nextMonday(
 			time.Now(),
 		).Format("Monday, 2 January 2006")+
 			".</p><br>Any questions let me know,<br>Thank you!<br><br>"+fromFirstName+"<br>Canine Club",

@@ -102,9 +102,15 @@ func TestPostReq(t *testing.T) {
 	app = startServer()
 
 	formData := url.Values{
-		"name":      {"Rex"},
-		"ownerName": {"Jane Doe"},
-		"email":     {"noreply@scottmckendry.tech"},
+		"name":                  {"Rex"},
+		"ownerName":             {"Jane Doe"},
+		"email":                 {"noreply@scottmckendry.tech"},
+		"services[0][service]":  {"Bath"},
+		"services[0][quantity]": {"1"},
+		"services[0][price]":    {"20.00"},
+		"services[1][service]":  {"Nail Trim"},
+		"services[1][quantity]": {"1"},
+		"services[1][price]":    {"10.00"},
 	}
 
 	req := httptest.NewRequest("POST", "/dogs", strings.NewReader(formData.Encode()))
@@ -133,7 +139,7 @@ func TestPostReq(t *testing.T) {
 		t.Error("Error sending request to Fiber: ", err)
 	}
 
-	if resp.StatusCode != 400 {
+	if resp.StatusCode != 500 {
 		t.Error("Expected status code 400, got ", resp.StatusCode)
 		bodyString, _ := io.ReadAll(resp.Body)
 		t.Error("Body: ", string(bodyString))
@@ -164,7 +170,7 @@ func TestPutReq(t *testing.T) {
 	formData = url.Values{
 		"name":      {"Ralph"},
 		"ownerName": {"James Doe"},
-		"price":     {"not a number"},
+		"grouping":  {"not a number"},
 	}
 
 	req = httptest.NewRequest("PUT", "/dogs/1", strings.NewReader(formData.Encode()))

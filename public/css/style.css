@@ -163,6 +163,30 @@ hr {
     color: #fff !important;
 }
 
+.service-entry {
+    display: grid;
+    grid-template-columns: 4fr 2fr 2fr 1fr;
+    width: 95%;
+}
+
+.service-entry button {
+    margin-bottom: 10px;
+    width: 100% !important;
+}
+
+.services-container {
+    width: 95%;
+}
+
+.service-entry input {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
 #modal {
     /* Underlay covers entire screen. */
     position: fixed;
@@ -230,7 +254,7 @@ hr {
     animation-timing-function: ease;
 }
 
-#modal input[type="text"] {
+#modal input {
     width: 95%;
     padding: 5px;
     font-size: 16px;
@@ -306,7 +330,13 @@ hr {
         background-color: #323130;
     }
 
-    #modal input[type="text"] {
+    #modal input {
+        border: 1px solid #fff;
+        background-color: #323130;
+        color: #fff;
+    }
+
+    .service-entry input {
         border: 1px solid #fff;
         background-color: #323130;
         color: #fff;

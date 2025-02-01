@@ -5,17 +5,32 @@ import (
 	"testing"
 )
 
-var testDog Dog = Dog{
+var testDog = Dog{
 	ID:        1,
 	Name:      "Fido",
 	OwnerName: "John Doe",
 	Address:   "123 Fake Street",
 	City:      "Fakeville",
 	Email:     "noreply@scottmckendry.tech",
-	Service:   "walk",
-	Quantity:  1,
-	Price:     25,
-	Grouping:   2,
+	Grouping:  2,
+	Services:  []Service{},
+}
+
+func dogsEqual(a, b Dog) bool {
+	if a.ID != b.ID || a.Name != b.Name || a.OwnerName != b.OwnerName ||
+		a.Address != b.Address || a.City != b.City || a.Email != b.Email ||
+		a.Grouping != b.Grouping || len(a.Services) != len(b.Services) {
+		return false
+	}
+
+	for i := range a.Services {
+		if a.Services[i].Service != b.Services[i].Service ||
+			a.Services[i].Quantity != b.Services[i].Quantity ||
+			a.Services[i].Price != b.Services[i].Price {
+			return false
+		}
+	}
+	return true
 }
 
 func TestInit(t *testing.T) {
@@ -72,6 +87,7 @@ func TestCreateTables(t *testing.T) {
 		t.Errorf("createTables() error = %q", err)
 	}
 
+	// Insert test dog
 	_, err = db.Exec(`
         INSERT INTO dogs (
             name,
@@ -79,15 +95,26 @@ func TestCreateTables(t *testing.T) {
             address,
             city,
             email,
-            service,
-            quantity,
-            price,
             grouping
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, testDog.Name, testDog.OwnerName, testDog.Address, testDog.City, testDog.Email, testDog.Service, testDog.Quantity, testDog.Price, testDog.Grouping)
+        ) VALUES (?, ?, ?, ?, ?, ?)
+    `, testDog.Name, testDog.OwnerName, testDog.Address, testDog.City, testDog.Email, testDog.Grouping)
 
 	if err != nil {
-		t.Errorf("createTables() error = %q", err)
+		t.Errorf("error inserting test dog: %q", err)
+	}
+
+	// Insert test service
+	_, err = db.Exec(`
+        INSERT INTO dog_services (
+            dog_id,
+            service,
+            quantity,
+            price
+        ) VALUES (?, ?, ?, ?)
+    `, testDog.ID, "Bath", 1, 20.00)
+
+	if err != nil {
+		t.Errorf("error inserting test service: %q", err)
 	}
 
 	// Force error
@@ -102,6 +129,7 @@ func TestCreateTables(t *testing.T) {
 	t.Cleanup(func() {
 		dbUrl = oldDbUrl
 		_ = connect()
+		db.Exec("DROP TABLE dog_services")
 		db.Exec("DROP TABLE dogs")
 		Init()
 	})
@@ -139,7 +167,7 @@ func TestAddDog(t *testing.T) {
 		t.Errorf("GetDog() error = %q", err)
 	}
 
-	if dog != testDog {
+	if !dogsEqual(dog, testDog) {
 		t.Errorf("AddDog() failed to add dog")
 		t.Errorf("have: %v", dog)
 		t.Errorf("want: %v", testDog)
@@ -156,9 +184,9 @@ func TestAddDog(t *testing.T) {
 }
 
 func TestUpdateDog(t *testing.T) {
-	testDog.ID = 1
-	testDog.Name = "Fred"
-	err := updateDog(testDog)
+	updatedDog := testDog
+	updatedDog.Name = "Fred"
+	err := updateDog(updatedDog)
 	if err != nil {
 		t.Errorf("UpdateDog() error = %q", err)
 	}
@@ -174,7 +202,7 @@ func TestUpdateDog(t *testing.T) {
 
 	// Force error
 	db.Exec("DROP TABLE dogs")
-	err = updateDog(testDog)
+	err = updateDog(updatedDog)
 
 	if err == nil {
 		t.Errorf("no error returned when expected")
@@ -196,7 +224,7 @@ func TestGetDogs(t *testing.T) {
 		t.Errorf("GetDogs() returned no dogs")
 	}
 
-	if dogs[0] != testDog {
+	if !dogsEqual(dogs[0], testDog) {
 		t.Errorf("GetDogs() returned incorrect dog")
 		t.Errorf("have: %v", dogs[0])
 		t.Errorf("want: %v", testDog)
@@ -210,6 +238,7 @@ func TestGetDogs(t *testing.T) {
 	}
 
 	// Force query error
+	db.Exec("DROP TABLE dog_services")
 	_, err = db.Exec("drop table dogs;")
 	if err != nil {
 		t.Errorf("error dropping table: %v", err)
@@ -223,7 +252,6 @@ func TestGetDogs(t *testing.T) {
 		Init()
 		_ = addDog(testDog)
 	})
-
 }
 
 func TestGetDog(t *testing.T) {
@@ -232,7 +260,7 @@ func TestGetDog(t *testing.T) {
 		t.Errorf("GetDog() error = %q", err)
 	}
 
-	if dog != testDog {
+	if !dogsEqual(dog, testDog) {
 		t.Errorf("GetDog() returned incorrect dog")
 	}
 }
@@ -304,9 +332,7 @@ func createBadTable() error {
             address text,
             city text,
             email text,
-            service text,
-            quantity text,
-            price text
+            grouping integer
         );
     `)
 	if err != nil {

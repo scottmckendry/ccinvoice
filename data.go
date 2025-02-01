@@ -12,6 +12,13 @@ import (
 var dbUrl = "file:./db.sqlite3"
 var db *sql.DB
 
+type Service struct {
+	ID       int
+	Service  string
+	Quantity int
+	Price    float64
+}
+
 type Dog struct {
 	ID        int
 	Name      string
@@ -19,10 +26,8 @@ type Dog struct {
 	Address   string
 	City      string
 	Email     string
-	Service   string
-	Quantity  int
-	Price     float64
 	Grouping  int
+	Services  []Service
 }
 
 type Email struct {
@@ -71,14 +76,25 @@ func createTables() error {
             address TEXT,
             city TEXT,
             email TEXT,
-            service TEXT,
-            quantity INTEGER,
-            price INTEGER
             grouping INTEGER
         );
     `)
 	if err != nil {
 		return fmt.Errorf("error creating dogs table: %v", err)
+	}
+
+	_, err = db.Exec(`
+        CREATE TABLE IF NOT EXISTS dog_services (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            dog_id INTEGER,
+            service TEXT,
+            quantity INTEGER,
+            price REAL,
+            FOREIGN KEY(dog_id) REFERENCES dogs(id) ON DELETE CASCADE
+        );
+    `)
+	if err != nil {
+		return fmt.Errorf("error creating dog_services table: %v", err)
 	}
 
 	_, err = db.Exec(`
@@ -131,9 +147,6 @@ func getDogs() ([]Dog, error) {
 			&dog.Address,
 			&dog.City,
 			&dog.Email,
-			&dog.Service,
-			&dog.Quantity,
-			&dog.Price,
 			&dog.Grouping,
 		)
 		if err != nil {
@@ -143,70 +156,149 @@ func getDogs() ([]Dog, error) {
 		dogs = append(dogs, dog)
 	}
 
+	// Get services
+	for i, dog := range dogs {
+		rows, err := db.Query(`
+            SELECT id, service, quantity, price
+            FROM dog_services
+            WHERE dog_id = ?
+        `, dog.ID)
+		if err != nil {
+			return nil, fmt.Errorf("error getting services: %v", err)
+		}
+		defer rows.Close()
+
+		for rows.Next() {
+			var svc Service
+			err := rows.Scan(&svc.ID, &svc.Service, &svc.Quantity, &svc.Price)
+			if err != nil {
+				return nil, fmt.Errorf("error scanning service: %v", err)
+			}
+			dogs[i].Services = append(dogs[i].Services, svc)
+		}
+	}
+
 	return dogs, nil
 }
 
 func getDog(id int) (Dog, error) {
 	var dog Dog
-	err := db.QueryRow("SELECT * FROM dogs WHERE id = ?", id).Scan(
+	err := db.QueryRow(`
+        SELECT id, name, ownerName, address, city, email, grouping 
+        FROM dogs WHERE id = ?`, id).Scan(
 		&dog.ID,
 		&dog.Name,
 		&dog.OwnerName,
 		&dog.Address,
 		&dog.City,
 		&dog.Email,
-		&dog.Service,
-		&dog.Quantity,
-		&dog.Price,
 		&dog.Grouping,
 	)
 	if err != nil {
 		return Dog{}, fmt.Errorf("error getting dog: %v", err)
 	}
 
+	// Get services
+	rows, err := db.Query(`
+        SELECT id, service, quantity, price 
+        FROM dog_services 
+        WHERE dog_id = ?`, id)
+	if err != nil {
+		return Dog{}, fmt.Errorf("error getting services: %v", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var svc Service
+		err := rows.Scan(&svc.ID, &svc.Service, &svc.Quantity, &svc.Price)
+		if err != nil {
+			return Dog{}, fmt.Errorf("error scanning service: %v", err)
+		}
+		dog.Services = append(dog.Services, svc)
+	}
+
 	return dog, nil
 }
 
 func addDog(dog Dog) error {
-	_, err := db.Exec(`
-        INSERT INTO dogs (
-            name,
-            ownerName,
-            address,
-            city,
-            email,
-            service,
-            quantity,
-            price,
-            grouping
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Service, dog.Quantity, dog.Price, dog.Grouping)
+	tx, err := db.Begin()
 	if err != nil {
+		return fmt.Errorf("error beginning transaction: %v", err)
+	}
+
+	result, err := tx.Exec(`
+        INSERT INTO dogs (name, ownerName, address, city, email, grouping)
+        VALUES (?, ?, ?, ?, ?, ?)
+    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Grouping)
+	if err != nil {
+		tx.Rollback()
 		return fmt.Errorf("error adding dog: %v", err)
 	}
 
-	return nil
+	dogID, err := result.LastInsertId()
+	if err != nil {
+		tx.Rollback()
+		return fmt.Errorf("error getting last insert id: %v", err)
+	}
+
+	for _, svc := range dog.Services {
+		_, err = tx.Exec(`
+            INSERT INTO dog_services (dog_id, service, quantity, price)
+            VALUES (?, ?, ?, ?)
+        `, dogID, svc.Service, svc.Quantity, svc.Price)
+		if err != nil {
+			tx.Rollback()
+			return fmt.Errorf("error adding service: %v", err)
+		}
+	}
+
+	return tx.Commit()
 }
 
 func updateDog(dog Dog) error {
-	_, err := db.Exec(`
+	tx, err := db.Begin()
+	if err != nil {
+		return fmt.Errorf("error beginning transaction: %v", err)
+	}
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// Update dog information
+	_, err = tx.Exec(`
         UPDATE dogs SET
             name = ?,
             ownerName = ?,
             address = ?,
             city = ?,
             email = ?,
-            service = ?,
-            quantity = ?,
-            price = ?,
             grouping = ?
         WHERE id = ?
-    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Service, dog.Quantity, dog.Price, dog.Grouping, dog.ID)
+    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Grouping, dog.ID)
 	if err != nil {
 		return fmt.Errorf("error updating dog: %v", err)
 	}
 
-	return nil
+	// Delete existing services for this dog
+	_, err = tx.Exec(`DELETE FROM dog_services WHERE dog_id = ?`, dog.ID)
+	if err != nil {
+		return fmt.Errorf("error deleting existing services: %v", err)
+	}
+
+	// Insert new services
+	for _, service := range dog.Services {
+		_, err = tx.Exec(`
+            INSERT INTO dog_services (dog_id, service, quantity, price)
+            VALUES (?, ?, ?, ?)
+        `, dog.ID, service.Service, service.Quantity, service.Price)
+		if err != nil {
+			return fmt.Errorf("error inserting service: %v", err)
+		}
+	}
+
+	return tx.Commit()
 }
 
 func deleteDog(id int) error {
@@ -265,7 +357,7 @@ func markEmailsInProcess(emails []Email) error {
 		}
 	}
 	if len(errs) > 0 {
-		return fmt.Errorf(strings.Join(errs, "\n"))
+		return fmt.Errorf("%s", strings.Join(errs, "\n"))
 	}
 
 	return nil
