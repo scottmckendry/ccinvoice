@@ -52,7 +52,16 @@
                 <button
                     type="button"
                     class="btn-danger"
-                    onclick="this.closest('.service-entry').remove()"
+                    onclick="
+                        this.closest('.service-entry').remove();
+                        const services = document.getElementById('services-container');
+                        const entries = services.getElementsByClassName('service-entry');
+                        for (let i = 0; i < entries.length; i++) {
+                            const inputs = entries[i].getElementsByTagName('input');
+                            for (let input of inputs) {
+                                input.name = input.name.replace(/services\[\d+\]/, `services[${i}]`);
+                            }
+                        }"
                 >
                     <i class="nf nf-cod-trash"></i>
                 </button>
