@@ -1,14 +1,41 @@
+:root {
+    color-scheme: light dark;
+    --bg-color: #ffffff;
+    --text-color: #333;
+    --header-bg: #37474f;
+    --card-bg: #ffffff;
+    --card-shadow: rgba(0, 0, 0, 0.2);
+    --hr-color: #eee;
+    --input-border: #ccc;
+    --modal-bg: white;
+}
+
+:root[theme="dark"] {
+    --bg-color: #1b1a19;
+    --text-color: #fff;
+    --header-bg: #323130;
+    --card-bg: #323130;
+    --card-shadow: rgba(0, 0, 0, 0.2);
+    --hr-color: rgba(255, 255, 255, 0.1);
+    --input-border: #fff;
+    --modal-bg: #323130;
+}
+
 body {
-    color: #333;
+    color: var(--text-color);
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     margin: 0;
+    background-color: var(--bg-color);
+    transition:
+        background-color 0.3s,
+        color 0.3s;
 }
 
 header {
     position: sticky;
     top: 0;
-    background-color: #37474f;
+    background-color: var(--header-bg);
     color: #fff;
     padding: 10px;
     display: flex;
@@ -44,6 +71,27 @@ header h1 {
     filter: grayscale(100%) brightness(0) invert(1);
 }
 
+.theme-toggle {
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+    width: 35px;
+    height: 35px;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+}
+
 #spinner {
     position: fixed;
     width: 100%;
@@ -76,14 +124,15 @@ header h1 {
 .card {
     padding: 10px;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px var(--card-shadow);
+    background-color: var(--card-bg);
     flex: 0 1 300px;
     min-width: 350px;
     max-width: 650px;
 }
 
 hr {
-    border: 1px solid #eee;
+    border: 1px solid var(--hr-color);
 }
 
 .card-title {
@@ -182,13 +231,14 @@ hr {
     width: 100%;
     padding: 5px;
     font-size: 14px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
     border-radius: 5px;
     box-sizing: border-box;
+    background-color: var(--card-bg);
+    color: var(--text-color);
 }
 
 #modal {
-    /* Underlay covers entire screen. */
     position: fixed;
     top: 0px;
     bottom: 0px;
@@ -196,21 +246,15 @@ hr {
     right: 0px;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
-
-    /* Flexbox centers the .modal-content vertically and horizontally */
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    /* Animate when opening */
     animation-name: fadeIn;
     animation-duration: 150ms;
     animation-timing-function: ease;
 }
 
 #modal > .modal-underlay {
-    /* underlay takes up the entire viewport. This is only
-	required if you want to click to dismiss the popup */
     position: absolute;
     z-index: -1;
     top: 0px;
@@ -220,35 +264,26 @@ hr {
 }
 
 #modal > .modal-content {
-    /* Position visible dialog near the top of the window */
     margin-top: 10vh;
-
-    /* Sizing for visible dialog */
     width: 80%;
     max-width: 600px;
-
-    /* Display properties for visible dialog*/
     border: solid 1px #999;
     border-radius: 8px;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
-    background-color: white;
+    background-color: var(--modal-bg);
     padding: 20px;
-
-    /* Animate when opening */
     animation-name: zoomIn;
     animation-duration: 150ms;
     animation-timing-function: ease;
 }
 
 #modal.closing {
-    /* Animate when closing */
     animation-name: fadeOut;
     animation-duration: 150ms;
     animation-timing-function: ease;
 }
 
 #modal.closing > .modal-content {
-    /* Animate when closing */
     animation-name: zoomOut;
     animation-duration: 150ms;
     animation-timing-function: ease;
@@ -259,8 +294,10 @@ hr {
     padding: 5px;
     font-size: 16px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
     border-radius: 5px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
 }
 
 @keyframes fadeIn {
@@ -309,36 +346,14 @@ hr {
 }
 
 @media (prefers-color-scheme: dark) {
-    body {
-        background-color: #1b1a19;
-        color: #fff;
-    }
-
-    header {
-        background-color: #323130;
-    }
-
-    .card {
-        background-color: #323130;
-    }
-
-    hr {
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    #modal > .modal-content {
-        background-color: #323130;
-    }
-
-    #modal input {
-        border: 1px solid #fff;
-        background-color: #323130;
-        color: #fff;
-    }
-
-    .service-entry input {
-        border: 1px solid #fff;
-        background-color: #323130;
-        color: #fff;
+    :root:not([theme="light"]) {
+        --bg-color: #1b1a19;
+        --text-color: #fff;
+        --header-bg: #323130;
+        --card-bg: #323130;
+        --card-shadow: rgba(0, 0, 0, 0.2);
+        --hr-color: rgba(255, 255, 255, 0.1);
+        --input-border: #fff;
+        --modal-bg: #323130;
     }
 }

@@ -18,6 +18,7 @@
             href="https://www.nerdfonts.com/assets/css/webfont.css"
             rel="stylesheet"
         />
+        <script src="js/theme_toggle.js"></script>
         <script src="https://unpkg.com/htmx.org@2.0.4"></script>
         <script src="https://unpkg.com/hyperscript.org@0.9.13"></script>
     </head>
@@ -28,14 +29,22 @@
                     <img src="/images/favicon.png" alt="canine-club-logo" />
                     <h1>Canine Club</h1>
                 </div>
-                <button
-                    class="btn-add"
-                    hx-get="/dogs/add"
-                    hx-target="body"
-                    hx-swap="beforeend"
-                >
-                    ADD
-                </button>
+                <div class="right">
+                    <button
+                        class="theme-toggle"
+                        _="on click call toggleTheme()"
+                    >
+                        <i class="nf nf-fa-moon"></i>
+                    </button>
+                    <button
+                        class="btn-add"
+                        hx-get="/dogs/add"
+                        hx-target="body"
+                        hx-swap="beforeend"
+                    >
+                        ADD
+                    </button>
+                </div>
             </header>
             <div>{{ template "dogs" . }}</div>
         </main>
