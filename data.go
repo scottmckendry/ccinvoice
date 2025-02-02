@@ -62,7 +62,12 @@ func Init() error {
 func connect() error {
 	db, _ = sql.Open("libsql", dbUrl)
 
-	err := db.Ping()
+	_, err := db.Exec("PRAGMA foreign_keys = ON;")
+	if err != nil {
+		return fmt.Errorf("error enabling foreign keys: %v", err)
+	}
+
+	err = db.Ping()
 	if err != nil {
 		return fmt.Errorf("error connecting to database: %v", err)
 	}
