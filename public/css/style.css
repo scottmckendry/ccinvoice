@@ -83,10 +83,6 @@ header h1 {
     height: 35px;
 }
 
-.theme-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
 .header-buttons {
     display: flex;
     align-items: center;
@@ -194,17 +190,9 @@ hr {
     text-align: center;
 }
 
-.btn-primary:hover {
-    background-color: #006978;
-}
-
 .btn-danger {
     background-color: #e64a19;
     color: #fff;
-}
-
-.btn-danger:hover {
-    background-color: #ac0800;
 }
 
 .btn-disabled {
@@ -342,6 +330,20 @@ hr {
     }
     100% {
         transform: rotate(360deg);
+    }
+}
+
+@media (hover: hover) {
+    .theme-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-primary:hover {
+        background-color: #006978;
+    }
+
+    .btn-danger:hover {
+        background-color: #ac0800;
     }
 }
 
