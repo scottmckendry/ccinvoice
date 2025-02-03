@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.0](https://github.com/scottmckendry/ccinvoice/compare/v2.0.1...v2.1.0) (2025-02-03)
+
+
+### Features
+
+* **ui:** add theme toggle button ([b8a2421](https://github.com/scottmckendry/ccinvoice/commit/b8a2421f433f7692d2e0568eeebffba5481e1dfc))
+
+
+### Bug Fixes
+
+* **db:** prevent orphaned services when dogs are deleted ([f4db3c5](https://github.com/scottmckendry/ccinvoice/commit/f4db3c5e51b18acaafcb39506bf462df0daf96b6))
+* **ui:** prevent "sticky" hover styles on mobile devices ([b9bb23b](https://github.com/scottmckendry/ccinvoice/commit/b9bb23b18b8bffde9f835627d1dfe200b2860063))
+
 ## [2.0.1](https://github.com/scottmckendry/ccinvoice/compare/v2.0.0...v2.0.1) (2025-02-01)
 
 
