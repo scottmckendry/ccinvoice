@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/scottmckendry/ccinvoice/compare/v2.1.0...v2.1.1) (2025-03-17)
+
+
+### Bug Fixes
+
+* release dependency updates ([850e5de](https://github.com/scottmckendry/ccinvoice/commit/850e5dea8614e2b5da11de6f0fda4a74ae8f0a33))
+
 ## [2.1.0](https://github.com/scottmckendry/ccinvoice/compare/v2.0.1...v2.1.0) (2025-02-03)
 
 
