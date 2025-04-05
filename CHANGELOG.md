@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/scottmckendry/ccinvoice/compare/v2.1.1...v2.1.2) (2025-04-05)
+
+
+### Bug Fixes
+
+* make .env optional ([0e66993](https://github.com/scottmckendry/ccinvoice/commit/0e6699384edb31848164b171abc4e60ef9f452ea))
+
 ## [2.1.1](https://github.com/scottmckendry/ccinvoice/compare/v2.1.0...v2.1.1) (2025-03-17)
 
 
