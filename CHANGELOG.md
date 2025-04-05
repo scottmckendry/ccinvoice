@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0](https://github.com/scottmckendry/ccinvoice/compare/v2.1.2...v2.2.0) (2025-04-05)
+
+
+### Features
+
+* **build:** docker image improvements/tidy up ([a8996cc](https://github.com/scottmckendry/ccinvoice/commit/a8996cc4b2d54f904cf38d52464347c403a1a72d))
+
+
+### Bug Fixes
+
+* **ci:** create data dir if not exists ([85f7316](https://github.com/scottmckendry/ccinvoice/commit/85f7316abc64a092a1ff8e3417fee6b2d9f91995))
+
 ## [2.1.2](https://github.com/scottmckendry/ccinvoice/compare/v2.1.1...v2.1.2) (2025-04-05)
 
 
