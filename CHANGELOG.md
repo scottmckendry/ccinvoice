@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/scottmckendry/ccinvoice/compare/v2.2.0...v2.2.1) (2025-04-05)
+
+
+### Bug Fixes
+
+* **build:** copy build assets correctly ([7d3d633](https://github.com/scottmckendry/ccinvoice/commit/7d3d63349a7ed314055c4cbb35b93de0bd1166eb))
+
 ## [2.2.0](https://github.com/scottmckendry/ccinvoice/compare/v2.1.2...v2.2.0) (2025-04-05)
 
 
