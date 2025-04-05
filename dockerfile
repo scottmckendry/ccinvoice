@@ -6,7 +6,11 @@ RUN apt-get update && apt-get install wkhtmltopdf -y
 RUN useradd -u 1000 -m ccinvoice
 
 WORKDIR /app
-COPY go.mod go.sum migrations/ public/ views/ *.go ./
+COPY go.mod go.sum ./
+COPY migrations/ ./migrations/
+COPY public/ ./public/
+COPY views/ ./views/
+COPY *.go ./
 
 RUN go mod tidy
 RUN go build -o main .
