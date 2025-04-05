@@ -13,9 +13,9 @@ import (
 )
 
 func main() {
-	err := loadEnv()
+	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Printf("Could not load .env file: %v | Continuing with system variables", err)
 	}
 
 	err = Init()
@@ -33,15 +33,6 @@ func main() {
 	if err != nil {
 		log.Fatal("Error starting server: ", err)
 	}
-}
-
-func loadEnv() error {
-	err := godotenv.Load()
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func startScheduler() error {
