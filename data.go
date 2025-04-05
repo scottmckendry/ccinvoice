@@ -60,9 +60,17 @@ func Init() error {
 }
 
 func connect() error {
+	_, err := os.Stat("data")
+	if os.IsNotExist(err) {
+		err = os.Mkdir("data", 0755)
+		if err != nil {
+			return fmt.Errorf("error creating data directory: %v", err)
+		}
+	}
+
 	db, _ = sql.Open("libsql", dbUrl)
 
-	_, err := db.Exec("PRAGMA foreign_keys = ON;")
+	_, err = db.Exec("PRAGMA foreign_keys = ON;")
 	if err != nil {
 		return fmt.Errorf("error enabling foreign keys: %v", err)
 	}
