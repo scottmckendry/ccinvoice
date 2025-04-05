@@ -12,7 +12,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-var dbUrl = "file:./db.sqlite3"
+var dbUrl = "file:./data/db.sqlite3"
 var db *sql.DB
 
 type Service struct {

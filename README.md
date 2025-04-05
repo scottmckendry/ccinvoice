@@ -45,7 +45,7 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             - /var/run/docker.sock:/var/run/docker.sock
-            - ./db.sqlite3:/app/db.sqlite3
+            - ./data/:/app/data/
             - ./.env:/app/.env
         ports: 3000:3000
         restart: unless-stopped

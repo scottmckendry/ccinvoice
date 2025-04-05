@@ -1,9 +1,21 @@
 FROM golang:1.23
 
+RUN apt-get update && apt-get install wkhtmltopdf -y
+
+# Create non-root user
+RUN useradd -u 1000 -m ccinvoice
+
 WORKDIR /app
-COPY . /app/
+COPY go.mod go.sum migrations/ public/ views/ *.go ./
+
 RUN go mod tidy
 RUN go build -o main .
-RUN apt-get update && apt-get install wkhtmltopdf -y
+
+# Clean up
+RUN rm *.go
+RUN rm go.*
+
+RUN chown -R ccinvoice:ccinvoice /app
+USER ccinvoice
 EXPOSE 3000
 ENTRYPOINT ["./main"]
