@@ -126,7 +126,11 @@ func sendEmail(dog Dog) error {
 }
 
 func getInvoiceNumber(dog Dog) string {
-	prefix := strings.ToUpper(dog.Name[0:3])
+	name := dog.Name
+	if len(name) < 3 {
+		name = name + strings.Repeat("0", 3-len(name))
+	}
+	prefix := strings.ToUpper(name[0:3])
 	return prefix + time.Now().Format("20060102")
 }
 
