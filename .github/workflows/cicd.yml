@@ -50,7 +50,6 @@ jobs:
               id: release-please
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
-                  release-type: go
 
     build-image:
         name: Publish

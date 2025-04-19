@@ -359,3 +359,16 @@ hr {
         --modal-bg: #323130;
     }
 }
+
+.version-badge {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background-color: var(--card-bg);
+    box-shadow: 0 0 10px var(--card-shadow);
+    z-index: 100;
+}
