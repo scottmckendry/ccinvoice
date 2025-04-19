@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.3.0](https://github.com/scottmckendry/ccinvoice/compare/v2.2.1...v2.3.0) (2025-04-19)
+
+
+### Features
+
+* add version badge in ui ([b7050b4](https://github.com/scottmckendry/ccinvoice/commit/b7050b4dc8f7393602bfa8f56362b6f6195bb40f))
+
+
+### Bug Fixes
+
+* handle invoice number generation for shorter names ([a745408](https://github.com/scottmckendry/ccinvoice/commit/a7454082ad76eb0d8dfd46c0247dbb5ddbcf4aed))
+
 ## [2.2.1](https://github.com/scottmckendry/ccinvoice/compare/v2.2.0...v2.2.1) (2025-04-05)
 
 
