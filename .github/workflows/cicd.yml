@@ -105,10 +105,3 @@ jobs:
                   labels: ${{ steps.meta.outputs.labels }}
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
-
-    update-docker-image:
-        needs: [build-image]
-        name: Pull image & restart container
-        runs-on: self-hosted
-        steps:
-            - run: cd /srv/docker/ccinvoice && docker compose pull && docker compose up -d --force-recreate
