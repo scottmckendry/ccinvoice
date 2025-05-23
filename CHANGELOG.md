@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/scottmckendry/ccinvoice/compare/v2.3.0...v2.3.1) (2025-05-23)
+
+
+### Bug Fixes
+
+* **deps:** bump github.com/gofiber/fiber/v2 from 2.52.6 to 2.52.7 ([6c894ff](https://github.com/scottmckendry/ccinvoice/commit/6c894ffc0960adf1d33b938ee78fe722eddb7eb3))
+
 ## [2.3.0](https://github.com/scottmckendry/ccinvoice/compare/v2.2.1...v2.3.0) (2025-04-19)
 
 
