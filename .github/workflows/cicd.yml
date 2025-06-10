@@ -23,16 +23,16 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
             - name: Setup Go
-              uses: actions/setup-go@v5
+              uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5
               with:
                   go-version: 1.23
             - name: Test
               run: go mod tidy && go run gotest.tools/gotestsum@latest --junitfile unit-tests.xml --format pkgname
 
             - name: Test summary
-              uses: test-summary/action@v2
+              uses: test-summary/action@31493c76ec9e7aa675f1585d3ed6f1da69269a86 # v2
               with:
                   paths: unit-tests.xml
               if: always()
@@ -46,7 +46,7 @@ jobs:
             release_created: ${{ steps.release-please.outputs.release_created }}
             tag_name: ${{ steps.release-please.outputs.tag_name }}
         steps:
-            - uses: googleapis/release-please-action@v4
+            - uses: googleapis/release-please-action@a02a34c4d625f9be7cb89156071d8567266a2445 # v4
               id: release-please
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
@@ -58,12 +58,12 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v4
+              uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
             # Install the cosign tool except on PR
             # https://github.com/sigstore/cosign-installer
             - name: Install cosign
-              uses: sigstore/cosign-installer@v3.3.0
+              uses: sigstore/cosign-installer@9614fae9e5c5eddabb09f90a270fcb487c9f7149 # v3.3.0
               with:
                   cosign-release: "v2.2.2"
 
@@ -71,12 +71,12 @@ jobs:
             # multi-platform images and export cache
             # https://github.com/docker/setup-buildx-action
             - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v3
+              uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
 
             # Login against a Docker registry except on PR
             # https://github.com/docker/login-action
             - name: Log into registry ${{ env.REGISTRY }}
-              uses: docker/login-action@v3
+              uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
               with:
                   registry: ${{ env.REGISTRY }}
                   username: ${{ github.actor }}
@@ -86,7 +86,7 @@ jobs:
             # https://github.com/docker/metadata-action
             - name: Extract Docker metadata
               id: meta
-              uses: docker/metadata-action@v5
+              uses: docker/metadata-action@902fa8ec7d6ecbf8d84d538b9b233a880e428804 # v5
               with:
                   images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
                   tags: |
@@ -97,7 +97,7 @@ jobs:
             # https://github.com/docker/build-push-action
             - name: Build and push Docker image
               id: build-and-push
-              uses: docker/build-push-action@v5
+              uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5
               with:
                   context: .
                   push: ${{ github.event_name != 'pull_request' }}
