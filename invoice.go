@@ -76,7 +76,11 @@ func generatePdf(dog Dog) (string, error) {
 		chromedp.Navigate(os.Getenv("BASE_URL")+"/invoice/"+strconv.Itoa(dog.ID)),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			var err error
-			pdfBuf, _, err = page.PrintToPDF().WithPrintBackground(true).Do(ctx)
+			pdfBuf, _, err = page.PrintToPDF().
+				WithPrintBackground(true).
+				WithScale(0.8).
+				WithPaperHeight(12).
+				Do(ctx)
 			return err
 		}),
 	)
