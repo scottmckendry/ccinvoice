@@ -1,15 +1,18 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	"github.com/Shopify/gomail"
+	"github.com/chromedp/cdproto/page"
+	"github.com/chromedp/chromedp"
 )
 
 func sendInvoice(id int) error {
@@ -61,27 +64,35 @@ func sendInvoices() (status string, err error) {
 }
 
 func generatePdf(dog Dog) (string, error) {
-	pdfGenerator, err := wkhtmltopdf.NewPDFGenerator()
+	// Create a headless Chrome context
+	ctx, cancel := chromedp.NewContext(context.Background())
+	defer cancel()
+	// Set timeout
+	ctx, cancel = context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+
+	var pdfBuf []byte
+	err := chromedp.Run(ctx,
+		chromedp.Navigate(os.Getenv("BASE_URL")+"/invoice/"+strconv.Itoa(dog.ID)),
+		chromedp.ActionFunc(func(ctx context.Context) error {
+			var err error
+			pdfBuf, _, err = page.PrintToPDF().
+				WithPrintBackground(true).
+				WithScale(0.8).
+				WithPaperHeight(12).
+				Do(ctx)
+			return err
+		}),
+	)
+
 	if err != nil {
-		return "", err
+		log.Fatal(err)
 	}
-
-	page := wkhtmltopdf.NewPage(os.Getenv("BASE_URL") + "/invoice/" + strconv.Itoa(dog.ID))
-
-	pdfGenerator.AddPage(page)
-
-	err = pdfGenerator.Create()
-	if err != nil {
-		return "", err
-	}
-
 	invoiceFile := fmt.Sprintf("./public/%s.pdf", getInvoiceNumber(dog))
-
-	err = pdfGenerator.WriteFile(invoiceFile)
-	if err != nil {
-		return "", err
+	// Save to file
+	if err := os.WriteFile(invoiceFile, pdfBuf, 0644); err != nil {
+		log.Fatal(err)
 	}
-
 	return invoiceFile, nil
 }
 
