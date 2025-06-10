@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/scottmckendry/ccinvoice/compare/v3.0.0...v3.0.1) (2025-06-10)
+
+
+### Bug Fixes
+
+* **pdf:** replace wkhtmltopdf with chromedp for pdf generation ([74ee74b](https://github.com/scottmckendry/ccinvoice/commit/74ee74bed4edebf2233a0d3ae2a9fa80571b838f))
+
 ## [3.0.0](https://github.com/scottmckendry/ccinvoice/compare/v2.3.1...v3.0.0) (2025-06-10)
 
 
