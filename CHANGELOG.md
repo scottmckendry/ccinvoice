@@ -1,5 +1,27 @@
 # Changelog
 
+## [3.0.0](https://github.com/scottmckendry/ccinvoice/compare/v2.3.1...v3.0.0) (2025-06-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **github-action:** Update action docker/build-push-action ( v5 → v6 )
+
+### Features
+
+* **container:** update image golang ( 1.23 → 1.24 ) ([2bc891d](https://github.com/scottmckendry/ccinvoice/commit/2bc891d524ba56b60b8370b35721dcc06c984b47))
+* **deps:** update module modernc.org/sqlite ( v1.37.1 → v1.38.0 ) ([f3275bd](https://github.com/scottmckendry/ccinvoice/commit/f3275bdacc4da2b477cbe686ee74c0c4e726cfbf))
+
+
+### Bug Fixes
+
+* **deps:** update dependency go ( 1.24.1 → 1.24.4 ) ([5d09d82](https://github.com/scottmckendry/ccinvoice/commit/5d09d827775bf75ff19a3ae4f925c8bfcc2830bd))
+
+
+### Continuous Integration
+
+* **github-action:** Update action docker/build-push-action ( v5 → v6 ) ([e48d32c](https://github.com/scottmckendry/ccinvoice/commit/e48d32c686553d71209d3bb448d7e58258308585))
+
 ## [2.3.1](https://github.com/scottmckendry/ccinvoice/compare/v2.3.0...v2.3.1) (2025-05-23)
 
 
