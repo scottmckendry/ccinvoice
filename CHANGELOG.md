@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/scottmckendry/ccinvoice/compare/v3.0.1...v3.0.2) (2025-06-11)
+
+
+### Bug Fixes
+
+* **pdf:** crashes in non-root envs with sandboxed chromedp ([3736d0e](https://github.com/scottmckendry/ccinvoice/commit/3736d0efdfbd5aeae89c954ae7d70729723c2b82))
+
 ## [3.0.1](https://github.com/scottmckendry/ccinvoice/compare/v3.0.0...v3.0.1) (2025-06-10)
 
 
