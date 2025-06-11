@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -64,10 +63,15 @@ func sendInvoices() (status string, err error) {
 }
 
 func generatePdf(dog Dog) (string, error) {
-	// Create a headless Chrome context
-	ctx, cancel := chromedp.NewContext(context.Background())
+	// Create a headless Chrome context with no sandbox - required for running in non-root environments
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.NoSandbox,
+		chromedp.Flag("disable-setuid-sandbox", true),
+	)
+	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	defer cancel()
-	// Set timeout
+	ctx, cancel := chromedp.NewContext(allocCtx)
+	defer cancel()
 	ctx, cancel = context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
 
@@ -86,12 +90,12 @@ func generatePdf(dog Dog) (string, error) {
 	)
 
 	if err != nil {
-		log.Fatal(err)
+		return "", fmt.Errorf("error generating PDF: %w", err)
 	}
 	invoiceFile := fmt.Sprintf("./public/%s.pdf", getInvoiceNumber(dog))
 	// Save to file
 	if err := os.WriteFile(invoiceFile, pdfBuf, 0644); err != nil {
-		log.Fatal(err)
+		return "", fmt.Errorf("error writing PDF to file: %w", err)
 	}
 	return invoiceFile, nil
 }
