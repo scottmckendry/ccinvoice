@@ -4,7 +4,7 @@ go 1.24
 
 require (
 	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69
-	github.com/chromedp/cdproto v0.0.0-20250611220608-a17eb1ae8ff0
+	github.com/chromedp/cdproto v0.0.0-20250615221225-2454e98bdb89
 	github.com/chromedp/chromedp v0.13.6
 	github.com/go-co-op/gocron/v2 v2.16.2
 	github.com/gofiber/fiber/v2 v2.52.8
