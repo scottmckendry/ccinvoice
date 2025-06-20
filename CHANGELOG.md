@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.3](https://github.com/scottmckendry/ccinvoice/compare/v3.0.2...v3.0.3) (2025-06-20)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/chromedp/chromedp ( v0.13.6 → v0.13.7 ) ([#86](https://github.com/scottmckendry/ccinvoice/issues/86)) ([3c7c305](https://github.com/scottmckendry/ccinvoice/commit/3c7c305128e0a563204048b3896fd2f82c37f4a1))
+
 ## [3.0.2](https://github.com/scottmckendry/ccinvoice/compare/v3.0.1...v3.0.2) (2025-06-11)
 
 
