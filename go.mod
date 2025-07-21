@@ -7,7 +7,7 @@ require (
 	github.com/chromedp/cdproto v0.0.0-20250625204652-ce640014f9ac
 	github.com/chromedp/chromedp v0.13.7
 	github.com/go-co-op/gocron/v2 v2.16.2
-	github.com/gofiber/fiber/v2 v2.52.8
+	github.com/gofiber/fiber/v2 v2.52.9
 	github.com/gofiber/template/html/v2 v2.1.3
 	github.com/joho/godotenv v1.5.1
 	github.com/tursodatabase/libsql-client-go v0.0.0-20240902231107-85af5b9d094d
