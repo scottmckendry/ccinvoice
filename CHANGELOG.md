@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.1.0](https://github.com/scottmckendry/ccinvoice/compare/v3.0.2...v3.1.0) (2025-07-29)
+
+
+### Features
+
+* **deps:** update module github.com/chromedp/chromedp ( v0.13.7 → v0.14.0 ) ([a9e8f7b](https://github.com/scottmckendry/ccinvoice/commit/a9e8f7b50c0a0af23d399672d7cb35b9a3d7a692))
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/chromedp/chromedp ( v0.13.6 → v0.13.7 ) ([#86](https://github.com/scottmckendry/ccinvoice/issues/86)) ([3c7c305](https://github.com/scottmckendry/ccinvoice/commit/3c7c305128e0a563204048b3896fd2f82c37f4a1))
+* **deps:** update module github.com/gofiber/fiber/v2 ( v2.52.8 → v2.52.9 ) ([#93](https://github.com/scottmckendry/ccinvoice/issues/93)) ([b93d41f](https://github.com/scottmckendry/ccinvoice/commit/b93d41f349bb0a03fe58f7886b3e6be9c4b2b9f3))
+
 ## [3.0.2](https://github.com/scottmckendry/ccinvoice/compare/v3.0.1...v3.0.2) (2025-06-11)
 
 
