@@ -1,4 +1,4 @@
-FROM golang:1.24
+FROM golang:1.25
 
 # Install Chrome - necessary for chromedp and pdf generation
 RUN apt-get update && apt-get install -y \
