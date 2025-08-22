@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.1](https://github.com/scottmckendry/ccinvoice/compare/v3.1.0...v3.1.1) (2025-08-22)
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/chromedp/chromedp ( v0.14.0 → v0.14.1 ) ([373a823](https://github.com/scottmckendry/ccinvoice/commit/373a823e8eb0748197e5749b1b09def8e9adb2fe))
+* **deps:** update module github.com/go-co-op/gocron/v2 ( v2.16.2 → v2.16.3 ) ([426c2f9](https://github.com/scottmckendry/ccinvoice/commit/426c2f9a9c5ef0b5f8f405abe82abc99f3d13daf))
+
 ## [3.1.0](https://github.com/scottmckendry/ccinvoice/compare/v3.0.2...v3.1.0) (2025-07-29)
 
 
