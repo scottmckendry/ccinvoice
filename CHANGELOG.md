@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.1](https://github.com/scottmckendry/ccinvoice/compare/v3.2.0...v3.2.1) (2025-09-28)
+
+
+### Bug Fixes
+
+* **build:** use chromium instead of chrome ([9435589](https://github.com/scottmckendry/ccinvoice/commit/9435589c1a2f296026a2c5c3be48ea367c1d7cbe))
+
 ## [3.2.0](https://github.com/scottmckendry/ccinvoice/compare/v3.1.0...v3.2.0) (2025-09-28)
 
 
