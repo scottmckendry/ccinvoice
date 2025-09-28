@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.2.0](https://github.com/scottmckendry/ccinvoice/compare/v3.1.0...v3.2.0) (2025-09-28)
+
+
+### Features
+
+* **container:** update image golang ( 1.24 → 1.25 ) ([b8b95f5](https://github.com/scottmckendry/ccinvoice/commit/b8b95f560862c6391cede92094355c56c7bcd5d2))
+* **deps:** update module modernc.org/sqlite ( v1.38.2 → v1.39.0 ) ([b333262](https://github.com/scottmckendry/ccinvoice/commit/b33326206da3e6887831df3cadab96e480500bf0))
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/chromedp/chromedp ( v0.14.0 → v0.14.1 ) ([373a823](https://github.com/scottmckendry/ccinvoice/commit/373a823e8eb0748197e5749b1b09def8e9adb2fe))
+* **deps:** update module github.com/go-co-op/gocron/v2 ( v2.16.2 → v2.16.3 ) ([426c2f9](https://github.com/scottmckendry/ccinvoice/commit/426c2f9a9c5ef0b5f8f405abe82abc99f3d13daf))
+* **deps:** update module github.com/go-co-op/gocron/v2 ( v2.16.3 → v2.16.6 ) ([16ee3a1](https://github.com/scottmckendry/ccinvoice/commit/16ee3a1e129adc817569df674b40704089bee940))
+
 ## [3.1.0](https://github.com/scottmckendry/ccinvoice/compare/v3.0.2...v3.1.0) (2025-07-29)
 
 
