@@ -6,7 +6,7 @@ require (
 	github.com/Shopify/gomail v0.0.0-20220729171026-0784ece65e69
 	github.com/chromedp/cdproto v0.0.0-20250803210736-d308e07a266d
 	github.com/chromedp/chromedp v0.14.2
-	github.com/go-co-op/gocron/v2 v2.16.6
+	github.com/go-co-op/gocron/v2 v2.19.1
 	github.com/gofiber/fiber/v3 v3.0.0
 	github.com/gofiber/template/html/v3 v3.0.2
 	github.com/jackc/pgx/v5 v5.8.0
