@@ -1,5 +1,29 @@
 # Changelog
 
+## [4.0.0](https://github.com/scottmckendry/ccinvoice/compare/v3.2.1...v4.0.0) (2026-02-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** upgrade to fiber v3
+* **data:** move from sqlite to postgresql
+
+### Features
+
+* **deps:** update module github.com/go-co-op/gocron/v2 ( v2.16.6 → v2.19.1 ) ([bc56681](https://github.com/scottmckendry/ccinvoice/commit/bc56681a611a75f6428ba61b4d5deae687a6c8e6))
+* **deps:** upgrade to fiber v3 ([b95ac34](https://github.com/scottmckendry/ccinvoice/commit/b95ac340a1e04246bae74cf7471e87404b61c6f8))
+
+
+### Bug Fixes
+
+* **ci:** support pgsql for integration tests ([e0ab6a9](https://github.com/scottmckendry/ccinvoice/commit/e0ab6a9b6ec49a2c433d40917d7df54d64a8fe6a))
+* **deps:** update module github.com/chromedp/chromedp ( v0.14.1 → v0.14.2 ) ([158643f](https://github.com/scottmckendry/ccinvoice/commit/158643f6491dab503b1dd36a28f014e0c3bb6506))
+
+
+### Code Refactoring
+
+* **data:** move from sqlite to postgresql ([f1b313d](https://github.com/scottmckendry/ccinvoice/commit/f1b313dcb99ac026c2a1bcbd3fe502b832d27c52))
+
 ## [3.2.1](https://github.com/scottmckendry/ccinvoice/compare/v3.2.0...v3.2.1) (2025-09-28)
 
 
