@@ -6,11 +6,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 // Renders the index page.
-func renderIndex(c *fiber.Ctx) error {
+func renderIndex(c fiber.Ctx) error {
 	dogs, err := getDogs()
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
@@ -21,7 +21,7 @@ func renderIndex(c *fiber.Ctx) error {
 }
 
 // Renders the cards for all dogs.
-func renderDogs(c *fiber.Ctx) error {
+func renderDogs(c fiber.Ctx) error {
 	dogs, err := getDogs()
 	if err != nil {
 		return c.Status(500).SendString(err.Error())
@@ -32,12 +32,12 @@ func renderDogs(c *fiber.Ctx) error {
 }
 
 // Renders the modal for adding a new dog.
-func renderAdd(c *fiber.Ctx) error {
+func renderAdd(c fiber.Ctx) error {
 	return c.Render("modal-add", nil)
 }
 
 // Gets details for the given dog ID and renders the modal for editing.
-func renderEdit(c *fiber.Ctx) error {
+func renderEdit(c fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(400).SendString(err.Error())
@@ -50,7 +50,7 @@ func renderEdit(c *fiber.Ctx) error {
 }
 
 // Generates a preview of the invoice for a given dog as HTML. This is used for generating the PDF.
-func renderInvoice(c *fiber.Ctx) error {
+func renderInvoice(c fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(400).SendString(err.Error())
@@ -83,7 +83,7 @@ func renderInvoice(c *fiber.Ctx) error {
 }
 
 // Generates a PDF version of the HTML returned by renderInvoice() using the wkhtmltopdf command line tool.
-func renderInvoicePdf(c *fiber.Ctx) error {
+func renderInvoicePdf(c fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(400).SendString(err.Error())
@@ -100,9 +100,9 @@ func renderInvoicePdf(c *fiber.Ctx) error {
 }
 
 // Adds a new dog to the database and returns the updated list of dogs.
-func handleDogAdd(c *fiber.Ctx) error {
+func handleDogAdd(c fiber.Ctx) error {
 	dog := new(Dog)
-	if err := c.BodyParser(dog); err != nil {
+	if err := c.Bind().Body(dog); err != nil {
 		return c.Status(400).SendString(err.Error())
 	}
 	err := addDog(*dog)
@@ -119,14 +119,14 @@ func handleDogAdd(c *fiber.Ctx) error {
 }
 
 // Updates a dog matching the provided ID in the database and returns the updated list of dogs.
-func handleDogUpdate(c *fiber.Ctx) error {
+func handleDogUpdate(c fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(400).SendString(err.Error())
 	}
 	dog := new(Dog)
 	dog.ID = id
-	if err := c.BodyParser(dog); err != nil {
+	if err := c.Bind().Body(dog); err != nil {
 		return c.Status(400).SendString(err.Error())
 	}
 	err = updateDog(*dog)
@@ -143,7 +143,7 @@ func handleDogUpdate(c *fiber.Ctx) error {
 }
 
 // Deletes a dog matching the provided ID from the database and returns the updated list of dogs.
-func handleDogDelete(c *fiber.Ctx) error {
+func handleDogDelete(c fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(400).SendString(err.Error())
@@ -162,7 +162,7 @@ func handleDogDelete(c *fiber.Ctx) error {
 }
 
 // Sends an invoice for the given dog to the owner's email address.
-func handleSendInvoice(c *fiber.Ctx) error {
+func handleSendInvoice(c fiber.Ctx) error {
 	id, err := strconv.Atoi(c.Params("id"))
 	if err != nil {
 		return c.Status(400).SendString(err.Error())

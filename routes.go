@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/static"
 )
 
 func setRoutes(app *fiber.App) {
 	// Serve static files from the public directory
-	app.Static("/", "./public")
+	app.Use(static.New("./public"))
 
 	// Render templates
 	app.Get("/", renderIndex)

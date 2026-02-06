@@ -7,10 +7,11 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/gofiber/template/html/v2"
+	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/recover"
+	"github.com/gofiber/template/html/v3"
 )
 
 var app *fiber.App
@@ -26,7 +27,7 @@ func TestViews(t *testing.T) {
 
 	for _, route := range routes {
 		req := httptest.NewRequest("GET", route, nil)
-		resp, err := app.Test(req, 10000)
+		resp, err := app.Test(req, fiber.TestConfig{Timeout: 10000 * time.Millisecond})
 		if err != nil {
 			t.Error("Error sending request to Fiber: ", err)
 		}
@@ -50,7 +51,7 @@ func TestViews(t *testing.T) {
 		}
 
 		req := httptest.NewRequest("GET", route, nil)
-		resp, err := app.Test(req, 10000)
+		resp, err := app.Test(req, fiber.TestConfig{Timeout: 10000 * time.Millisecond})
 		if err != nil {
 			t.Error("Error sending request to Fiber: ", err)
 		}
@@ -85,7 +86,7 @@ func TestBadPaths(t *testing.T) {
 
 	for _, route := range routes {
 		req := httptest.NewRequest("GET", route, nil)
-		resp, err := app.Test(req, 10000)
+		resp, err := app.Test(req, fiber.TestConfig{Timeout: 10000 * time.Millisecond})
 		if err != nil {
 			t.Error("Error sending request to Fiber: ", err)
 		}
@@ -116,7 +117,7 @@ func TestPostReq(t *testing.T) {
 
 	req := httptest.NewRequest("POST", "/dogs", strings.NewReader(formData.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	resp, err := app.Test(req, 10000)
+	resp, err := app.Test(req, fiber.TestConfig{Timeout: 10000 * time.Millisecond})
 	if err != nil {
 		t.Error("Error sending request to Fiber: ", err)
 	}
@@ -135,7 +136,7 @@ func TestPostReq(t *testing.T) {
 
 	req = httptest.NewRequest("POST", "/dogs", strings.NewReader(formData.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	resp, err = app.Test(req, 10000)
+	resp, err = app.Test(req, fiber.TestConfig{Timeout: 10000 * time.Millisecond})
 	if err != nil {
 		t.Error("Error sending request to Fiber: ", err)
 	}
@@ -157,7 +158,7 @@ func TestPutReq(t *testing.T) {
 
 	req := httptest.NewRequest("PUT", "/dogs/1", strings.NewReader(formData.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	resp, err := app.Test(req, 10000)
+	resp, err := app.Test(req, fiber.TestConfig{Timeout: 10000 * time.Millisecond})
 	if err != nil {
 		t.Error("Error sending request to Fiber: ", err)
 	}
@@ -176,7 +177,7 @@ func TestPutReq(t *testing.T) {
 
 	req = httptest.NewRequest("PUT", "/dogs/1", strings.NewReader(formData.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	resp, err = app.Test(req, 10000)
+	resp, err = app.Test(req, fiber.TestConfig{Timeout: 10000 * time.Millisecond})
 	if err != nil {
 		t.Error("Error sending request to Fiber: ", err)
 	}
@@ -188,7 +189,7 @@ func TestPutReq(t *testing.T) {
 	}
 
 	req = httptest.NewRequest("PUT", "/dogs/abc", nil)
-	resp, err = app.Test(req, 10000)
+	resp, err = app.Test(req, fiber.TestConfig{Timeout: 10000 * time.Millisecond})
 	if err != nil {
 		t.Error("Error sending request to Fiber: ", err)
 	}
@@ -208,7 +209,7 @@ func TestDeleteReq(t *testing.T) {
 	setRoutes(app)
 
 	req := httptest.NewRequest("DELETE", "/dogs/1", nil)
-	resp, err := app.Test(req, 10000)
+	resp, err := app.Test(req, fiber.TestConfig{Timeout: 10000 * time.Millisecond})
 	if err != nil {
 		t.Error("Error sending request to Fiber: ", err)
 	}
@@ -220,7 +221,7 @@ func TestDeleteReq(t *testing.T) {
 	}
 
 	req = httptest.NewRequest("DELETE", "/dogs/abc", nil)
-	resp, err = app.Test(req, 10000)
+	resp, err = app.Test(req, fiber.TestConfig{Timeout: 10000 * time.Millisecond})
 	if err != nil {
 		t.Error("Error sending request to Fiber: ", err)
 	}
@@ -236,7 +237,7 @@ func TestInvoicePostReq(t *testing.T) {
 	app = startServer()
 
 	req := httptest.NewRequest("POST", "/invoice/2", nil)
-	resp, err := app.Test(req, 10000)
+	resp, err := app.Test(req, fiber.TestConfig{Timeout: 10000 * time.Millisecond})
 	if err != nil {
 		t.Error("Error sending request to Fiber: ", err)
 	}
@@ -248,7 +249,7 @@ func TestInvoicePostReq(t *testing.T) {
 	}
 
 	req = httptest.NewRequest("POST", "/invoice/abc", nil)
-	resp, err = app.Test(req, 10000)
+	resp, err = app.Test(req, fiber.TestConfig{Timeout: 10000 * time.Millisecond})
 	if err != nil {
 		t.Error("Error sending request to Fiber: ", err)
 	}
