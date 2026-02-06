@@ -4,6 +4,7 @@ import (
 	"io"
 	"net/http/httptest"
 	"net/url"
+	"os"
 	"strings"
 	"testing"
 
@@ -39,8 +40,8 @@ func TestViews(t *testing.T) {
 	}
 
 	// Test that a 500 error is returned if there is an error rendering the template
-	oldDbUrl := dbUrl
-	dbUrl = "someBadUrl"
+	oldDbUrl := os.Getenv("DATABASE_URL")
+	os.Setenv("DATABASE_URL", "someBadUrl")
 	connect()
 
 	for _, route := range routes {
@@ -66,7 +67,7 @@ func TestViews(t *testing.T) {
 
 	// Reverse the changes to the database connection
 	t.Cleanup(func() {
-		dbUrl = oldDbUrl
+		os.Setenv("DATABASE_URL", oldDbUrl)
 		Init()
 	})
 }

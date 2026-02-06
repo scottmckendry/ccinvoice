@@ -8,11 +8,9 @@ import (
 	"sort"
 	"strings"
 
-	_ "github.com/tursodatabase/libsql-client-go/libsql"
-	_ "modernc.org/sqlite"
+	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
-var dbUrl = "file:./data/db.sqlite3"
 var db *sql.DB
 
 type Service struct {
@@ -60,19 +58,15 @@ func Init() error {
 }
 
 func connect() error {
-	_, err := os.Stat("data")
-	if os.IsNotExist(err) {
-		err = os.Mkdir("data", 0755)
-		if err != nil {
-			return fmt.Errorf("error creating data directory: %v", err)
-		}
+	dbUrl := os.Getenv("DATABASE_URL")
+	if dbUrl == "" {
+		return fmt.Errorf("DATABASE_URL environment variable is required")
 	}
 
-	db, _ = sql.Open("libsql", dbUrl)
-
-	_, err = db.Exec("PRAGMA foreign_keys = ON;")
+	var err error
+	db, err = sql.Open("pgx", dbUrl)
 	if err != nil {
-		return fmt.Errorf("error enabling foreign keys: %v", err)
+		return fmt.Errorf("error opening database: %v", err)
 	}
 
 	err = db.Ping()
@@ -86,8 +80,8 @@ func connect() error {
 func createTables() error {
 	_, err := db.Exec(`
         CREATE TABLE IF NOT EXISTS dogs (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT unique,
+            id SERIAL PRIMARY KEY,
+            name TEXT UNIQUE,
             ownerName TEXT,
             address TEXT,
             city TEXT,
@@ -108,7 +102,7 @@ func createTables() error {
 
 	_, err = db.Exec(`
         CREATE TABLE IF NOT EXISTS dog_services (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             dog_id INTEGER,
             service TEXT,
             quantity INTEGER,
@@ -122,10 +116,10 @@ func createTables() error {
 
 	_, err = db.Exec(`
         CREATE TABLE IF NOT EXISTS email_queue (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             dog_id INTEGER,
-            queued TEXT,
-            sent TEXT
+            queued TIMESTAMP,
+            sent TIMESTAMP
         );
     `)
 	if err != nil {
@@ -134,9 +128,9 @@ func createTables() error {
 
 	_, err = db.Exec(`
         CREATE TABLE IF NOT EXISTS migrations (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             name TEXT,
-            applied TEXT
+            applied TIMESTAMP
         );
     `)
 	if err != nil {
@@ -156,7 +150,7 @@ func applyMigrations() error {
 
 	for _, file := range files {
 		var count int
-		err := db.QueryRow("SELECT COUNT(*) FROM migrations WHERE name = ?",
+		err := db.QueryRow("SELECT COUNT(*) FROM migrations WHERE name = $1",
 			filepath.Base(file)).Scan(&count)
 		if err != nil {
 			return fmt.Errorf("error checking migration status: %v", err)
@@ -183,7 +177,7 @@ func applyMigrations() error {
 		}
 
 		_, err = tx.Exec(
-			"INSERT INTO migrations (name, applied) VALUES (?, datetime('now'))",
+			"INSERT INTO migrations (name, applied) VALUES ($1, CURRENT_TIMESTAMP)",
 			filepath.Base(file))
 		if err != nil {
 			tx.Rollback()
@@ -229,7 +223,7 @@ func getDogs() ([]Dog, error) {
 		rows, err := db.Query(`
             SELECT id, service, quantity, price
             FROM dog_services
-            WHERE dog_id = ?
+            WHERE dog_id = $1
         `, dog.ID)
 		if err != nil {
 			return nil, fmt.Errorf("error getting services: %v", err)
@@ -253,7 +247,7 @@ func getDog(id int) (Dog, error) {
 	var dog Dog
 	err := db.QueryRow(`
         SELECT id, name, ownerName, address, city, email, grouping 
-        FROM dogs WHERE id = ?`, id).Scan(
+        FROM dogs WHERE id = $1`, id).Scan(
 		&dog.ID,
 		&dog.Name,
 		&dog.OwnerName,
@@ -270,7 +264,7 @@ func getDog(id int) (Dog, error) {
 	rows, err := db.Query(`
         SELECT id, service, quantity, price 
         FROM dog_services 
-        WHERE dog_id = ?`, id)
+        WHERE dog_id = $1`, id)
 	if err != nil {
 		return Dog{}, fmt.Errorf("error getting services: %v", err)
 	}
@@ -294,25 +288,21 @@ func addDog(dog Dog) error {
 		return fmt.Errorf("error beginning transaction: %v", err)
 	}
 
-	result, err := tx.Exec(`
+	var dogID int
+	err = tx.QueryRow(`
         INSERT INTO dogs (name, ownerName, address, city, email, grouping)
-        VALUES (?, ?, ?, ?, ?, ?)
-    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Grouping)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING id
+    `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Grouping).Scan(&dogID)
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error adding dog: %v", err)
 	}
 
-	dogID, err := result.LastInsertId()
-	if err != nil {
-		tx.Rollback()
-		return fmt.Errorf("error getting last insert id: %v", err)
-	}
-
 	for _, svc := range dog.Services {
 		_, err = tx.Exec(`
             INSERT INTO dog_services (dog_id, service, quantity, price)
-            VALUES (?, ?, ?, ?)
+            VALUES ($1, $2, $3, $4)
         `, dogID, svc.Service, svc.Quantity, svc.Price)
 		if err != nil {
 			tx.Rollback()
@@ -337,20 +327,20 @@ func updateDog(dog Dog) error {
 	// Update dog information
 	_, err = tx.Exec(`
         UPDATE dogs SET
-            name = ?,
-            ownerName = ?,
-            address = ?,
-            city = ?,
-            email = ?,
-            grouping = ?
-        WHERE id = ?
+            name = $1,
+            ownerName = $2,
+            address = $3,
+            city = $4,
+            email = $5,
+            grouping = $6
+        WHERE id = $7
     `, dog.Name, dog.OwnerName, dog.Address, dog.City, dog.Email, dog.Grouping, dog.ID)
 	if err != nil {
 		return fmt.Errorf("error updating dog: %v", err)
 	}
 
 	// Delete existing services for this dog
-	_, err = tx.Exec(`DELETE FROM dog_services WHERE dog_id = ?`, dog.ID)
+	_, err = tx.Exec(`DELETE FROM dog_services WHERE dog_id = $1`, dog.ID)
 	if err != nil {
 		return fmt.Errorf("error deleting existing services: %v", err)
 	}
@@ -359,7 +349,7 @@ func updateDog(dog Dog) error {
 	for _, service := range dog.Services {
 		_, err = tx.Exec(`
             INSERT INTO dog_services (dog_id, service, quantity, price)
-            VALUES (?, ?, ?, ?)
+            VALUES ($1, $2, $3, $4)
         `, dog.ID, service.Service, service.Quantity, service.Price)
 		if err != nil {
 			return fmt.Errorf("error inserting service: %v", err)
@@ -370,7 +360,7 @@ func updateDog(dog Dog) error {
 }
 
 func deleteDog(id int) error {
-	_, err := db.Exec("DELETE FROM dogs WHERE id = ?", id)
+	_, err := db.Exec("DELETE FROM dogs WHERE id = $1", id)
 	if err != nil {
 		return fmt.Errorf("error deleting dog: %v", err)
 	}
@@ -382,7 +372,7 @@ func queueEmail(dogID int) error {
 	_, err := db.Exec(`
         INSERT INTO email_queue (
             dog_id, queued, sent
-        ) VALUES (?, datetime('now'), NULL)
+        ) VALUES ($1, CURRENT_TIMESTAMP, NULL)
     `, dogID)
 	if err != nil {
 		return fmt.Errorf("error queuing email: %v", err)
@@ -419,7 +409,7 @@ func getEmailQueue() ([]Email, error) {
 func markEmailsInProcess(emails []Email) error {
 	errs := []string{}
 	for _, email := range emails {
-		_, err := db.Exec("UPDATE email_queue SET sent = datetime('now') WHERE id = ?", email.ID)
+		_, err := db.Exec("UPDATE email_queue SET sent = CURRENT_TIMESTAMP WHERE id = $1", email.ID)
 		if err != nil {
 			errs = append(errs, fmt.Sprintf("error marking email in process: %v", err))
 		}
@@ -432,7 +422,7 @@ func markEmailsInProcess(emails []Email) error {
 }
 
 func markEmailSent(id int) error {
-	_, err := db.Exec("UPDATE email_queue SET sent = datetime('now') WHERE id = ?", id)
+	_, err := db.Exec("UPDATE email_queue SET sent = CURRENT_TIMESTAMP WHERE id = $1", id)
 	if err != nil {
 		return fmt.Errorf("error marking email sent: %v", err)
 	}

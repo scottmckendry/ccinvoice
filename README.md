@@ -21,6 +21,7 @@
 To run the app in a docker container, you'll need to create a `.env` file in the root directory with the following environment variables:
 
 ```env
+DATABASE_URL=postgres://user:password@host:5432/dbname?sslmode=disable
 SMTP_HOST=smtp.example.com
 SMTP_PORT=587
 SMTP_USER=john@example.com
@@ -35,23 +36,41 @@ BASE_URL=http://invoices.example.com
 I recommend using a docker-compose file to run the app. Here's an example:
 
 ```yaml
-version: "3"
 services:
-    invoices:
+    db:
+        image: postgres:18-alpine
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: ccinvoice
+            POSTGRES_PASSWORD: ccinvoice
+            POSTGRES_DB: ccinvoice
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ccinvoice"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
+    app:
         image: ghcr.io/scottmckendry/ccinvoice:main
         container_name: invoices
-        networks:
-            - traefik
-        volumes:
-            - /etc/localtime:/etc/localtime:ro
-            - /var/run/docker.sock:/var/run/docker.sock
-            - ./data/:/app/data/
-            - ./.env:/app/.env
-        ports: 3000:3000
+        depends_on:
+            db:
+                condition: service_healthy
+        env_file:
+            - .env
+        environment:
+            DATABASE_URL: postgres://ccinvoice:ccinvoice@db:5432/ccinvoice?sslmode=disable
+        ports:
+            - 3000:3000
         restart: unless-stopped
+
+volumes:
+    postgres_data:
 ```
 
-This will run the app on port 3000. I recommend using [Traefik](https://traefik.io) as a reverse proxy. Take a look at my [setup guide](https://scottmckendry.tech/traefik-setup/) for more information.
+This will run the app on port 3000 with a PostgreSQL database. The database data will be persisted in a Docker volume. I recommend using [Traefik](https://traefik.io) as a reverse proxy. Take a look at my [setup guide](https://scottmckendry.tech/traefik-setup/) for more information.
 
 > [!WARNING]\
 > Do not expose the app to the internet without a reverse proxy running authentication middleware. The app does not have any authentication built in.

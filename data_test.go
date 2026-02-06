@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"testing"
 )
 
@@ -43,15 +44,15 @@ func TestInit(t *testing.T) {
 	}
 
 	// Force error
-	oldDbUrl := dbUrl
-	dbUrl = "someBadUrl"
+	oldDbUrl := os.Getenv("DATABASE_URL")
+	os.Setenv("DATABASE_URL", "someBadUrl")
 	err = Init()
 	if err == nil {
 		t.Errorf("no error returned when expected")
 	}
 
 	t.Cleanup(func() {
-		dbUrl = oldDbUrl
+		os.Setenv("DATABASE_URL", oldDbUrl)
 		Init()
 	})
 }
@@ -67,15 +68,15 @@ func TestConnect(t *testing.T) {
 	}
 
 	// Force error
-	oldDbUrl := dbUrl
-	dbUrl = "someBadUrl"
+	oldDbUrl := os.Getenv("DATABASE_URL")
+	os.Setenv("DATABASE_URL", "someBadUrl")
 	err = connect()
 	if err == nil {
 		t.Errorf("no error returned when expected")
 	}
 
 	t.Cleanup(func() {
-		dbUrl = oldDbUrl
+		os.Setenv("DATABASE_URL", oldDbUrl)
 		Init()
 	})
 }
@@ -87,7 +88,8 @@ func TestCreateTables(t *testing.T) {
 	}
 
 	// Insert test dog
-	_, err = db.Exec(`
+	var dogId int
+	err = db.QueryRow(`
         INSERT INTO dogs (
             name,
             ownerName,
@@ -95,8 +97,8 @@ func TestCreateTables(t *testing.T) {
             city,
             email,
             grouping
-        ) VALUES (?, ?, ?, ?, ?, ?)
-    `, testDog.Name, testDog.OwnerName, testDog.Address, testDog.City, testDog.Email, testDog.Grouping)
+        ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id
+    `, testDog.Name, testDog.OwnerName, testDog.Address, testDog.City, testDog.Email, testDog.Grouping).Scan(&dogId)
 
 	if err != nil {
 		t.Errorf("error inserting test dog: %q", err)
@@ -109,16 +111,16 @@ func TestCreateTables(t *testing.T) {
             service,
             quantity,
             price
-        ) VALUES (?, ?, ?, ?)
-    `, testDog.ID, "Bath", 1, 20.00)
+        ) VALUES ($1, $2, $3, $4)
+    `, dogId, "Bath", 1, 20.00)
 
 	if err != nil {
 		t.Errorf("error inserting test service: %q", err)
 	}
 
 	// Force error
-	oldDbUrl := dbUrl
-	dbUrl = "someBadUrl"
+	oldDbUrl := os.Getenv("DATABASE_URL")
+	os.Setenv("DATABASE_URL", "someBadUrl")
 	_ = connect()
 	err = createTables()
 	if err == nil {
@@ -126,11 +128,12 @@ func TestCreateTables(t *testing.T) {
 	}
 
 	t.Cleanup(func() {
-		dbUrl = oldDbUrl
+		os.Setenv("DATABASE_URL", oldDbUrl)
 		_ = connect()
-		db.Exec("DROP TABLE dog_services")
-		db.Exec("DROP TABLE dogs")
-		db.Exec("DROP TABLE migrations")
+		db.Exec("DROP TABLE IF EXISTS dog_services CASCADE")
+		db.Exec("DROP TABLE IF EXISTS dogs CASCADE")
+		db.Exec("DROP TABLE IF EXISTS email_queue CASCADE")
+		db.Exec("DROP TABLE IF EXISTS migrations CASCADE")
 		Init()
 	})
 }
@@ -180,7 +183,7 @@ func TestUpdateDog(t *testing.T) {
 	}
 
 	// Force error
-	db.Exec("DROP TABLE dogs")
+	db.Exec("DROP TABLE dogs CASCADE")
 	err = updateDog(updatedDog)
 
 	if err == nil {
@@ -188,7 +191,10 @@ func TestUpdateDog(t *testing.T) {
 	}
 
 	t.Cleanup(func() {
-		db.Exec("DROP TABLE migrations")
+		db.Exec("DROP TABLE IF EXISTS dog_services CASCADE")
+		db.Exec("DROP TABLE IF EXISTS dogs CASCADE")
+		db.Exec("DROP TABLE IF EXISTS email_queue CASCADE")
+		db.Exec("DROP TABLE IF EXISTS migrations CASCADE")
 		Init()
 		_ = addDog(testDog)
 	})
@@ -218,8 +224,8 @@ func TestGetDogs(t *testing.T) {
 	}
 
 	// Force query error
-	db.Exec("DROP TABLE dog_services")
-	_, err = db.Exec("drop table dogs;")
+	db.Exec("DROP TABLE dog_services CASCADE")
+	_, err = db.Exec("DROP TABLE dogs CASCADE")
 	if err != nil {
 		t.Errorf("error dropping table: %v", err)
 	}
@@ -229,7 +235,10 @@ func TestGetDogs(t *testing.T) {
 	}
 
 	t.Cleanup(func() {
-		db.Exec("DROP TABLE migrations")
+		db.Exec("DROP TABLE IF EXISTS dog_services CASCADE")
+		db.Exec("DROP TABLE IF EXISTS dogs CASCADE")
+		db.Exec("DROP TABLE IF EXISTS email_queue CASCADE")
+		db.Exec("DROP TABLE IF EXISTS migrations CASCADE")
 		Init()
 		_ = addDog(testDog)
 	})
@@ -258,14 +267,17 @@ func TestDeleteDog(t *testing.T) {
 	}
 
 	// Force error
-	db.Exec("DROP TABLE dogs")
+	db.Exec("DROP TABLE dogs CASCADE")
 	err = deleteDog(1)
 	if err == nil {
 		t.Errorf("no error returned when expected")
 	}
 
 	t.Cleanup(func() {
-		db.Exec("DROP TABLE migrations")
+		db.Exec("DROP TABLE IF EXISTS dog_services CASCADE")
+		db.Exec("DROP TABLE IF EXISTS dogs CASCADE")
+		db.Exec("DROP TABLE IF EXISTS email_queue CASCADE")
+		db.Exec("DROP TABLE IF EXISTS migrations CASCADE")
 		Init()
 		_ = addDog(testDog)
 	})

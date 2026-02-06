@@ -1,11 +1,36 @@
 services:
+    db:
+        image: postgres:18-alpine
+        restart: unless-stopped
+        environment:
+            POSTGRES_USER: ccinvoice
+            POSTGRES_PASSWORD: ccinvoice
+            POSTGRES_DB: ccinvoice
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ccinvoice"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+
     app:
         container_name: "ccinvoice"
         build:
             context: ./
             dockerfile: dev.dockerfile
-        volumes:
-            - ./:/app
+        depends_on:
+            db:
+                condition: service_healthy
+        env_file:
+            - .env
+        environment:
+            DATABASE_URL: postgres://ccinvoice:ccinvoice@db:5432/ccinvoice?sslmode=disable
         ports:
             - 3000:3000
             - 8080:8080
+
+volumes:
+    postgres_data:

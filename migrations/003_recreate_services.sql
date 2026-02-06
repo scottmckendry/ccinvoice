@@ -12,7 +12,7 @@ DELETE FROM dog_services_backup WHERE dog_id NOT IN (SELECT id FROM dogs);
 
 -- Recreate the dog_services table
 CREATE TABLE IF NOT EXISTS dog_services (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     dog_id INTEGER,
     service TEXT,
     quantity INTEGER,
@@ -20,9 +20,9 @@ CREATE TABLE IF NOT EXISTS dog_services (
     FOREIGN KEY(dog_id) REFERENCES dogs(id) ON DELETE CASCADE
 );
 
--- Restore the data from the backup
-INSERT INTO dog_services (id, dog_id, service, quantity, price)
-SELECT id, dog_id, service, quantity, price FROM dog_services_backup;
+-- Restore the data from the backup (note: we don't restore id, let PostgreSQL auto-generate)
+INSERT INTO dog_services (dog_id, service, quantity, price)
+SELECT dog_id, service, quantity, price FROM dog_services_backup;
 
 -- Drop the backup table
 DROP TABLE dog_services_backup;
