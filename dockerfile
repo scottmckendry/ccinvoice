@@ -1,4 +1,4 @@
-FROM golang:1.25
+FROM golang:1.26
 
 # Install Chromium (for chromedp PDF generation)
 RUN apt-get update && apt-get install -y --no-install-recommends \
