@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.1](https://github.com/scottmckendry/ccinvoice/compare/v4.1.0...v4.1.1) (2026-02-14)
+
+
+### Bug Fixes
+
+* **fiber:** configure proxy header explicitly ([69f1134](https://github.com/scottmckendry/ccinvoice/commit/69f11348d3b0e8a9beedf20f4bd8c0ce278d41f0))
+
 ## [4.1.0](https://github.com/scottmckendry/ccinvoice/compare/v4.0.0...v4.1.0) (2026-02-14)
 
 
