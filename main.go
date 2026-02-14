@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/go-co-op/gocron/v2"
@@ -65,16 +67,26 @@ func startScheduler() error {
 }
 
 func startServer() *fiber.App {
-	app := fiber.New(fiber.Config{
-		TrustProxy:  true,
-		ProxyHeader: "X-Forwarded-For",
-		TrustProxyConfig: fiber.TrustProxyConfig{
-			Private:   true,
-			LinkLocal: true,
-			Loopback:  true,
-		},
+	config := fiber.Config{
 		Views: html.New("./views", ".html"),
-	})
+	}
+
+	// Configure proxy settings only if TRUSTED_PROXIES is set
+	if envProxies := os.Getenv("TRUSTED_PROXIES"); envProxies != "" {
+		trustedProxies := strings.Split(envProxies, ",")
+		for i := range trustedProxies {
+			trustedProxies[i] = strings.TrimSpace(trustedProxies[i])
+		}
+
+		config.TrustProxy = true
+		config.ProxyHeader = fiber.HeaderXForwardedFor
+		config.TrustProxyConfig = fiber.TrustProxyConfig{
+			Proxies: trustedProxies,
+		}
+		config.EnableIPValidation = true
+	}
+
+	app := fiber.New(config)
 	app.Use(recover.New())
 	app.Use(logger.New())
 
