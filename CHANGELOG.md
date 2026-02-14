@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.1.0](https://github.com/scottmckendry/ccinvoice/compare/v4.0.0...v4.1.0) (2026-02-14)
+
+
+### Features
+
+* **container:** update image golang ( 1.25 → 1.26 ) ([dbfc3bf](https://github.com/scottmckendry/ccinvoice/commit/dbfc3bfbc5ac81fda9707eb4b4c4698c367a1247))
+* trust proxy headers ([013d6b5](https://github.com/scottmckendry/ccinvoice/commit/013d6b53bddcfe2dd095e0ea3481d01fa1c2c93c))
+
 ## [4.0.0](https://github.com/scottmckendry/ccinvoice/compare/v3.2.1...v4.0.0) (2026-02-06)
 
 
