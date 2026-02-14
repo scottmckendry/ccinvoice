@@ -66,7 +66,8 @@ func startScheduler() error {
 
 func startServer() *fiber.App {
 	app := fiber.New(fiber.Config{
-		TrustProxy: true,
+		TrustProxy:  true,
+		ProxyHeader: "X-Forwarded-For",
 		TrustProxyConfig: fiber.TrustProxyConfig{
 			Private:   true,
 			LinkLocal: true,
