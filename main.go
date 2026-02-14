@@ -66,6 +66,12 @@ func startScheduler() error {
 
 func startServer() *fiber.App {
 	app := fiber.New(fiber.Config{
+		TrustProxy: true,
+		TrustProxyConfig: fiber.TrustProxyConfig{
+			Private:   true,
+			LinkLocal: true,
+			Loopback:  true,
+		},
 		Views: html.New("./views", ".html"),
 	})
 	app.Use(recover.New())
