@@ -9,7 +9,7 @@ require (
 	github.com/go-co-op/gocron/v2 v2.19.1
 	github.com/gofiber/fiber/v3 v3.0.0
 	github.com/gofiber/template/html/v3 v3.0.2
-	github.com/jackc/pgx/v5 v5.8.0
+	github.com/jackc/pgx/v5 v5.9.0
 	github.com/joho/godotenv v1.5.1
 )
 
