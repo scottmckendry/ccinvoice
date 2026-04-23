@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.2.0](https://github.com/scottmckendry/ccinvoice/compare/v4.1.2...v4.2.0) (2026-04-23)
+
+
+### Features
+
+* **deps:** update module github.com/chromedp/chromedp ( v0.14.2 → v0.15.1 ) ([ed87de9](https://github.com/scottmckendry/ccinvoice/commit/ed87de907f21d9aa7f1b41bec6348713a2c12e83))
+* **deps:** update module github.com/go-co-op/gocron/v2 ( v2.19.1 → v2.21.1 ) ([d2bf2b0](https://github.com/scottmckendry/ccinvoice/commit/d2bf2b08b19b8328c02a10f3ffe68b2850eb15ba))
+* **deps:** update module github.com/gofiber/fiber/v3 ( v3.0.0 → v3.1.0 ) [security] ([fa48627](https://github.com/scottmckendry/ccinvoice/commit/fa486270e26c67077ce2896ea8c0fdb8cbfcbf6c))
+* **deps:** update module github.com/jackc/pgx/v5 ( v5.8.0 → v5.9.2 ) [security] ([c1d683e](https://github.com/scottmckendry/ccinvoice/commit/c1d683eb9c9ff0aa1f5d017753799da4f798a4cd))
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/gofiber/template/html/v3 ( v3.0.2 → v3.0.3 ) ([1e32f87](https://github.com/scottmckendry/ccinvoice/commit/1e32f8764338a2c0d4ccc819f085a79ffadde215))
+
 ## [4.1.2](https://github.com/scottmckendry/ccinvoice/compare/v4.1.1...v4.1.2) (2026-02-14)
 
 
