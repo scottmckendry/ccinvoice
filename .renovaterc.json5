@@ -45,6 +45,8 @@
     {
       matchManagers: ["github-actions"],
       semanticCommitType: "ci",
+      groupName: 'github-actions',
+      separateMajorMinor: false,
       semanticCommitScope: "github-action",
       commitMessageTopic: "action {{depName}}",
     },
