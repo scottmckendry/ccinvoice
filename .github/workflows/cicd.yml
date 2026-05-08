@@ -48,7 +48,7 @@ jobs:
                   DATABASE_URL: postgres://ccinvoice:ccinvoice@localhost:5432/ccinvoice?sslmode=disable
 
             - name: Test summary
-              uses: test-summary/action@31493c76ec9e7aa675f1585d3ed6f1da69269a86 # v2
+              uses: test-summary/action@37b508cfee6d4d080eedd00b5bb240a6a784a6a5 # v2
               with:
                   paths: unit-tests.xml
               if: always()
@@ -79,7 +79,7 @@ jobs:
             # Install the cosign tool except on PR
             # https://github.com/sigstore/cosign-installer
             - name: Install cosign
-              uses: sigstore/cosign-installer@cad07c2e89fa2edd6e2d7bab4c1aa38e53f76003 # v4.1.1
+              uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
               with:
                   cosign-release: "v2.2.2"
 
