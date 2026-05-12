@@ -25,6 +25,8 @@ github.com/go-co-op/gocron/v2 v2.19.1 h1:B4iLeA0NB/2iO3EKQ7NfKn5KsQgZfjb2fkvoZJU
 github.com/go-co-op/gocron/v2 v2.19.1/go.mod h1:5lEiCKk1oVJV39Zg7/YG10OnaVrDAV5GGR6O0663k6U=
 github.com/go-co-op/gocron/v2 v2.21.1 h1:QYOK6iOQVCut+jDcs4zRdWRTBHRxRCEeeFi1TnAmgbU=
 github.com/go-co-op/gocron/v2 v2.21.1/go.mod h1:5lEiCKk1oVJV39Zg7/YG10OnaVrDAV5GGR6O0663k6U=
+github.com/go-co-op/gocron/v2 v2.21.2 h1:bD8/YwkojYHgXFr3iEulL148KBdTbKVxUZzFKpXcdbY=
+github.com/go-co-op/gocron/v2 v2.21.2/go.mod h1:5lEiCKk1oVJV39Zg7/YG10OnaVrDAV5GGR6O0663k6U=
 github.com/go-json-experiment/json v0.0.0-20250725192818-e39067aee2d2 h1:iizUGZ9pEquQS5jTGkh4AqeeHCMbfbjeb0zMt0aEFzs=
 github.com/go-json-experiment/json v0.0.0-20250725192818-e39067aee2d2/go.mod h1:TiCD2a1pcmjd7YnhGH0f/zKNcCD06B029pHhzV23c2M=
 github.com/go-json-experiment/json v0.0.0-20260214004413-d219187c3433 h1:vymEbVwYFP/L05h5TKQxvkXoKxNvTpjxYKdF1Nlwuao=
